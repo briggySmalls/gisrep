@@ -6,15 +6,14 @@ class TestCli(unittest.TestCase):
 
     def test_parse_init(self):
         def handle_init(args):
-            self.assertTrue(args.local)
             self.assertTrue(args.force)
 
         def handle_report(args):
             self.fail("Report should not be called")
 
         cli = Cli(handle_init, handle_report)
-        cli.parse(["init", "--local", "--force"])
-        cli.parse(["init", "-l", "-f"])
+        cli.parse(["init", "--force"])
+        cli.parse(["init", "-f"])
 
     def test_parse_report(self):
         template = "release-note"

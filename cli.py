@@ -17,10 +17,6 @@ class Cli(object):
             '-f', '--force',
             action='store_true',
             help="Overwrite an existing config file")
-        init_parser.add_argument(
-            '-l', '--local',
-            action='store_true',
-            help="Save config file in execution directory")
         init_parser.set_defaults(handler=init_handler)
 
         # Create the parser for the 'report' command
