@@ -9,8 +9,8 @@ class TestOutputManager(unittest.TestCase):
     def setUp(self):
         self.outputs = OutputManager()
 
-    def test_list_outputs(self):
-        tag_list = self.outputs.get_tags()
+    def test_list(self):
+        tag_list = self.outputs.list()
 
         # Assert tag list length
         self.assertTrue(len(tag_list) > 0)

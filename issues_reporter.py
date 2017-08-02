@@ -48,7 +48,22 @@ def report(args):
         args.output,
         report)
 
+def template(args):
+    builder = TemplateManager()
+    for template in builder.list():
+        print(template)
+
+def outputs(args):
+    output = OutputManager()
+    for output in output.list():
+        print(output)
 
 # Get command line arguments
-cli = Cli(init, report)
+handlers = {
+    'init': init,
+    'report': report,
+    'templates': template,
+    'outputs': outputs,
+}
+cli = Cli(handlers)
 cli.parse(sys.argv[1:])

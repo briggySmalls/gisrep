@@ -21,3 +21,10 @@ class TestTemplateManager(unittest.TestCase):
         # TODO: Assert contents
         self.assertIsNotNone(report)
         print(report)
+
+    def test_list(self):
+        # Get a list of templates
+        templates = self.builder.list()
+
+        # Assert list
+        self.assertTrue(len(templates) > 0)

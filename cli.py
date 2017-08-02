@@ -2,14 +2,16 @@ import argparse
 
 
 class Cli(object):
-    def __init__(self, init_handler, report_handler):
+    def __init__(self, handlers):
         # Build a parser
         parser = argparse.ArgumentParser(
             "Tool for publishing reports of Github issues")
         subparsers = parser.add_subparsers(
             title="commands")
-        self._add_init_parser(subparsers, init_handler)
-        self._add_report_parser(subparsers, report_handler)
+        self._add_init_parser(subparsers, handlers['init'])
+        self._add_report_parser(subparsers, handlers['report'])
+        self._add_template_parser(subparsers, handlers['templates'])
+        self._add_output_parser(subparsers, handlers['outputs'])
         # Save the parser
         self.parser = parser
 
@@ -40,6 +42,18 @@ class Cli(object):
             default="stdout",
             help="Method to output results")
         report_parser.set_defaults(handler=report_handler)
+
+    def _add_template_parser(self, subparsers, templates_handler):
+        template_parser = subparsers.add_parser(
+            'templates',
+            help="Lists available templates")
+        template_parser.set_defaults(handler=templates_handler)
+
+    def _add_output_parser(self, subparsers, outputs_handler):
+        outputs_parser = subparsers.add_parser(
+            'outputs',
+            help="Lists available outputs")
+        outputs_parser.set_defaults(handler=outputs_handler)
 
     def parse(self, raw_args):
         args = self.parser.parse_args(raw_args)

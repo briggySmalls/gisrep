@@ -10,7 +10,7 @@ class OutputManager(object):
     def __init__(self):
         self.subclasses = all_subclasses(outputs.AbstractOutput)
 
-    def get_tags(self):
+    def list(self):
         return [cls.tag() for cls in self.subclasses]
 
     def dump(self, tag, report):

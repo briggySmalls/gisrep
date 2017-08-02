@@ -18,3 +18,6 @@ class TemplateManager(object):
         template = self.env.get_template(template)
         # Render the template
         return template.render(issues=issues)
+
+    def list(self):
+        return self.env.list_templates()
