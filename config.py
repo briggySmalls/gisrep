@@ -28,12 +28,6 @@ class Config(object):
             # No config found (or provided)
             raise RuntimeError("Config file doesn't exist")
 
-    def set_repo(self, url):
-        self.parser['repo'] = {
-            'url': url,
-        }
-        self._save()
-
     def get_credentials(self):
         username = self.parser['user']['username']
         password_service = self.parser['user']['service']
@@ -44,12 +38,6 @@ class Config(object):
             'username': username,
             'password': password,
         }
-
-    def get_repo(self):
-        try:
-            return self.parser['repo']['url']
-        except KeyError:
-            raise RuntimeError("No repo saved in config")
 
     def _create_config_file(self, username, password):       
         # Set the config content

@@ -58,16 +58,6 @@ class TestConfig(unittest.TestCase):
         # Assert contents of fresh config object
         self.assert_credentials(self.new_config(), different_content)
 
-    def test_add_repo(self):
-        # First check getting missing repo fails
-        self.assertRaises(RuntimeError, self.config.get_repo)
-        # Add repo to config
-        self.config.set_repo(TEST_REPO)
-        # Assert repo is saved
-        self.assert_repo(self.config, TEST_REPO)
-        # Assert a fresh config object has the repo
-        self.assert_repo(self.new_config(), TEST_REPO)
-
     def new_config(self, **kwargs):   
         return Config(path=TEST_CONFIG_PATH, **kwargs)
 
@@ -77,6 +67,3 @@ class TestConfig(unittest.TestCase):
         # Assert config content
         self.assertEqual(credentials['username'], expected_credentials['username'])
         self.assertEqual(credentials['password'], expected_credentials['password'])
-
-    def assert_repo(self, config, expected_repo):
-        self.assertEqual(config.get_repo(), expected_repo)
