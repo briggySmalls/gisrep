@@ -27,17 +27,11 @@ class Cli(object):
             'template',
             help="Template format to publish issues with")
         report_parser.add_argument(
-            '-r', '--repo',
-            help="Github repository to query for issues")
-        report_parser.add_argument(
-            '-m', '--milestone',
-            help="Repo milestone to filter issues")
-        report_parser.add_argument(
-            '-l', '--labels',
-            nargs='*',
-            help="Labels to filter issues")
+            '-q', '--query',
+            help="Github issues search query (see https://help.github.com/articles/searching-issues-and-pull-requests/)")
         report_parser.add_argument(
             '-o', '--output',
+            default="stdout",
             help="Method to output results")
         report_parser.set_defaults(handler=report_handler)
 

@@ -1,32 +1,40 @@
 from cli import Cli
 from config import Config
-from api_manager import ApiManager
+from github import Github
 from template_manager import TemplateManager
 from output_manager import OutputManager
+import getpass
 import sys
 
 
-# Parse config file (if it exists)
-# TODO: pass cli arg 'config'
-config = Config()
-
-
 def init(args):
-    # Initialise config file
-    config.init(
-        args.username,
-        args.password)
+    # Prompt for username and password
+    username = input("Github username:")
+    password = getpass.getpass("Github password:")
 
+    credentials = {
+        'username': username,
+        'password': password,
+    }
+
+    # Initialise config file
+    config = Config(
+        initial_config=credentials,
+        force=args.force)
 
 def report(args):
-    # Request issues
-    api = ApiManager(
-        config.username,
-        config.password)
-    issues = api.issues(
-        args.repo,
-        args.milestone,
-        args.labels)
+    # Read in the existing config
+    config = Config()
+
+    # Instantiate an API client
+    credentials = config.get_credentials()
+    api = Github(
+        credentials['username'],
+        credentials['password'])
+
+    # Request the issues
+    issues = api.search_issues(
+        args.query)
 
     # Generate report
     builder = TemplateManager()

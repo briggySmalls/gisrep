@@ -17,26 +17,17 @@ class TestCli(unittest.TestCase):
 
     def test_parse_report(self):
         template = "release-note"
-        repo = "https://www.google.com"
-        milestone = "My milestone"
-        label_1 = "label_1"
-        label_2 = "label_2"
-        label_3 = "label_3"
+        query = "repo:github/opensource.guide is:open"
 
         def handle_init(args):
             self.fail("Init should not be called")
 
         def handle_report(args):
-            self.assertEqual(args.repo, repo)
-            self.assertEqual(args.milestone, milestone)
-            self.assertIn(label_1, args.labels)
-            self.assertIn(label_2, args.labels)
-            self.assertIn(label_3, args.labels)
+            self.assertEqual(args.template, template)
+            self.assertEqual(args.query, query)
 
         cli = Cli(handle_init, handle_report)
         cli.parse([
             'report',
             template,
-            '--repo', repo,
-            '--milestone', milestone,
-            '--labels', label_1, label_2, label_3])
+            '--query', query])
