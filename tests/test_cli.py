@@ -45,7 +45,7 @@ class TestCli(unittest.TestCase):
         self.cli.parse([
             'report',
             template,
-            '--query', query])
+            query])
 
     def default_handler(self, args):
         self.fail("Default handler called with args: {0}".format(

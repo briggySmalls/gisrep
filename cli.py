@@ -35,7 +35,7 @@ class Cli(object):
             'template',
             help="Template format to publish issues with")
         report_parser.add_argument(
-            '-q', '--query',
+            'query',
             help="Github issues search query (see https://help.github.com/articles/searching-issues-and-pull-requests/)")
         report_parser.add_argument(
             '-o', '--output',
