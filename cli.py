@@ -8,12 +8,12 @@ class Cli(object):
             "Tool for publishing reports of Github issues")
         subparsers = parser.add_subparsers(
             title="commands")
-        self.add_init_parser(subparsers, init_handler)
-        self.add_report_parser(subparsers, report_handler)
+        self._add_init_parser(subparsers, init_handler)
+        self._add_report_parser(subparsers, report_handler)
         # Save the parser
         self.parser = parser
 
-    def add_init_parser(self, subparsers, init_handler):
+    def _add_init_parser(self, subparsers, init_handler):
         # Create the parser for the 'init' command
         init_parser = subparsers.add_parser(
             'init',
@@ -24,7 +24,7 @@ class Cli(object):
             help="Overwrite an existing config file")
         init_parser.set_defaults(handler=init_handler)
 
-    def add_report_parser(self, subparsers, report_handler):
+    def _add_report_parser(self, subparsers, report_handler):
         # Create the parser for the 'report' command
         report_parser = subparsers.add_parser(
             'report',
