@@ -1,3 +1,2 @@
-{% for issue in issues %}
-{{ issue.title }} - ({{ issue.number }})
+{% for issue in issues %}{{ issue.title }} - ({{ issue.number }})
 {% endfor %}
