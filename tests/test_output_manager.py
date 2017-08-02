@@ -18,4 +18,5 @@ class TestOutputManager(unittest.TestCase):
             print(tag)
 
     def test_stdout_dump(self):
+        # TODO: Redirect stdout
         self.outputs.dump('stdout', "Hi!")

@@ -18,5 +18,6 @@ class TestTemplateManager(unittest.TestCase):
             'simple_report.txt',
             TEST_ISSUES)
 
+        # TODO: Assert contents
         self.assertIsNotNone(report)
         print(report)
