@@ -5,7 +5,7 @@ class Cli(object):
     def __init__(self, handlers):
         # Build a parser
         parser = argparse.ArgumentParser(
-            "Tool for publishing reports of Github issues")
+            description="Tool for publishing reports of Github issues")
         subparsers = parser.add_subparsers(
             title="commands")
         self._add_init_parser(subparsers, handlers['init'])
