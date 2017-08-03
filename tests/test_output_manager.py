@@ -1,12 +1,11 @@
 import unittest
 from output_manager import OutputManager
-import io
-import sys
 
 
 class TestOutputManager(unittest.TestCase):
 
     def setUp(self):
+        # Create the output manager
         self.outputs = OutputManager()
 
     def test_list(self):
