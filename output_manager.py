@@ -8,13 +8,14 @@ def all_subclasses(cls):
 
 class OutputManager(object):
     def __init__(self):
-        self.subclasses = all_subclasses(outputs.AbstractOutput)
+        subclasses = all_subclasses(outputs.AbstractOutput)
+        self.output_forms = { cls.tag(): cls for cls in subclasses}
 
     def list(self):
-        return [cls.tag() for cls in self.subclasses]
+        return keys(self.output_forms)
 
     def dump(self, tag, report):
-        for cls in self.subclasses:
-            if cls.tag() == tag:
-                cls.dump(report)
-                break
+        if tag in self.output_forms:
+            self.output_forms[tag].dump(report)
+        else:
+            raise RuntimeError("Outputter not found")
