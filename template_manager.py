@@ -1,21 +1,21 @@
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader, select_autoescape, exceptions
 import os
-
-TEMPLATE_DIR = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    'templates')
 
 
 class TemplateManager(object):
-    def __init__(self):
+    def __init__(self, template_dirs):
         self.env = Environment(
-            loader=FileSystemLoader(TEMPLATE_DIR),
+            loader=FileSystemLoader(template_dirs),
             autoescape=select_autoescape(['html', 'xml'])
         )
 
     def generate(self, template, issues):
         # Load the template
-        template = self.env.get_template(template)
+        try:
+            template = self.env.get_template(template)
+        except exceptions.TemplateNotFound as exc:
+            raise RuntimeError("Template does not exist") from exc
+        
         # Render the template
         return template.render(issues=issues)
 

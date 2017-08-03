@@ -5,21 +5,28 @@ from template_manager import TemplateManager
 from output_manager import OutputManager
 import getpass
 import sys
+import os
 
+
+TOOL_TEMPLATE_DIR = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)),
+    'templates')
 
 def init(args):
     # Prompt for username and password
+    # TODO: Should this be in Cli?
     username = input("Github username:")
     password = getpass.getpass("Github password:")
 
-    credentials = {
+    initial_config = {
         'username': username,
         'password': password,
+        'template_dirs': [TOOL_TEMPLATE_DIR]
     }
 
     # Initialise config file
     config = Config(
-        initial_config=credentials,
+        initial_config=initial_config,
         force=args.force)
 
 def report(args):
@@ -37,7 +44,7 @@ def report(args):
         args.query)
 
     # Generate report
-    builder = TemplateManager()
+    builder = TemplateManager(config.template_dirs)
     report = builder.generate(
         args.template,
         issues)
@@ -48,12 +55,19 @@ def report(args):
         args.output,
         report)
 
-def template(args):
-    builder = TemplateManager()
+def templates_list(args):
+    config = Config()
+    builder = TemplateManager(config.template_dirs)
     for template in builder.list():
         print(template)
 
-def outputs(args):
+def templates_add(args):
+    # Read in the existing config
+    config = Config()
+    abs_directory = os.path.realpath(args.directory)
+    config.add_template_dir(abs_directory)
+
+def outputs_list(args):
     output = OutputManager()
     for output in output.list():
         print(output)
@@ -62,8 +76,9 @@ def outputs(args):
 handlers = {
     'init': init,
     'report': report,
-    'templates': template,
-    'outputs': outputs,
+    'templates_list': templates_list,
+    'templates_add': templates_add,
+    'outputs_list': outputs_list,
 }
 cli = Cli(handlers)
 cli.parse(sys.argv[1:])
