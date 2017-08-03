@@ -8,7 +8,6 @@ TEST_INITIAL_CONFIG = {
     'username': "my_name",
     'password': "my_password"
 }
-TEST_REPO = "https://www.google.com"
 
 class TestConfig(unittest.TestCase):
     def setUp(self):
