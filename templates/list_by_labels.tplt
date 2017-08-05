@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>Issues Report</title>
+</head>
+<body>
+    <h1>Issues Report</h1>
+    {%- for label in all_labels %}
+    <h2>{{ label.name }}</h2>
+    <ul>
+        {%- for issue in issues %}
+            {%- if label in issue.labels %}
+            <li>{{ issue.title }} - ({{ issue.number }})</li>
+            {%- endif %}
+        {%- endfor %}
+    </ul>
+    {%- endfor %}
+</body>
+</html>

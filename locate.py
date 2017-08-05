@@ -15,7 +15,6 @@ class Locator(object, metaclass=ABCMeta):
             return self.lookup.values() if tag is None else self.lookup[tag]
         except KeyError as exc:
             raise RuntimeError("Tag not found") from exc
-            
 
     def list(self):
         return self.lookup.keys()
