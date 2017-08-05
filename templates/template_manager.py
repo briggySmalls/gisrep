@@ -4,8 +4,7 @@ import os
 from abc import ABCMeta, abstractmethod
 import importlib.util
 
-FILEPATH = os.path.dirname(os.path.abspath(__file__))
-TEMPLATE_NAME = os.path.basename(__file__)
+TEMPLATE_EXTENSION = 'tplt'
 
 
 class AbstractTemplate(object, metaclass=ABCMeta):
@@ -51,8 +50,9 @@ class TemplateManager(object):
         return template.render(context)
 
     def list(self):
-        return self.env.list_templates(
-            extensions=['tplt'])
+        # Get 
+        self.env.list_templates(
+            extensions=[TEMPLATE_EXTENSION])
 
     def _import_module(self, module_path):
         module_name = os.path.basename(module_path)
