@@ -34,7 +34,8 @@ class TemplateManager(object):
     def generate(self, template, issues):
         # Load the template
         try:
-            template = self.env.get_template(template)
+            template = self.env.get_template(
+                "{0}.{1}".format(template, TEMPLATE_EXTENSION))
         except exceptions.TemplateNotFound as exc:
             raise RuntimeError("Template does not exist") from exc
 
@@ -50,9 +51,15 @@ class TemplateManager(object):
         return template.render(context)
 
     def list(self):
-        # Get 
-        self.env.list_templates(
+        # Get list of template files
+        templates = self.env.list_templates(
             extensions=[TEMPLATE_EXTENSION])
+
+        # Strip template from text
+        for i in range(len(templates)):
+            templates[i] = os.path.splitext(templates[i])[0]
+
+        return templates
 
     def _import_module(self, module_path):
         module_name = os.path.basename(module_path)
