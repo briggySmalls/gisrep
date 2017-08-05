@@ -1,12 +1,9 @@
-from .abstract_output import AbstractOutput
+from .output_manager import AbstractOutput
 import pyperclip
 
 
 class Clipboard(AbstractOutput):
-
-    @classmethod
-    def tag(self):
-        return "clipboard"
+    tag = "clipboard"
 
     @classmethod
     def dump(self, report):

@@ -1,5 +1,6 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape, exceptions
 import os
+from locate import Locator, Locatable
 
 
 class TemplateManager(object):
@@ -15,7 +16,7 @@ class TemplateManager(object):
             template = self.env.get_template(template)
         except exceptions.TemplateNotFound as exc:
             raise RuntimeError("Template does not exist") from exc
-        
+
         # Render the template
         return template.render(issues=issues)
 

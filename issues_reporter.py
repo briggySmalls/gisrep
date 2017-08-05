@@ -1,8 +1,8 @@
 from cli import Cli
 from config import Config
 from github import Github
-from template_manager import TemplateManager
-from output_manager import OutputManager
+from templates.template_manager import TemplateManager
+from outputs.output_manager import OutputManager
 import getpass
 import sys
 import os
@@ -55,19 +55,13 @@ def report(args):
         args.output,
         report)
 
-def templates_list(args):
+def list_templates(args):
     config = Config()
     builder = TemplateManager(config.template_dirs)
     for template in builder.list():
         print(template)
 
-def templates_add(args):
-    # Read in the existing config
-    config = Config()
-    abs_directory = os.path.realpath(args.directory)
-    config.add_template_dir(abs_directory)
-
-def outputs_list(args):
+def list_outputs(args):
     output = OutputManager()
     for output in output.list():
         print(output)
@@ -76,9 +70,8 @@ def outputs_list(args):
 handlers = {
     'init': init,
     'report': report,
-    'templates_list': templates_list,
-    'templates_add': templates_add,
-    'outputs_list': outputs_list,
+    'list_templates': list_templates,
+    'list_outputs': list_outputs,
 }
 cli = Cli(handlers)
 cli.parse(sys.argv[1:])
