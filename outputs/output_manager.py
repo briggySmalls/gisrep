@@ -14,8 +14,14 @@ class AbstractOutput(Locatable, metaclass=ABCMeta):
     def configure_parser(self, parser):
         return parser
 
+    def publish(self, report, args=None):
+        # Parse the arguments
+        parsed_args = self.parser.parse_args(args)
+        # Dump the report
+        self.dump(report, parsed_args)
+
     @abstractmethod
-    def dump(self, report, args=None): pass
+    def dump(report, args=None): pass
 
     @property
     def description(self):
@@ -31,4 +37,4 @@ class OutputManager(Locator):
         output_class = self.locate(args[0])
         output = output_class()
         # Generate the report with the report and other arguments
-        output.dump(report, args[1:] if len(args) > 0 else None)
+        output.publish(report, args[1:] if len(args) > 0 else None)
