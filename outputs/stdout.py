@@ -1,9 +1,9 @@
 from .output_manager import AbstractOutput
 
 
-class StdOut(AbstractOutput):
+class StdOutOutput(AbstractOutput):
     tag = "stdout"
 
     @classmethod
-    def dump(self, report):
+    def dump(self, report, args=None):
         print(report)
