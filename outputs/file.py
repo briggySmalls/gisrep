@@ -15,6 +15,6 @@ class FileOutput(AbstractOutput):
 
     def dump(self, report, args=None):
         # Ensure the path is correct
-        filename = os.path.abspath(parsed_args.filename)
+        filename = os.path.abspath(args.filename)
         with open(filename, 'w') as f:
             f.write(report)
