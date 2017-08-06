@@ -1,11 +1,25 @@
 from locate import Locator, Locatable
 import outputs
 from abc import ABCMeta, abstractmethod
+import argparse
 
 
 class AbstractOutput(Locatable, metaclass=ABCMeta):
+    def __init__(self):
+        parser = argparse.ArgumentParser(
+            description=self.description,
+            usage="-o {} [options]".format(self.tag))
+        self.parser = self.configure_parser(parser)
+
+    def configure_parser(self, parser):
+        return parser
+
     @abstractmethod
     def dump(self, report, args=None): pass
+
+    @property
+    def description(self):
+        raise NotImplementedError("description attribute must be defined")
 
 
 class OutputManager(Locator):
