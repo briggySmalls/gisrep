@@ -47,6 +47,30 @@ class TestCli(unittest.TestCase):
             template,
             query])
 
+    def test_list_templates(self):
+        def handle_list_templates(args):
+            self.assertEqual('list', args.command)
+        
+        # Set handlers
+        self.handlers['list_templates'] = handle_list_templates
+
+        # Run test
+        self.cli.parse([
+            'templates',
+            'list'])
+
+    def test_list_outputs(self):
+        def handle_list_outputs(args):
+            self.assertEqual('list', args.command)
+        
+        # Set handlers
+        self.handlers['list_outputs'] = handle_list_outputs
+
+        # Run test
+        self.cli.parse([
+            'outputs',
+            'list'])
+
     def default_handler(self, args):
         self.fail("Default handler called with args: {0}".format(
             args))
