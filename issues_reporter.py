@@ -32,6 +32,10 @@ def init(args):
 def report(args):
     # Read in the existing config
     config = Config()
+    # Create the managers based on config/cli args
+    # Note: we do this now to catch errors before any API calls
+    builder = TemplateManager(config.template_dirs)
+    output = OutputManager()
 
     # Instantiate an API client
     credentials = config.get_credentials()
@@ -44,13 +48,11 @@ def report(args):
         args.query)
 
     # Generate report
-    builder = TemplateManager(config.template_dirs)
     report = builder.generate(
         args.template,
         issues)
 
     # Output report
-    output = OutputManager()
     output.dump(
         args.output,
         report)
