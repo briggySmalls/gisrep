@@ -5,7 +5,9 @@ import argparse
 root_parser = argparse.ArgumentParser(
     description="Tool for publishing reports of Github issues")
 subparsers = root_parser.add_subparsers(
-    title="commands")
+    title="commands",
+    dest="command")
+subparsers.required = True
 
 # Create a parser for the 'init' command
 init_parser = subparsers.add_parser(
@@ -28,7 +30,8 @@ report_parser.add_argument(
     help="Github issues search query (see https://help.github.com/articles/searching-issues-and-pull-requests/)")
 report_parser.add_argument(
     '-o', '--output',
-    default="stdout",
+    default=["stdout"],
+    nargs='+',
     help="Method to output results")
 
 # Create a parser for the 'templates' command
@@ -36,7 +39,9 @@ templates_parser = subparsers.add_parser(
     'templates',
     help="Manage report templates")
 templates_subparsers = templates_parser.add_subparsers(
-    title="commands")
+    title="commands",
+    dest="command")
+templates_subparsers.required = True
 
 # Create a parser for the 'templates list' command
 list_templates_parser = templates_subparsers.add_parser(
@@ -48,7 +53,9 @@ outputs_parser = subparsers.add_parser(
     'outputs',
     help="Manage output methods")
 outputs_subparsers = outputs_parser.add_subparsers(
-    title="commands")
+    title="commands",
+    dest="command")
+outputs_subparsers.required = True
 
 # Create a parser for the 'outputs list' command
 list_outputs_parser = outputs_subparsers.add_parser(
