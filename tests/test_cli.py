@@ -21,6 +21,7 @@ class TestCli(unittest.TestCase):
 
     def test_parse_init(self):
         def handle_init(args):
+            self.assertEqual(args.command, 'init')
             self.assertTrue(args.force)
 
         # Set handlers
@@ -35,6 +36,7 @@ class TestCli(unittest.TestCase):
         query = "repo:github/opensource.guide is:open"
 
         def handle_report(args):
+            self.assertEqual(args.command, 'report')
             self.assertEqual(args.template, template)
             self.assertEqual(args.query, query)
 
@@ -49,7 +51,7 @@ class TestCli(unittest.TestCase):
 
     def test_list_templates(self):
         def handle_list_templates(args):
-            self.assertEqual('list', args.command)
+            self.assertEqual(args.command, 'list')
         
         # Set handlers
         self.handlers['list_templates'] = handle_list_templates
@@ -61,7 +63,7 @@ class TestCli(unittest.TestCase):
 
     def test_list_outputs(self):
         def handle_list_outputs(args):
-            self.assertEqual('list', args.command)
+            self.assertEqual(args.command, 'list')
         
         # Set handlers
         self.handlers['list_outputs'] = handle_list_outputs
