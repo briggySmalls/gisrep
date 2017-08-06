@@ -8,15 +8,15 @@ class TestCli(unittest.TestCase):
         self.handlers = {}
         self.handlers['init'] = self.default_handler
         self.handlers['report'] = self.default_handler
-        self.handlers['templates'] = self.default_handler
-        self.handlers['outputs'] = self.default_handler
+        self.handlers['list_templates'] = self.default_handler
+        self.handlers['list_outputs'] = self.default_handler
 
         # Instantiate new Cli object
         self.cli = Cli({
             'init': lambda args : self.handlers['init'](args),
             'report': lambda args : self.handlers['report'](args),
-            'templates': lambda args : self.handlers['templates'](args),
-            'outputs': lambda args : self.handlers['outputs'](args),
+            'list_templates': lambda args : self.handlers['list_templates'](args),
+            'list_outputs': lambda args : self.handlers['list_outputs'](args),
         })
 
     def test_parse_init(self):
