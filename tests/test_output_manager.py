@@ -1,5 +1,9 @@
 import unittest
-from output_manager import OutputManager
+from outputs.output_manager import AbstractOutput, OutputManager
+
+
+# Variable to validate output handled values
+validate = {}
 
 
 class TestOutputManager(unittest.TestCase):
@@ -7,15 +11,62 @@ class TestOutputManager(unittest.TestCase):
     def setUp(self):
         # Create the output manager
         self.outputs = OutputManager()
+        # Clear the state variables
+        validate = {}
 
     def test_list(self):
         tag_list = self.outputs.list()
 
         # Assert tag list length
         self.assertTrue(len(tag_list) > 0)
-        for tag in tag_list:
-            print(tag)
+        self.assertIn('stdout', tag_list)
+        self.assertIn('file', tag_list)
+        self.assertIn('clipboard', tag_list)
 
-    def test_stdout_dump(self):
-        # TODO: Redirect stdout
-        self.outputs.dump('stdout', "Hi!")
+    def test_std_dump(self):
+        report_string = "Hi!"
+
+        # Pass the 'report' to the test output
+        self.outputs.dump(['test_std'], report_string)
+
+        # Assert that the report was handled
+        self.assertEqual(TestStdOutput.validate['report'], report_string)
+        self.assertNotIn('args', TestStdOutput.validate)
+
+    def test_args_dump(self):
+        report_string = "Yo!"
+        output_args = ['second_arg']
+
+        combined_args = ['test_args']
+        combined_args.extend(output_args)
+        # Pass the 'report' to the test output
+        self.outputs.dump(combined_args, report_string)
+
+        # Assert that the report was handled
+        self.assertEqual(TestArgsOutput.validate['report'], report_string)
+        self.assertEqual(TestArgsOutput.validate['args'].arg_a, output_args[0])
+
+class TestStdOutput(AbstractOutput):
+    tag = "test_std"
+    description = "Saves the report to a variable"
+    validate = {}
+
+    def dump(self, report, args=None):
+        # Store the report
+        self.validate['report'] = report
+
+class TestArgsOutput(AbstractOutput):
+    tag = "test_args"
+    description = "Saves the report to a variable, requires argument"
+    validate = {}
+
+    def configure_parser(self, parser):
+        parser.add_argument(
+            'arg_a',
+            help="A fake argument for the output")
+        return parser
+
+    def dump(self, report, args=None):
+        # Store the report
+        self.validate['report'] = report
+        self.validate['args'] = args
