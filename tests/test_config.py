@@ -4,9 +4,11 @@ import os
 
 TEST_CONFIG_PATH = os.path.abspath('.')
 TEST_CONFIG_FILE = os.path.join(TEST_CONFIG_PATH, '.ir_config')
+TEST_TEMPLATE_DIR = os.path.join(TEST_CONFIG_PATH, 'test_data')
 TEST_INITIAL_CONFIG = {
     'username': "my_name",
-    'password': "my_password"
+    'password': "my_password",
+    'template_dirs': [TEST_TEMPLATE_DIR],
 }
 
 class TestConfig(unittest.TestCase):
@@ -39,6 +41,7 @@ class TestConfig(unittest.TestCase):
         different_content = {
             'username': "different_name",
             'password': "different_password",
+            'template_dirs': ['./test'],
         }
 
         def init_new_config(force):
