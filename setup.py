@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='github-issues-reporter',
+    name='gisrep',
     version='0.1.0',
     description="Tool for publishing Github issues",
     # TODO: Add long_description
@@ -35,7 +35,7 @@ setup(
     ],
     packages=find_packages(),
     entry_points={
-        'console_scripts': ['gisrep=issues_reporter.issues_reporter:main']
+        'console_scripts': ['gisrep=gisrep.gisrep:main']
     },
     python_requires='>=3',
 )

@@ -3,8 +3,8 @@ import keyring
 import os
 
 DEFAULT_CONFIG_PATH = os.path.expanduser("~")
-DEFAULT_CONFIG_FILE = ".ir_config"
-DEFAULT_PASSWORD_SERVICE = "issues-reporter"
+DEFAULT_CONFIG_FILE = ".gisrep_config"
+DEFAULT_PASSWORD_SERVICE = "gisrep"
 
 
 class Config(object):
