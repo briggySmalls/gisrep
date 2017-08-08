@@ -1,8 +1,8 @@
-from cli import Cli
-from config import Config
+from .cli import Cli
+from .config import Config
+from .templates.template_manager import TemplateManager
+from .outputs.output_manager import OutputManager
 from github import Github
-from templates.template_manager import TemplateManager
-from outputs.output_manager import OutputManager
 import getpass
 import sys
 import os
@@ -11,6 +11,18 @@ import os
 TOOL_TEMPLATE_DIR = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     'templates')
+
+def main():
+    # Prepare handlers
+    handlers = {
+        'init': init,
+        'report': report,
+        'list_templates': list_templates,
+        'list_outputs': list_outputs,
+    }
+    # Parse command line arguments
+    cli = Cli(handlers)
+    cli.parse(sys.argv[1:])
 
 def init(args):
     # Prompt for username and password
@@ -68,12 +80,5 @@ def list_outputs(args):
     for output in output.list():
         print(output)
 
-# Get command line arguments
-handlers = {
-    'init': init,
-    'report': report,
-    'list_templates': list_templates,
-    'list_outputs': list_outputs,
-}
-cli = Cli(handlers)
-cli.parse(sys.argv[1:])
+if __name__ == '__main__':
+    main()

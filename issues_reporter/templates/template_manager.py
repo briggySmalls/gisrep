@@ -1,4 +1,4 @@
-from locate import Locator, Locatable
+from ..locate import Locator, Locatable
 from jinja2 import Environment, FileSystemLoader, select_autoescape, exceptions
 import os
 from abc import ABCMeta, abstractmethod

@@ -1,5 +1,4 @@
-from locate import Locator, Locatable
-import outputs
+from ..locate import Locator, Locatable
 from abc import ABCMeta, abstractmethod
 import argparse
 
