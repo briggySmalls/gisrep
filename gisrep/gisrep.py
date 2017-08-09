@@ -1,6 +1,6 @@
 from .cli import Cli
 from .config import Config
-from .templates.template_manager import TemplateManager
+from .templates.template_manager import TemplateManager, TOOL_TEMPLATE_DIR
 from .outputs.output_manager import OutputManager
 from github import Github
 import getpass
@@ -8,16 +8,14 @@ import sys
 import os
 
 
-TOOL_TEMPLATE_DIR = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    'templates')
-
 def main():
     # Prepare handlers
     handlers = {
         'init': init,
         'report': report,
         'list_templates': list_templates,
+        'add_templates': add_templates,
+        'remove_templates': remove_templates,
         'list_outputs': list_outputs,
     }
     # Parse command line arguments
@@ -33,7 +31,6 @@ def init(args):
     initial_config = {
         'username': username,
         'password': password,
-        'template_dirs': [TOOL_TEMPLATE_DIR]
     }
 
     # Initialise config file
@@ -46,7 +43,9 @@ def report(args):
     config = Config()
     # Create the managers based on config/cli args
     # Note: we do this now to catch errors before any API calls
-    builder = TemplateManager(config.template_dirs)
+    template_dirs = [TOOL_TEMPLATE_DIR]
+    template_dirs.extend(config.template_dirs)
+    builder = TemplateManager(template_dirs)
     output = OutputManager()
 
     # Instantiate an API client
@@ -71,11 +70,22 @@ def report(args):
 
 def list_templates(args):
     config = Config()
-    builder = TemplateManager(config.template_dirs)
+    template_dirs = [TOOL_TEMPLATE_DIR]
+    template_dirs.extend(config.template_dirs)
+    builder = TemplateManager(template_dirs)
     for template in builder.list():
         print(template)
 
+def add_templates(args):
+    config = Config()
+    config.add_template_dir(args.directory)
+
+def remove_templates(args):
+    config = Config()
+    config.remove_template_dir(args.directory)
+
 def list_outputs(args):
+    config = Config()
     output = OutputManager()
     for output in output.list():
         print(output)

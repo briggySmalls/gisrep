@@ -47,9 +47,21 @@ class Config(object):
         self.template_dirs.append(directory)
         self._write()
 
+    def add_output_dir(self, directory):
+        self.output_dirs.append(directory)
+        self._write()
+
+    def remove_template_dir(self, directory):
+        self.template_dirs.remove(directory)
+        self._write()
+
+    def remove_output_dir(self, directory):
+        self.output_dirs.remove(directory)
+        self._write()
+
     @property
     def template_dirs(self):
-        return self.config['tool']['template_dirs']
+        return self.config['tool']['user_template_dirs']
 
     def _create_config(self, initial_config):       
         # Save the password in the password manager
@@ -66,10 +78,11 @@ class Config(object):
             'password_service': DEFAULT_PASSWORD_SERVICE,
         }
 
-        # Format a tool section
+        # Create tool placeholder config
         config['tool'] = {
-            'template_dirs': initial_config['template_dirs'],
+            'user_template_dirs': [],
         }
+
         # Return the new config
         return config
 

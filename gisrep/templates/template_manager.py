@@ -5,7 +5,7 @@ from abc import ABCMeta, abstractmethod
 import importlib.util
 
 TEMPLATE_EXTENSION = 'tplt'
-
+TOOL_TEMPLATE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 class AbstractTemplate(object, metaclass=ABCMeta):
     def __init__(self):

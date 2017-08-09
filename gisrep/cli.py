@@ -48,6 +48,22 @@ list_templates_parser = templates_subparsers.add_parser(
     'list',
     help="List the available templates")
 
+# Create a parser for the 'templates add' command
+add_templates_parser = templates_subparsers.add_parser(
+    'add',
+    help="Add templates to the tool")
+add_templates_parser.add_argument(
+     'directory',
+     help="Adds directory to the template path")
+
+# Create a parser for the 'templates remove' command
+remove_templates_parser = templates_subparsers.add_parser(
+     'remove',
+     help="Remove templates from the tool")
+remove_templates_parser.add_argument(
+     'directory',
+     help="Removes directory from the template path") 
+
 # Create a parser for the 'outputs' command
 outputs_parser = subparsers.add_parser(
     'outputs',
@@ -67,6 +83,8 @@ class Cli(object):
         self._set_handler(init_parser, handlers['init'])
         self._set_handler(report_parser, handlers['report'])
         self._set_handler(list_templates_parser, handlers['list_templates'])
+        self._set_handler(add_templates_parser, handlers['add_templates'])
+        self._set_handler(remove_templates_parser, handlers['remove_templates'])
         self._set_handler(list_outputs_parser, handlers['list_outputs'])
 
     def parse(self, raw_args):
