@@ -46,7 +46,8 @@ def report(args):
     template_dirs = [TOOL_TEMPLATE_DIR]
     template_dirs.extend(config.template_dirs)
     builder = TemplateManager(template_dirs)
-    output = OutputManager()
+    output_manager = OutputManager()
+    output = output_manager.get_output(args.output)
 
     # Instantiate an API client
     credentials = config.get_credentials()
@@ -64,9 +65,7 @@ def report(args):
         issues)
 
     # Output report
-    output.dump(
-        args.output,
-        report)
+    output.publish(report)
 
 def list_templates(args):
     config = Config()

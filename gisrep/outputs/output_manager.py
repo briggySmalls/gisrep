@@ -4,20 +4,19 @@ import argparse
 
 
 class AbstractOutput(Locatable, metaclass=ABCMeta):
-    def __init__(self):
+    def __init__(self, args):
         parser = argparse.ArgumentParser(
             description=self.description,
             usage="-o {} [options]".format(self.tag))
         self.parser = self.configure_parser(parser)
+        self.parsed_args = self.parser.parse_args(args)
 
     def configure_parser(self, parser):
         return parser
 
-    def publish(self, report, args=None):
-        # Parse the arguments
-        parsed_args = self.parser.parse_args(args)
+    def publish(self, report):
         # Dump the report
-        self.dump(report, parsed_args)
+        self.dump(report, self.parsed_args)
 
     @abstractmethod
     def dump(report, args=None): pass
@@ -31,9 +30,5 @@ class OutputManager(Locator):
     def __init__(self):
         super().__init__(AbstractOutput)
 
-    def dump(self, args, report):
-        # locate the output format using the first argument (tag)
-        output_class = self.locate(args[0])
-        output = output_class()
-        # Generate the report with the report and other arguments
-        output.publish(report, args[1:] if len(args) > 0 else None)
+    def get_output(self, args):
+        return self.locate(args[0])(args[1:] if len(args) > 1 else [])
