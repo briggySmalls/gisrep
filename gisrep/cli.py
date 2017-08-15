@@ -80,6 +80,13 @@ list_outputs_parser = outputs_subparsers.add_parser(
 
 class Cli(object):
     def __init__(self, handlers):
+        """
+        Class for cli.
+        
+        :returns:   CLI object that calls handlers defined in constructor
+        :rtype:     Cli
+        """
+
         self._set_handler(init_parser, handlers['init'])
         self._set_handler(report_parser, handlers['report'])
         self._set_handler(list_templates_parser, handlers['list_templates'])

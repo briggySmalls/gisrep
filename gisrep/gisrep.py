@@ -1,3 +1,7 @@
+"""
+Application source for the gisrep issues reporter tool
+"""
+
 from .cli import Cli
 from .config import Config
 from .templates.template_manager import TemplateManager, TOOL_TEMPLATE_DIR
@@ -9,6 +13,13 @@ import os
 
 
 def main():
+    """
+    Main function, executed upon
+    
+    :returns:   None
+    :rtype:     None
+    """
+    
     # Prepare handlers
     handlers = {
         'init': init,
@@ -23,6 +34,16 @@ def main():
     cli.parse(sys.argv[1:])
 
 def init(args):
+    """
+    Initialises the tool config file
+    
+    :param      args:  The command arguments
+    :type       args:  argparse.Namespace
+    
+    :returns:   None
+    :rtype:     None
+    """
+
     # Prompt for username and password
     # TODO: Should this be in Cli?
     username = input("Github username:")
@@ -39,6 +60,16 @@ def init(args):
         force=args.force)
 
 def report(args):
+    """
+    Publishes a report using specified query, template and output
+    
+    :param      args:  The command arguments
+    :type       args:  argparse.Namespace
+    
+    :returns:   None
+    :rtype:     None
+    """
+
     # Read in the existing config
     config = Config()
     # Create the managers based on config/cli args
@@ -68,6 +99,16 @@ def report(args):
     output.publish(report)
 
 def list_templates(args):
+    """
+    Lists the templates available for publishing
+    
+    :param      args:  The command arguments
+    :type       args:  argparse.Namespace
+    
+    :returns:   None
+    :rtype:     None
+    """
+
     config = Config()
     template_dirs = [TOOL_TEMPLATE_DIR]
     template_dirs.extend(config.template_dirs)
@@ -76,18 +117,52 @@ def list_templates(args):
         print(template)
 
 def add_templates(args):
+    """
+    Adds a template directory to the config file
+    
+    :param      args:  The command arguments
+    :type       args:  argparse.Namespace
+    
+    :returns:   None
+    :rtype:     None
+    """
+
     config = Config()
     config.add_template_dir(args.directory)
 
 def remove_templates(args):
+    """
+    Removes a template directory from the config file
+    
+    :param      args:  The command arguments
+    :type       args:  argparse.Namespace
+    
+    :returns:   None
+    :rtype:     None
+    """
+
     config = Config()
     config.remove_template_dir(args.directory)
 
 def list_outputs(args):
+    """
+    Lists the outputs available for publishing
+    
+    :param      args:  The command arguments
+    :type       args:  argparse.Namespace
+    
+    :returns:   None
+    :rtype:     None
+    """
+
     config = Config()
     output = OutputManager()
     for output in output.list():
         print(output)
 
 if __name__ == '__main__':
+    """
+    Entry point for the tool
+    """
+
     main()

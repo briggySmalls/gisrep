@@ -1,3 +1,7 @@
+"""
+Module that defines how templates are located
+"""
+
 from ..locate import Locator, Locatable
 from jinja2 import Environment, FileSystemLoader, select_autoescape, exceptions
 import os
@@ -8,6 +12,11 @@ TEMPLATE_EXTENSION = 'tplt'
 TOOL_TEMPLATE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 class AbstractTemplate(object, metaclass=ABCMeta):
+    """
+    Abstract class for template.
+    
+    """
+
     def __init__(self):
         path, filename = os.path.split(
         )
