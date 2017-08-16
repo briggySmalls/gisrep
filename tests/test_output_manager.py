@@ -1,5 +1,5 @@
 import unittest
-from outputs.output_manager import AbstractOutput, OutputManager
+from gisrep.outputs.output_manager import AbstractOutput, OutputManager
 
 
 # Variable to validate output handled values
@@ -27,7 +27,8 @@ class TestOutputManager(unittest.TestCase):
         report_string = "Hi!"
 
         # Pass the 'report' to the test output
-        self.outputs.dump(['test_std'], report_string)
+        output = self.outputs.get_output(['test_std'])
+        output.publish(report_string)
 
         # Assert that the report was handled
         self.assertEqual(TestStdOutput.validate['report'], report_string)
@@ -40,7 +41,8 @@ class TestOutputManager(unittest.TestCase):
         combined_args = ['test_args']
         combined_args.extend(output_args)
         # Pass the 'report' to the test output
-        self.outputs.dump(combined_args, report_string)
+        output = self.outputs.get_output(combined_args)
+        output.publish(report_string)
 
         # Assert that the report was handled
         self.assertEqual(TestArgsOutput.validate['report'], report_string)

@@ -1,5 +1,5 @@
 import unittest
-from templates.template_manager import TemplateManager
+from gisrep.templates.template_manager import TemplateManager
 import pickle
 import os
 

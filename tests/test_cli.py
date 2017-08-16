@@ -1,5 +1,5 @@
 import unittest
-from cli import Cli
+from gisrep.cli import Cli
 
 
 class TestCli(unittest.TestCase):
@@ -52,7 +52,7 @@ class TestCli(unittest.TestCase):
     def test_list_templates(self):
         def handle_list_templates(args):
             self.assertEqual(args.command, 'list')
-        
+
         # Set handlers
         self.handlers['list_templates'] = handle_list_templates
 
@@ -64,7 +64,7 @@ class TestCli(unittest.TestCase):
     def test_list_outputs(self):
         def handle_list_outputs(args):
             self.assertEqual(args.command, 'list')
-        
+
         # Set handlers
         self.handlers['list_outputs'] = handle_list_outputs
 

@@ -1,9 +1,9 @@
 import unittest
-from config import Config
+from gisrep.config import Config
 import os
 
 TEST_CONFIG_PATH = os.path.abspath('.')
-TEST_CONFIG_FILE = os.path.join(TEST_CONFIG_PATH, '.ir_config')
+TEST_CONFIG_FILE = os.path.join(TEST_CONFIG_PATH, '.gisrep_config')
 TEST_TEMPLATE_DIR = os.path.join(TEST_CONFIG_PATH, 'test_data')
 TEST_INITIAL_CONFIG = {
     'username': "my_name",
@@ -60,7 +60,7 @@ class TestConfig(unittest.TestCase):
         # Assert contents of fresh config object
         self.assert_credentials(self.new_config(), different_content)
 
-    def new_config(self, **kwargs):   
+    def new_config(self, **kwargs):
         return Config(path=TEST_CONFIG_PATH, **kwargs)
 
     def assert_credentials(self, config, expected_credentials):
