@@ -15,18 +15,16 @@ import os
 def main():
     """
     Main function, executed upon
-    
+
     :returns:   None
     :rtype:     None
     """
-    
+
     # Prepare handlers
     handlers = {
         'init': init,
         'report': report,
         'list_templates': list_templates,
-        'add_templates': add_templates,
-        'remove_templates': remove_templates,
         'list_outputs': list_outputs,
     }
     # Parse command line arguments
@@ -36,10 +34,10 @@ def main():
 def init(args):
     """
     Initialises the tool config file
-    
+
     :param      args:  The command arguments
     :type       args:  argparse.Namespace
-    
+
     :returns:   None
     :rtype:     None
     """
@@ -62,21 +60,29 @@ def init(args):
 def report(args):
     """
     Publishes a report using specified query, template and output
-    
+
     :param      args:  The command arguments
     :type       args:  argparse.Namespace
-    
+
     :returns:   None
     :rtype:     None
     """
 
     # Read in the existing config
     config = Config()
-    # Create the managers based on config/cli args
-    # Note: we do this now to catch errors before any API calls
-    template_dirs = [TOOL_TEMPLATE_DIR]
-    template_dirs.extend(config.template_dirs)
-    builder = TemplateManager(template_dirs)
+
+    # Create the template manger
+    if args.template.endswith('.tplt'):
+        # We have been passed a template file path
+        template_dir = os.path.dirname(os.path.abspath(args.template))
+        template_tag = os.path.splitext(os.path.basename(args.template))[0]
+    else:
+        # We have been passed a template tag
+        template_dir = TOOL_TEMPLATE_DIR
+        template_tag = args.template
+    builder = TemplateManager(template_dir)
+
+    # Create the output manager, and fetch the output
     output_manager = OutputManager()
     output = output_manager.get_output(args.output)
 
@@ -92,7 +98,7 @@ def report(args):
 
     # Generate report
     report = builder.generate(
-        args.template,
+        template_tag,
         issues)
 
     # Output report
@@ -101,61 +107,29 @@ def report(args):
 def list_templates(args):
     """
     Lists the templates available for publishing
-    
+
     :param      args:  The command arguments
     :type       args:  argparse.Namespace
-    
+
     :returns:   None
     :rtype:     None
     """
 
-    config = Config()
-    template_dirs = [TOOL_TEMPLATE_DIR]
-    template_dirs.extend(config.template_dirs)
-    builder = TemplateManager(template_dirs)
+    builder = TemplateManager(TOOL_TEMPLATE_DIR)
     for template in builder.list():
         print(template)
-
-def add_templates(args):
-    """
-    Adds a template directory to the config file
-    
-    :param      args:  The command arguments
-    :type       args:  argparse.Namespace
-    
-    :returns:   None
-    :rtype:     None
-    """
-
-    config = Config()
-    config.add_template_dir(args.directory)
-
-def remove_templates(args):
-    """
-    Removes a template directory from the config file
-    
-    :param      args:  The command arguments
-    :type       args:  argparse.Namespace
-    
-    :returns:   None
-    :rtype:     None
-    """
-
-    config = Config()
-    config.remove_template_dir(args.directory)
 
 def list_outputs(args):
     """
     Lists the outputs available for publishing
-    
+
     :param      args:  The command arguments
     :type       args:  argparse.Namespace
-    
+
     :returns:   None
     :rtype:     None
     """
 
-    config = Config()
     output = OutputManager()
     for output in output.list():
         print(output)

@@ -1,5 +1,5 @@
 """
-Module that defines behaviour of command line interface 
+Module that defines behaviour of command line interface
 """
 
 import argparse
@@ -51,22 +51,6 @@ list_templates_parser = templates_subparsers.add_parser(
     'list',
     help="List the available templates")
 
-# Create a parser for the 'templates add' command
-add_templates_parser = templates_subparsers.add_parser(
-    'add',
-    help="Add templates to the tool")
-add_templates_parser.add_argument(
-     'directory',
-     help="Adds directory to the template path")
-
-# Create a parser for the 'templates remove' command
-remove_templates_parser = templates_subparsers.add_parser(
-     'remove',
-     help="Remove templates from the tool")
-remove_templates_parser.add_argument(
-     'directory',
-     help="Removes directory from the template path") 
-
 # Create a parser for the 'outputs' command
 outputs_parser = subparsers.add_parser(
     'outputs',
@@ -85,7 +69,7 @@ class Cli(object):
     def __init__(self, handlers):
         """
         Class for cli.
-        
+
         :returns:   CLI object that calls handlers defined in constructor
         :rtype:     Cli
         """
@@ -93,17 +77,15 @@ class Cli(object):
         self.set_handler(init_parser, handlers['init'])
         self.set_handler(report_parser, handlers['report'])
         self.set_handler(list_templates_parser, handlers['list_templates'])
-        self.set_handler(add_templates_parser, handlers['add_templates'])
-        self.set_handler(remove_templates_parser, handlers['remove_templates'])
         self.set_handler(list_outputs_parser, handlers['list_outputs'])
 
     def parse(self, raw_args):
         """
         Parses the arguments
-        
+
         :param      raw_args:  The raw arguments
         :type       raw_args:  list
-        
+
         :returns:   None
         :rtype:     None
         """
@@ -114,12 +96,12 @@ class Cli(object):
     def set_handler(self, parser, handler):
         """
         Sets a handler for the parser
-        
+
         :param      parser:   The parser
         :param      handler:  The handler function
         :type       parser:   argparse.ArgumentParser
         :type       handler:  function
-        
+
         :returns:   None
         :rtype:     None
         """
