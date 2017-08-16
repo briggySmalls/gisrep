@@ -11,6 +11,9 @@ import getpass
 import sys
 import os
 
+DEFAULT_CONFIG_PATH = os.path.expanduser("~")
+DEFAULT_CONFIG_FILE = ".gisrep_config"
+DEFAULT_CONFIG_FILEPATH = os.path.join(DEFAULT_CONFIG_PATH, DEFAULT_CONFIG_FILE)
 
 def main():
     """
@@ -54,6 +57,7 @@ def init(args):
 
     # Initialise config file
     config = Config(
+        DEFAULT_CONFIG_FILEPATH,
         initial_config=initial_config,
         force=args.force)
 
@@ -67,9 +71,6 @@ def report(args):
     :returns:   None
     :rtype:     None
     """
-
-    # Read in the existing config
-    config = Config()
 
     # Create the template manger
     if args.template.endswith('.tplt'):
@@ -86,11 +87,17 @@ def report(args):
     output_manager = OutputManager()
     output = output_manager.get_output(args.output)
 
-    # Instantiate an API client
-    credentials = config.get_credentials()
-    api = Github(
-        credentials['username'],
-        credentials['password'])
+    if os.path.exists(DEFAULT_CONFIG_FILEPATH):
+        # Read in the existing config
+        config = Config(DEFAULT_CONFIG_FILEPATH)
+        # Instantiate an API client with Github credentials
+        credentials = config.get_credentials()
+        api = Github(
+            credentials['username'],
+            credentials['password'])
+    else:
+        # Instantiate an API client without Github credentials
+        api = Github()
 
     # Request the issues
     issues = api.search_issues(

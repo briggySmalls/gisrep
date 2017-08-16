@@ -2,14 +2,12 @@ import toml
 import keyring
 import os
 
-DEFAULT_CONFIG_PATH = os.path.expanduser("~")
-DEFAULT_CONFIG_FILE = ".gisrep_config"
 DEFAULT_PASSWORD_SERVICE = "gisrep"
 
 
 class Config(object):
 
-    def __init__(self, path=DEFAULT_CONFIG_PATH, initial_config=None, force=False):
+    def __init__(self, path, initial_config=None, force=False):
         """
         Class for managing configuration file.
 
@@ -24,9 +22,7 @@ class Config(object):
         :rtype:     None
         """
 
-        # Read the contents of an existing config file
-        self.file_path = os.path.join(path, DEFAULT_CONFIG_FILE)
-
+        self.file_path = path
         # Determine if a config file already exists
         if os.path.exists(self.file_path) and not force:
             if initial_config is not None:
