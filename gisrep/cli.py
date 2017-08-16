@@ -1,5 +1,8 @@
-import argparse
+"""
+Module that defines behaviour of command line interface 
+"""
 
+import argparse
 
 # Build a parser
 root_parser = argparse.ArgumentParser(
@@ -87,16 +90,38 @@ class Cli(object):
         :rtype:     Cli
         """
 
-        self._set_handler(init_parser, handlers['init'])
-        self._set_handler(report_parser, handlers['report'])
-        self._set_handler(list_templates_parser, handlers['list_templates'])
-        self._set_handler(add_templates_parser, handlers['add_templates'])
-        self._set_handler(remove_templates_parser, handlers['remove_templates'])
-        self._set_handler(list_outputs_parser, handlers['list_outputs'])
+        self.set_handler(init_parser, handlers['init'])
+        self.set_handler(report_parser, handlers['report'])
+        self.set_handler(list_templates_parser, handlers['list_templates'])
+        self.set_handler(add_templates_parser, handlers['add_templates'])
+        self.set_handler(remove_templates_parser, handlers['remove_templates'])
+        self.set_handler(list_outputs_parser, handlers['list_outputs'])
 
     def parse(self, raw_args):
+        """
+        Parses the arguments
+        
+        :param      raw_args:  The raw arguments
+        :type       raw_args:  list
+        
+        :returns:   None
+        :rtype:     None
+        """
+
         args = root_parser.parse_args(raw_args)
         args.handler(args)
 
-    def _set_handler(self, parser, handler):
+    def set_handler(self, parser, handler):
+        """
+        Sets a handler for the parser
+        
+        :param      parser:   The parser
+        :param      handler:  The handler function
+        :type       parser:   argparse.ArgumentParser
+        :type       handler:  function
+        
+        :returns:   None
+        :rtype:     None
+        """
+
         parser.set_defaults(handler=handler)
