@@ -4,11 +4,9 @@ import os
 
 TEST_CONFIG_PATH = os.path.abspath('.')
 TEST_CONFIG_FILE = os.path.join(TEST_CONFIG_PATH, '.gisrep_config')
-TEST_TEMPLATE_DIR = os.path.join(TEST_CONFIG_PATH, 'test_data')
 TEST_INITIAL_CONFIG = {
     'username': "my_name",
     'password': "my_password",
-    'template_dirs': [TEST_TEMPLATE_DIR],
 }
 
 class TestConfig(unittest.TestCase):
@@ -41,7 +39,6 @@ class TestConfig(unittest.TestCase):
         different_content = {
             'username': "different_name",
             'password': "different_password",
-            'template_dirs': ['./test'],
         }
 
         def init_new_config(force):
@@ -53,7 +50,7 @@ class TestConfig(unittest.TestCase):
         self.assertRaises(RuntimeError, init_new_config, False)
 
         # Now force a new config file to be written
-        config = init_new_config(True)
+        config = init_new_config(force=True)
 
         # Assert contents of origintal config object
         self.assert_credentials(config, different_content)
@@ -61,7 +58,7 @@ class TestConfig(unittest.TestCase):
         self.assert_credentials(self.new_config(), different_content)
 
     def new_config(self, **kwargs):
-        return Config(path=TEST_CONFIG_PATH, **kwargs)
+        return Config(path=TEST_CONFIG_FILE, **kwargs)
 
     def assert_credentials(self, config, expected_credentials):
         # Get the content
