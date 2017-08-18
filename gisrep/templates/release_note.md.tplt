@@ -22,3 +22,7 @@
   - {{ issue.title }} [#{{ issue.number }}]
 {%- endcall %}
 
+## Uncategorised
+{%- for issue in uncategorised %}
+- {{ issue.title }} [#{{ issue.number }}]
+{%- endfor %}
