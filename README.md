@@ -24,41 +24,33 @@ The gisrep report subcommand comprises three components:
 
 - A Template `simple_report` to format issues
 - A Github search query `"repo:twbs/..."` to filter issues
-- An Output, defaulting to stdout, to present the report 
+- An Output, defaulting to stdout, used to deliver the report 
 
-The template is a [jinja2](http://jinja.pocoo.org/docs/2.9/) template (and possibly some support logic) that formats the issues returned by the search query into a nice report.
+The template component can be either a built-in template tag or a filepath to a custom template. More information on creating custom templates is discussed in the [dedicated templates readme](gisrep/templates/README.md).
 
-The search query is passed to the [Github search API](https://developer.github.com/v3/search/#search-issues) using [PyGithub](https://github.com/PyGithub/PyGithub) to filter issues and pull requests. Read the Github guide on [searching issues and pull requests](https://help.github.com/articles/searching-issues-and-pull-requests/) for help constructing queries.
+The search query is passed to the [Github search API](https://developer.github.com/v3/search/#search-issues) to filter issues and pull requests. Read the Github guide on [searching issues and pull requests](https://help.github.com/articles/searching-issues-and-pull-requests/) for help constructing queries.
 
-The output is a method of delivering the report. For example printing to the console or saving to a file.
-
-To specify an output other than the console, use the `--output` argument. For example to save to a file:
+The output is a method of delivering the report, for example printing to the console or saving to a file. To specify an output other than the console, use the `--output` argument. For example to save to a file:
 
 ```
 gisrep report simple_report repo:"twbs/bootstrap is:open label:feature" --output file output.txt
 ```
 
-### Templates
+### Listing built-ins
 
-List the available templates with the following command:
+Listing the available built-in templates or outputs uses the `list` subcommand.
 
-```
-gisrep templates list
-```
-
-The tags displayed can be used with the template positional argument to the `report` command.
-
-The project is designed for the community to contribute useful templates meaning the tool should come with a useful collection of generic templates. However there may be a need for extending the tool with custom templates.
-
-### Outputs
-
-List the available outputs with the following command:
+To list the tags for built-in templates use the following command:
 
 ```
-gisrep outputs list
+gisrep list templates
 ```
 
-The tags displayed can be used with the `--output` argument to the `report` subcommand.
+To list the tags for built-in outputs use the following command:
+
+```
+gisrep list outputs
+```
 
 ### Credentials
 
@@ -68,4 +60,4 @@ The tool needs to be initialised with Github credentials in order to access priv
 gisrep init
 ```
 
-You will be prompted for your Github username and password. The password is stored in your system's password manager using [keyring](https://pypi.python.org/pypi/keyring).
+You will be prompted for your Github username and password. The password is stored in your system's password manager using [keyring](https://pypi.python.org/pypi/keyring). To overrwrite an existing configuration use the `--force` argument.
