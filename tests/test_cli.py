@@ -8,15 +8,13 @@ class TestCli(unittest.TestCase):
         self.handlers = {}
         self.handlers['init'] = self.default_handler
         self.handlers['report'] = self.default_handler
-        self.handlers['list_templates'] = self.default_handler
-        self.handlers['list_outputs'] = self.default_handler
+        self.handlers['list'] = self.default_handler
 
         # Instantiate new Cli object
         self.cli = Cli({
             'init': lambda args : self.handlers['init'](args),
             'report': lambda args : self.handlers['report'](args),
-            'list_templates': lambda args : self.handlers['list_templates'](args),
-            'list_outputs': lambda args : self.handlers['list_outputs'](args),
+            'list': lambda args : self.handlers['list'](args),
         })
 
     def test_parse_init(self):
@@ -52,26 +50,28 @@ class TestCli(unittest.TestCase):
     def test_list_templates(self):
         def handle_list_templates(args):
             self.assertEqual(args.command, 'list')
+            self.assertEqual(args.component, 'templates')
 
         # Set handlers
-        self.handlers['list_templates'] = handle_list_templates
+        self.handlers['list'] = handle_list_templates
 
         # Run test
         self.cli.parse([
-            'templates',
-            'list'])
+            'list',
+            'templates'])
 
     def test_list_outputs(self):
         def handle_list_outputs(args):
             self.assertEqual(args.command, 'list')
+            self.assertEqual(args.component, 'outputs')
 
         # Set handlers
-        self.handlers['list_outputs'] = handle_list_outputs
+        self.handlers['list'] = handle_list_outputs
 
         # Run test
         self.cli.parse([
-            'outputs',
-            'list'])
+            'list',
+            'outputs'])
 
     def default_handler(self, args):
         self.fail("Default handler called with args: {0}".format(

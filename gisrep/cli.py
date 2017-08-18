@@ -37,33 +37,14 @@ report_parser.add_argument(
     nargs='+',
     help="Method to output results")
 
-# Create a parser for the 'templates' command
-templates_parser = subparsers.add_parser(
-    'templates',
-    help="Manage report templates")
-templates_subparsers = templates_parser.add_subparsers(
-    title="commands",
-    dest="command")
-templates_subparsers.required = True
-
-# Create a parser for the 'templates list' command
-list_templates_parser = templates_subparsers.add_parser(
+# Create a parser for the 'list' subcommand
+list_parser = subparsers.add_parser(
     'list',
-    help="List the available templates")
-
-# Create a parser for the 'outputs' command
-outputs_parser = subparsers.add_parser(
-    'outputs',
-    help="Manage output methods")
-outputs_subparsers = outputs_parser.add_subparsers(
-    title="commands",
-    dest="command")
-outputs_subparsers.required = True
-
-# Create a parser for the 'outputs list' command
-list_outputs_parser = outputs_subparsers.add_parser(
-    'list',
-    help="List the available output methods")
+    help="List built-in components")
+list_parser.add_argument(
+    'component',
+    choices=['templates', 'outputs'],
+    help="Component to list built-ins for")
 
 class Cli(object):
     def __init__(self, handlers):
@@ -76,8 +57,7 @@ class Cli(object):
 
         self.set_handler(init_parser, handlers['init'])
         self.set_handler(report_parser, handlers['report'])
-        self.set_handler(list_templates_parser, handlers['list_templates'])
-        self.set_handler(list_outputs_parser, handlers['list_outputs'])
+        self.set_handler(list_parser, handlers['list'])
 
     def parse(self, raw_args):
         """

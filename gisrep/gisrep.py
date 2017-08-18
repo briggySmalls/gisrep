@@ -27,8 +27,7 @@ def main():
     handlers = {
         'init': init,
         'report': report,
-        'list_templates': list_templates,
-        'list_outputs': list_outputs,
+        'list': list_component,
     }
     # Parse command line arguments
     cli = Cli(handlers)
@@ -111,7 +110,7 @@ def report(args):
     # Output report
     output.publish(report)
 
-def list_templates(args):
+def list_component(args):
     """
     Lists the templates available for publishing
 
@@ -122,24 +121,14 @@ def list_templates(args):
     :rtype:     None
     """
 
-    builder = TemplateManager(TOOL_TEMPLATE_DIR)
-    for template in builder.list():
-        print(template)
-
-def list_outputs(args):
-    """
-    Lists the outputs available for publishing
-
-    :param      args:  The command arguments
-    :type       args:  argparse.Namespace
-
-    :returns:   None
-    :rtype:     None
-    """
-
-    output = OutputManager()
-    for output in output.list():
-        print(output)
+    if args.component == 'templates':
+        builder = TemplateManager(TOOL_TEMPLATE_DIR)
+        for template in builder.list():
+            print(template)
+    elif args.component == 'outputs':
+        output = OutputManager()
+        for output in output.list():
+            print(output)
 
 if __name__ == '__main__':
     """
