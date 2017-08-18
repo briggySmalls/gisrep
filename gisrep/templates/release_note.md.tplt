@@ -9,16 +9,16 @@
 {% endmacro -%}
 ## Features/enhancements
 {%- call(issue) render_if_has_label(['feature', 'enhancement']) %}
-  - {{ issue.title }} - (#{{ issue.number }})
+  - {{ issue.title }} [#{{ issue.number }}]
 {%- endcall %}
 
 ## Refactoring
 {%- call(issue) render_if_has_label(['refactoring']) %}
-  - {{ issue.title }} - (#{{ issue.number }})
+  - {{ issue.title }} [#{{ issue.number }}]
 {%- endcall %}
 
 ## Bug fixes
 {%- call(issue) render_if_has_label(['bug']) %}
-  - {{ issue.title }} - (#{{ issue.number }})
+  - {{ issue.title }} [#{{ issue.number }}]
 {%- endcall %}
 
