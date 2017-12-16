@@ -1,5 +1,5 @@
 import unittest
-from gisrep.outputs.output_manager import AbstractOutput, OutputManager
+from gisrep.outputs.output_manager import Output, OutputManager
 
 
 # Variable to validate output handled values
@@ -48,7 +48,7 @@ class TestOutputManager(unittest.TestCase):
         self.assertEqual(TestArgsOutput.validate['report'], report_string)
         self.assertEqual(TestArgsOutput.validate['args'].arg_a, output_args[0])
 
-class TestStdOutput(AbstractOutput):
+class TestStdOutput(Output):
     tag = "test_std"
     description = "Saves the report to a variable"
     validate = {}
@@ -57,7 +57,7 @@ class TestStdOutput(AbstractOutput):
         # Store the report
         self.validate['report'] = report
 
-class TestArgsOutput(AbstractOutput):
+class TestArgsOutput(Output):
     tag = "test_args"
     description = "Saves the report to a variable, requires argument"
     validate = {}

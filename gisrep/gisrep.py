@@ -1,29 +1,33 @@
 """
 Application source for the gisrep issues reporter tool
+
+Attributes:
+    DEFAULT_CONFIG_FILE (str): Default config file name
+    DEFAULT_CONFIG_FILEPATH (str): Full file path to default config file
+    DEFAULT_CONFIG_DIR (str): Default config file directory
 """
+
+import getpass
+import os
+import sys
+
+from github import Github
 
 from .cli import Cli
 from .config import Config
-from .templates.template_manager import TemplateManager, TOOL_TEMPLATE_DIR
 from .outputs.output_manager import OutputManager
-from github import Github
-import getpass
-import sys
-import os
+from .templates.template_manager import TOOL_TEMPLATE_DIR, TemplateManager
 
-DEFAULT_CONFIG_PATH = os.path.expanduser("~")
+DEFAULT_CONFIG_DIR = os.path.expanduser("~")
 DEFAULT_CONFIG_FILE = ".gisrep_config"
-DEFAULT_CONFIG_FILEPATH = os.path.join(DEFAULT_CONFIG_PATH, DEFAULT_CONFIG_FILE)
+DEFAULT_CONFIG_FILEPATH = os.path.join(
+    os.path.expanduser("~"), DEFAULT_CONFIG_FILE)
+
 
 def main():
-    """
-    Main function, executed upon
-
-    :returns:   None
-    :rtype:     None
+    """Main function for Gisrep tool
     """
 
-    # Prepare handlers
     handlers = {
         'init': init,
         'report': report,
@@ -33,19 +37,14 @@ def main():
     cli = Cli(handlers)
     cli.parse(sys.argv[1:])
 
+
 def init(args):
+    """Initialises the tool config file
+
+    Args:
+        args (list): Command arguments
     """
-    Initialises the tool config file
-
-    :param      args:  The command arguments
-    :type       args:  argparse.Namespace
-
-    :returns:   None
-    :rtype:     None
-    """
-
     # Prompt for username and password
-    # TODO: Should this be in Cli?
     username = input("Github username:")
     password = getpass.getpass("Github password:")
 
@@ -55,22 +54,18 @@ def init(args):
     }
 
     # Initialise config file
-    config = Config(
+    Config(
         DEFAULT_CONFIG_FILEPATH,
         initial_config=initial_config,
         force=args.force)
 
+
 def report(args):
+    """Publishes a report using specified query, template and output
+
+    Args:
+        args (list): Command arguments
     """
-    Publishes a report using specified query, template and output
-
-    :param      args:  The command arguments
-    :type       args:  argparse.Namespace
-
-    :returns:   None
-    :rtype:     None
-    """
-
     # Create the template manger
     if args.template.endswith('.tplt'):
         # We have been passed a template file path
@@ -103,24 +98,20 @@ def report(args):
         args.query)
 
     # Generate report
-    report = builder.generate(
+    report_obj = builder.generate(
         template_tag,
         issues)
 
     # Output report
-    output.publish(report)
+    output.publish(report_obj)
+
 
 def list_component(args):
+    """Lists the templates available for publishing
+
+    Args:
+        args (list): Command arguments
     """
-    Lists the templates available for publishing
-
-    :param      args:  The command arguments
-    :type       args:  argparse.Namespace
-
-    :returns:   None
-    :rtype:     None
-    """
-
     if args.component == 'templates':
         builder = TemplateManager(TOOL_TEMPLATE_DIR)
         for template in builder.list():
@@ -130,9 +121,6 @@ def list_component(args):
         for output in output.list():
             print(output)
 
-if __name__ == '__main__':
-    """
-    Entry point for the tool
-    """
 
+if __name__ == '__main__':
     main()
