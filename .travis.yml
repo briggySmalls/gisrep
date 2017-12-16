@@ -6,6 +6,8 @@ install:
   - pip install -e .
   - pip install pylint
   - pip install flake8
+  - sudo apt-get install python-dbus
+  - pip install SecretStorage
 # command to run tests
 script:
   - flake8 gisrep/ --statistics
