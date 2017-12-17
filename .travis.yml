@@ -1,6 +1,12 @@
 language: python
 python:
-  - "3.6"
+  - "3.4"
+virtualenv:
+  system_site_packages: true
+addons:
+  apt:
+    packages:
+      - libdbus-glib-1-dev
 # command to install dependencies
 install:
   - pip install -e .

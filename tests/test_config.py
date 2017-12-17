@@ -9,6 +9,7 @@ TEST_INITIAL_CONFIG = {
     'password': "my_password",
 }
 
+
 class TestConfig(unittest.TestCase):
     def setUp(self):
         # Ensure no previous file exists
