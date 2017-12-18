@@ -10,11 +10,8 @@ class Cli(object):  # pylint: disable=too-few-public-methods
     """Class for parsing command line arguments
 
     Attributes:
-        init_parser (ArgumentParser): Parses the init command
-        list_parser (ArgumentParser): Parses the list command
-        report_parser (ArgumentParser): Parses the report command
         root_parser (ArgumentParser): Gisrep parser
-        subparsers (TYPE): Subparser for commands to the gisrep tool
+
     """
 
     def __init__(self, handlers):
