@@ -15,11 +15,9 @@ def get_context(issues):
     """
     labels = []
     for issue in issues:
-        for label in issue.labels:
-            if label not in labels:
-                labels.append(label)
+        labels.extend([l for l in issue.labels if l not in labels])
 
     return {
-        'all_labels': labels,
+        'labels': labels,
         'issues': issues
     }

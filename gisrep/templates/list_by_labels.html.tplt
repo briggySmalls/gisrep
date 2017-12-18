@@ -4,7 +4,7 @@
 </head>
 <body>
     <h1>Issues Report</h1>
-    {%- for label in all_labels %}
+    {%- for label in labels %}
     <h2>{{ label.name }}</h2>
     <ul>
         {%- for issue in issues %}
