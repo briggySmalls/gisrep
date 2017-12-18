@@ -1,4 +1,5 @@
 import unittest
+import pytest
 from gisrep.config import Config
 import os
 
@@ -26,6 +27,7 @@ class TestConfig(unittest.TestCase):
         # Remove the config file
         os.remove(TEST_CONFIG_FILE)
 
+    @pytest.mark.keyring
     def test_new_config(self):
         # Assert config file exists
         self.assertTrue(os.path.exists(TEST_CONFIG_FILE))
@@ -35,6 +37,7 @@ class TestConfig(unittest.TestCase):
         # Assert a fresh config object
         self.assert_credentials(self.new_config(), TEST_INITIAL_CONFIG)
 
+    @pytest.mark.keyring
     def test_force_config(self):
         # Create different config content
         different_content = {

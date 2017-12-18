@@ -31,8 +31,8 @@ class TestOutputManager(unittest.TestCase):
         output.publish(report_string)
 
         # Assert that the report was handled
-        self.assertEqual(TestStdOutput.validate['report'], report_string)
-        self.assertNotIn('args', TestStdOutput.validate)
+        self.assertEqual(DummyStdOutput.validate['report'], report_string)
+        self.assertNotIn('args', DummyStdOutput.validate)
 
     def test_args_dump(self):
         report_string = "Yo!"
@@ -45,10 +45,11 @@ class TestOutputManager(unittest.TestCase):
         output.publish(report_string)
 
         # Assert that the report was handled
-        self.assertEqual(TestArgsOutput.validate['report'], report_string)
-        self.assertEqual(TestArgsOutput.validate['args'].arg_a, output_args[0])
+        self.assertEqual(DummyArgsOutput.validate['report'], report_string)
+        self.assertEqual(DummyArgsOutput.validate['args'].arg_a, output_args[0])
 
-class TestStdOutput(Output):
+
+class DummyStdOutput(Output):
     tag = "test_std"
     description = "Saves the report to a variable"
     validate = {}
@@ -57,7 +58,8 @@ class TestStdOutput(Output):
         # Store the report
         self.validate['report'] = report
 
-class TestArgsOutput(Output):
+
+class DummyArgsOutput(Output):
     tag = "test_args"
     description = "Saves the report to a variable, requires argument"
     validate = {}
