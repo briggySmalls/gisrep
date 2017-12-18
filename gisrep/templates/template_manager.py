@@ -15,6 +15,9 @@ class TemplateManager(object):
     Class for template manager. The template manager class locates templates
     used for generating reports
 
+    Attributes:
+        env (jinja2.Environment): Jinja2 templating environment
+
     """
 
     def __init__(self, template_dirs):
@@ -25,16 +28,17 @@ class TemplateManager(object):
             autoescape=select_autoescape(['html', 'xml']))
 
     def generate(self, template, issues):
-        """
-        Generates a report
+        """Generates a report
 
-        :param      template:  The template to format the report
-        :param      issues:    The issues to report
-        :type       template:  string
-        :type       issues:    list
+        Args:
+            template (str): The template to format the report
+            issues (github.Issue.Issue): The issues to report
 
-        :returns:   The report
-        :rtype:     string
+        Returns:
+            str: The report
+
+        Raises:
+            RuntimeError: Template not found
         """
 
         # Load the template
@@ -49,18 +53,17 @@ class TemplateManager(object):
         context = {'issues': issues}
         if os.path.exists(module_path):
             # Module defines get_context
-            module = self.import_module(module_path)
+            module = TemplateManager.import_module(module_path)
             context = module.get_context(issues)
 
         # Render the template
         return template.render(context)
 
     def list(self):
-        """
-        Lists the available templates
+        """Lists the available templates
 
-        :returns:   The tags of the available templates
-        :rtype:     list
+        Returns:
+            list: The tags of the available templates
         """
 
         # Get list of template files
@@ -68,20 +71,20 @@ class TemplateManager(object):
             extensions=[TEMPLATE_EXTENSION])
 
         # Strip template from text
-        for i in range(len(templates)):
-            templates[i] = os.path.splitext(templates[i])[0]
+        for i, template in enumerate(templates):
+            templates[i] = os.path.splitext(template)[0]
 
         return templates
 
-    def import_module(self, module_path):
-        """
-        Imports the specified module dynamically
+    @staticmethod
+    def import_module(module_path):
+        """Imports the specified module dynamically
 
-        :param      module_path:  The module path
-        :type       module_path:  string
+        Args:
+            module_path (str): The module path
 
-        :returns:   The module that was imported
-        :rtype:     module
+        Returns:
+            module: The module that was imported
         """
 
         module_name = os.path.basename(module_path)
