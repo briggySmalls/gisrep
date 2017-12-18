@@ -2,7 +2,7 @@
 
 # Gisrep
 
-The open source Github issues reporter.
+The command line Github issues reporter, powered by [PyGithub](https://github.com/PyGithub/PyGithub).
 
 ## Installation
 
