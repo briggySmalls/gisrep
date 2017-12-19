@@ -1,12 +1,19 @@
 """Python package definition
 """
+from os import path
 from setuptools import setup, find_packages
+
+
+# Get the long description from the README file
+with open(path.join(path.abspath(path.dir(__file__), 'README.rst')), encoding='utf-8') as file:
+    long_description = file.read()
 
 
 setup(
     name='gisrep',
     version='0.1.0',
     description="The command line Github issues reporter",
+    long_description=long_description,
     url="https://github.com/briggySmalls/gisrep",
     download_url='https://github.com/briggySmalls/gisrep/archive/0.1.0.tar.gz',
     author="Sam Briggs",
