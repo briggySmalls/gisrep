@@ -95,7 +95,9 @@ def report(args):
 
     # Request the issues
     issues = api.search_issues(
-        args.query)
+        args.query,
+        sort="created",
+        order="asc")
 
     # Generate report
     report_obj = builder.generate(
