@@ -1,11 +1,14 @@
+"""Python package definition
+"""
 from setuptools import setup, find_packages
+
 
 setup(
     name='gisrep',
     version='0.1.0',
-    description="Tool for publishing Github issues",
-    # TODO: Add long_description
-    url="https://github.com/briggySmalls/issues-reporter",
+    description="The command line Github issues reporter",
+    url="https://github.com/briggySmalls/gisrep",
+    download_url='https://github.com/briggySmalls/gisrep/archive/0.1.0.tar.gz',
     author="Sam Briggs",
     licence="GPLv3",
     classifiers=[
@@ -25,7 +28,9 @@ setup(
         "Topic :: Software Development :: Bug Tracking",
         "Topic :: Software Development :: Documentation",
     ],
-    keywords="Github development issues reports documentation release note",
+    keywords=(
+        "Github issues tracker reports reporting documentation release"
+        "note publish"),
     install_requires=[
         'toml',
         'jinja2',
