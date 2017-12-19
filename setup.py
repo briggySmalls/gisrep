@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 
 # Get the long description from the README file
-with open(path.join(path.abspath(path.dir(__file__), 'README.rst')), encoding='utf-8') as file:
+with open(path.join(path.abspath(path.dirname(__file__)), 'README.rst'), encoding='utf-8') as file:
     long_description = file.read()
 
 
