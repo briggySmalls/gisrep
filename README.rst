@@ -38,7 +38,7 @@ Templates
 
 The template component can be either a tag for a built-in template, or a
 filepath to a custom template. Read the `templates
-readme <gisrep/templates/README.md>`__ for creating custom templates.
+readme <gisrep/templates/README.rst>`__ for creating custom templates.
 
 Github search query
 ^^^^^^^^^^^^^^^^^^^
