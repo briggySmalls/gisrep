@@ -11,7 +11,7 @@ Installation
 
 ::
 
-    pip install 'path/to/package'
+    pip install gisrep
 
 This installs the ``gisrep`` script to the command line.
 
