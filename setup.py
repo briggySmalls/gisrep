@@ -10,7 +10,8 @@ setup(
     url="https://github.com/briggySmalls/gisrep",
     download_url='https://github.com/briggySmalls/gisrep/archive/0.1.0.tar.gz',
     author="Sam Briggs",
-    licence="GPLv3",
+    author_email="briggySmalls90@gmail.com",
+    license="GPLv3",
     classifiers=[
         # Development status
         "Development Status :: 2 - Pre-Alpha",
