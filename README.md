@@ -19,7 +19,7 @@ This installs the `gisrep` script to the command line.
 Publishing reports uses the `report` subcommand:
 
 ```
-gisrep report simple_report.md "repo:twbs/bootstrap is:open label:feature" --output clipboard
+gisrep report simple_report.md "repo:twbs/bootstrap is:open label:feature" clipboard
 ```
 
 The gisrep report subcommand comprises three components:
