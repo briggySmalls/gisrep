@@ -59,7 +59,7 @@ class Cli(object):  # pylint: disable=too-few-public-methods
             help="Publishes a report from Github issues")
         report_parser.add_argument(
             'template',
-            help="Template format to publish issues with")
+            help="Tag of template to publish issues with")
         report_parser.add_argument(
             'query',
             help=(
@@ -67,10 +67,12 @@ class Cli(object):  # pylint: disable=too-few-public-methods
                 "help.github.com/articles/"
                 "searching-issues-and-pull-requests/)"))
         report_parser.add_argument(
-            '-o', '--output',
+            'output',
             default=["stdout"],
-            nargs='+',
-            help="Method to output results")
+            nargs='*',
+            help=(
+                "Tag of output deliver report "
+                "(may require further arguments)"))
         report_parser.set_defaults(handler=handler)
 
     @classmethod
