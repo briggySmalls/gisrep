@@ -20,9 +20,6 @@ setup(
     author_email="briggySmalls90@gmail.com",
     license="GPLv3",
     classifiers=[
-        # Development status
-        "Development Status :: 2 - Pre-Alpha",
-
         # Audience
         "Intended Audience :: Developers",
 
