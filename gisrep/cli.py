@@ -66,13 +66,6 @@ class Cli(object):  # pylint: disable=too-few-public-methods
                 "Github issues search query (see "
                 "help.github.com/articles/"
                 "searching-issues-and-pull-requests/)"))
-        report_parser.add_argument(
-            'output',
-            default=["stdout"],
-            nargs='*',
-            help=(
-                "Tag of output deliver report "
-                "(may require further arguments)"))
         report_parser.set_defaults(handler=handler)
 
     @classmethod
@@ -86,11 +79,7 @@ class Cli(object):  # pylint: disable=too-few-public-methods
 
         list_parser = subparsers.add_parser(
             'list',
-            help="List built-in components")
-        list_parser.add_argument(
-            'component',
-            choices=['templates', 'outputs'],
-            help="Component to list built-ins for")
+            help="List built-in templates")
         list_parser.set_defaults(handler=handler)
 
     def parse(self, raw_args):

@@ -50,28 +50,12 @@ class TestCli(unittest.TestCase):
     def test_list_templates(self):
         def handle_list_templates(args):
             self.assertEqual(args.command, 'list')
-            self.assertEqual(args.component, 'templates')
 
         # Set handlers
         self.handlers['list'] = handle_list_templates
 
         # Run test
-        self.cli.parse([
-            'list',
-            'templates'])
-
-    def test_list_outputs(self):
-        def handle_list_outputs(args):
-            self.assertEqual(args.command, 'list')
-            self.assertEqual(args.component, 'outputs')
-
-        # Set handlers
-        self.handlers['list'] = handle_list_outputs
-
-        # Run test
-        self.cli.parse([
-            'list',
-            'outputs'])
+        self.cli.parse(['list'])
 
     def default_handler(self, args):
         self.fail("Default handler called with args: {0}".format(

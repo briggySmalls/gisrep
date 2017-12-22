@@ -15,7 +15,6 @@ from github import Github
 
 from .cli import Cli
 from .config import Config
-from .outputs.output_manager import OutputManager
 from .templates.template_manager import (
     InternalTemplateManager, ExternalTemplateManager)
 
@@ -32,7 +31,7 @@ def main():
     handlers = {
         'init': init,
         'report': report,
-        'list': list_component,
+        'list': list_templates,
     }
     # Parse command line arguments
     cli = Cli(handlers)
@@ -43,7 +42,7 @@ def init(args):
     """Initialises the tool config file
 
     Args:
-        args (list): Command arguments
+        args (argparse.Namespace): Command arguments
     """
     # Prompt for username and password
     username = input("Github username:")
@@ -65,7 +64,7 @@ def report(args):
     """Publishes a report using specified query, template and output
 
     Args:
-        args (list): Command arguments
+        args (argparse.Namespace): Command arguments
     """
     # Create the template manger
     if args.template.endswith('.tplt'):
@@ -78,10 +77,7 @@ def report(args):
         template_tag = args.template
         builder = InternalTemplateManager()
 
-    # Create the output manager, and fetch the output
-    output_manager = OutputManager()
-    output = output_manager.get_output(args.output)
-
+    # Create PyGithub API object
     if os.path.exists(DEFAULT_CONFIG_FILEPATH):
         # Read in the existing config
         config = Config(DEFAULT_CONFIG_FILEPATH)
@@ -106,23 +102,18 @@ def report(args):
         issues)
 
     # Output report
-    output.publish(report_obj)
+    print(report_obj)
 
 
-def list_component(args):
+def list_templates(args):  # pylint: disable=unused-argument
     """Lists the templates available for publishing
 
     Args:
-        args (list): Command arguments
+        args (argparse.Namespace): Command arguments
     """
-    if args.component == 'templates':
-        builder = InternalTemplateManager()
-        for template in builder.list():
-            print(template)
-    elif args.component == 'outputs':
-        output = OutputManager()
-        for output in output.list():
-            print(output)
+    builder = InternalTemplateManager()
+    for template in builder.list():
+        print(template)
 
 
 if __name__ == '__main__':

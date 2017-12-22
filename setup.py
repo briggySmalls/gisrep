@@ -11,7 +11,7 @@ with open(path.join(path.abspath(path.dirname(__file__)), 'README.rst'), encodin
 
 setup(
     name='gisrep',
-    version='0.1.0',
+    version='0.2.0',
     description="The command line Github issues reporter",
     long_description=long_description,
     url="https://github.com/briggySmalls/gisrep",
