@@ -58,14 +58,19 @@ class Cli(object):  # pylint: disable=too-few-public-methods
             'report',
             help="Publishes a report from Github issues")
         report_parser.add_argument(
-            'template',
-            help="Tag of template to publish issues with")
-        report_parser.add_argument(
             'query',
             help=(
                 "Github issues search query (see "
                 "help.github.com/articles/"
                 "searching-issues-and-pull-requests/)"))
+        group = report_parser.add_mutually_exclusive_group()
+        group.add_argument(
+            '-t', '--template',
+            default='simple_report.md',
+            help="Tag of internal template to format issues with")
+        group.add_argument(
+            '-u', '--user-template',
+            help="Path to user template to format issues with")
         report_parser.set_defaults(handler=handler)
 
     @classmethod

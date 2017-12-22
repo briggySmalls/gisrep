@@ -12,9 +12,9 @@ class TestCli(unittest.TestCase):
 
         # Instantiate new Cli object
         self.cli = Cli({
-            'init': lambda args : self.handlers['init'](args),
-            'report': lambda args : self.handlers['report'](args),
-            'list': lambda args : self.handlers['list'](args),
+            'init': lambda args: self.handlers['init'](args),
+            'report': lambda args: self.handlers['report'](args),
+            'list': lambda args: self.handlers['list'](args),
         })
 
     def test_parse_init(self):
@@ -42,10 +42,7 @@ class TestCli(unittest.TestCase):
         self.handlers['report'] = handle_report
 
         # Run test
-        self.cli.parse([
-            'report',
-            template,
-            query])
+        self.cli.parse(['report', '--template', template, query])
 
     def test_list_templates(self):
         def handle_list_templates(args):

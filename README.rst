@@ -21,58 +21,52 @@ Usage
 Publishing reports
 ~~~~~~~~~~~~~~~~~~
 
-Publishing reports uses the ``report`` subcommand:
+Publishing reports uses the ``report`` subcommand and a query for the `Github search
+API <https://developer.github.com/v3/search/#search-issues>`__:
 
 ::
 
-    gisrep report simple_report.md "repo:twbs/bootstrap is:open label:feature" clipboard
+    gisrep report "repo:twbs/bootstrap is:open label:feature"
 
-The gisrep report subcommand comprises three components:
+Which will print a summary of the issues to the console:
 
--  A Template (``simple_report.md``) to format issues
--  A Github search query (``"repo:twbs/..."``) to filter issues
--  An Output (``clipboard``) used to deliver the report
+::
 
-Templates
-^^^^^^^^^
+    v4 - Touch gesture support for carousel - (17118)
+    Modal animations for v4 - some examples - (17219)
+    Request - bring muted backgrounds back - (17245)
+    Horizontal collapse - (17496)
+    Add styling for <input type="range"> - (17916)
+    Consider integrating Drool to check for leaks in the JS - (17932)
+    Add option to enable/disable animation of Collapse on a per-show/hide basis - (18127)
+    ...
 
-The template component can be either a tag for a built-in template, or a
-filepath to a custom template. Read the `templates
-readme <gisrep/templates/README.rst>`__ for creating custom templates.
-
-Github search query
-^^^^^^^^^^^^^^^^^^^
-
-The search query is passed to the `Github search
-API <https://developer.github.com/v3/search/#search-issues>`__ to filter
-issues and pull requests. Read the Github guide on `searching issues and
+Read the Github guide on `searching issues and
 pull
 requests <https://help.github.com/articles/searching-issues-and-pull-requests/>`__
 for help constructing queries.
 
-Outputs
-^^^^^^^
+Formatting results
+~~~~~~~~~~~~~~~~~~
 
-The output is a method of delivering the report. Defaults to printing to
-the console.
+Issues can be formatted with templates - either those shipped with gisrep, or custom user templates.
 
-Listing built-ins
-~~~~~~~~~~~~~~~~~
+::
 
-Listing the available built-in templates or outputs uses the ``list``
-subcommand.
+    # Specify gisrep template tag
+    gisrep report "repo:twbs/bootstrap is:open label:feature" --template list_by_labels.html
+
+    # Pass path of a user template
+    gisrep report "repo:twbs/bootstrap is:open label:feature" --user-template ./custom-report.rst
 
 To list the tags for built-in templates use the following command:
 
 ::
 
-    gisrep list templates
+    gisrep list
 
-To list the tags for built-in outputs use the following command:
-
-::
-
-    gisrep list outputs
+Read the `templates
+readme <gisrep/templates/README.rst>`__ for creating custom templates.
 
 Private repositories
 ~~~~~~~~~~~~~~~~~~~~

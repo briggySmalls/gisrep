@@ -67,12 +67,14 @@ def report(args):
         args (argparse.Namespace): Command arguments
     """
     # Create the template manger
-    if args.template.endswith('.tplt'):
+    if args.user_template:
         # We have been passed a template file path
-        template_dir = os.path.dirname(os.path.abspath(args.template))
-        template_tag = os.path.splitext(os.path.basename(args.template))[0]
+        template_dir = os.path.dirname(
+            os.path.abspath(args.user_template))
+        template_tag = os.path.splitext(
+            os.path.basename(args.user_template))[0]
         builder = ExternalTemplateManager(template_dir)
-    else:
+    elif args.template:
         # We have been passed a template tag
         template_tag = args.template
         builder = InternalTemplateManager()
