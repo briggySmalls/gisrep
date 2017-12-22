@@ -16,7 +16,8 @@ from github import Github
 from .cli import Cli
 from .config import Config
 from .outputs.output_manager import OutputManager
-from .templates.template_manager import TOOL_TEMPLATE_DIR, TemplateManager
+from .templates.template_manager import (
+    InternalTemplateManager, ExternalTemplateManager)
 
 DEFAULT_CONFIG_DIR = os.path.expanduser("~")
 DEFAULT_CONFIG_FILE = ".gisrep_config"
@@ -71,11 +72,11 @@ def report(args):
         # We have been passed a template file path
         template_dir = os.path.dirname(os.path.abspath(args.template))
         template_tag = os.path.splitext(os.path.basename(args.template))[0]
+        builder = ExternalTemplateManager(template_dir)
     else:
         # We have been passed a template tag
-        template_dir = TOOL_TEMPLATE_DIR
         template_tag = args.template
-    builder = TemplateManager(template_dir)
+        builder = InternalTemplateManager()
 
     # Create the output manager, and fetch the output
     output_manager = OutputManager()
@@ -115,7 +116,7 @@ def list_component(args):
         args (list): Command arguments
     """
     if args.component == 'templates':
-        builder = TemplateManager(TOOL_TEMPLATE_DIR)
+        builder = InternalTemplateManager()
         for template in builder.list():
             print(template)
     elif args.component == 'outputs':

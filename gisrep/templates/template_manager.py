@@ -4,10 +4,12 @@ Module that defines how templates are located
 import importlib.util
 import os
 
-from jinja2 import Environment, FileSystemLoader, exceptions, select_autoescape
+from jinja2 import (
+    Environment, FileSystemLoader, PackageLoader, exceptions,
+    select_autoescape)
+
 
 TEMPLATE_EXTENSION = 'tplt'
-TOOL_TEMPLATE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 class TemplateManager(object):
@@ -19,13 +21,11 @@ class TemplateManager(object):
         env (jinja2.Environment): Jinja2 templating environment
 
     """
-
-    def __init__(self, template_dirs):
-
-        # Create the template environment
-        self.env = Environment(
-            loader=FileSystemLoader(template_dirs),
+    def __init__(self, loader):
+        env = Environment(
+            loader=loader,
             autoescape=select_autoescape(['html', 'xml']))
+        self.env = env
 
     def generate(self, template, issues):
         """Generates a report
@@ -92,3 +92,29 @@ class TemplateManager(object):
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module
+
+
+class ExternalTemplateManager(TemplateManager):
+
+    """Template manager that fetches user templates (external)
+    """
+
+    def __init__(self, template_path):
+        # Create the template loader
+        loader = FileSystemLoader(template_path)
+
+        # Call the parent constructor with our loader
+        super().__init__(loader)
+
+
+class InternalTemplateManager(TemplateManager):
+
+    """Template manager that fetches package templates (internal)
+    """
+
+    def __init__(self):
+        # Create the template loader
+        loader = PackageLoader('gisrep', 'templates')
+
+        # Call the parent constructor with our loader
+        super().__init__(loader)

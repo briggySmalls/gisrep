@@ -3,3 +3,6 @@ include LICENSE.txt
 
 # Include the readme file
 include README.rst
+
+# Include templates
+include gisrep/templates/*.tplt

@@ -1,6 +1,5 @@
 import unittest
-from gisrep.templates.template_manager import TemplateManager
-import pickle
+from gisrep.templates.template_manager import ExternalTemplateManager
 import os
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "test_data")
@@ -15,7 +14,7 @@ FAKE_ISSUES = [
 class TestTemplateManager(unittest.TestCase):
 
     def setUp(self):
-        self.builder = TemplateManager(TEST_DATA_DIR)
+        self.builder = ExternalTemplateManager(TEST_DATA_DIR)
 
     def test_simple(self):
         report = self.builder.generate(
