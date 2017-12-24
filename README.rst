@@ -4,7 +4,8 @@ Gisrep
 ======
 
 The command line Github issues reporter, powered by
-`PyGithub <https://github.com/PyGithub/PyGithub>`__.
+`PyGithub <https://github.com/PyGithub/PyGithub>`__ and the
+`jinja2 <http://jinja.pocoo.org/docs/2.10/>`__ templating engine.
 
 Installation
 ------------
@@ -32,13 +33,13 @@ Which will print a summary of the issues to the console:
 
 ::
 
-    v4 - Touch gesture support for carousel - (17118)
-    Modal animations for v4 - some examples - (17219)
-    Request - bring muted backgrounds back - (17245)
-    Horizontal collapse - (17496)
-    Add styling for <input type="range"> - (17916)
-    Consider integrating Drool to check for leaks in the JS - (17932)
-    Add option to enable/disable animation of Collapse on a per-show/hide basis - (18127)
+    - v4 - Touch gesture support for carousel [#17118]
+    - Modal animations for v4 - some examples [#17219]
+    - Request - bring muted backgrounds back [#17245]
+    - Horizontal collapse [#17496]
+    - Add styling for <input type="range"> [#17916]
+    - Consider integrating Drool to check for leaks in the JS [#17932]
+    - Add option to enable/disable animation of Collapse on a per-show/hide basis [#18127]
     ...
 
 Read the Github guide on `searching issues and
@@ -69,7 +70,7 @@ Read the `templates
 readme <gisrep/templates/README.rst>`__ for creating custom templates.
 
 Private repositories
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 The tool needs to be initialised with Github credentials in order to
 access private repositories. The tool is initialised with the following
@@ -81,8 +82,12 @@ command:
 
 You will be prompted for your Github username and password. The password
 is stored in your system’s password manager using
-`keyring <https://pypi.python.org/pypi/keyring>`__. To overrwrite an
-existing configuration use the ``--force`` argument.
+`keyring <https://pypi.python.org/pypi/keyring>`__. Note that if your Github
+account uses 2 factor authentication, then the password provided to gisrep
+should be a `personal access token
+<https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/>`__.
+
+To overrwrite an existing configuration use the ``--force`` argument.
 
 .. |Build Status| image:: https://travis-ci.org/briggySmalls/gisrep.svg?branch=master
    :target: https://travis-ci.org/briggySmalls/gisrep
