@@ -22,16 +22,17 @@ class TemplateManager(object):
 
     """
     def __init__(self, loader):
-        env = Environment(
+        self.env = Environment(
             loader=loader,
+            trim_blocks=True,
+            lstrip_blocks=True,
             autoescape=select_autoescape(['html', 'xml']))
-        self.env = env
 
-    def generate(self, template, issues):
+    def generate(self, filename, issues):
         """Generates a report
 
         Args:
-            template (str): The template to format the report
+            filename (str): The filename of the template to use
             issues (github.Issue.Issue): The issues to report
 
         Returns:
@@ -44,7 +45,7 @@ class TemplateManager(object):
         # Load the template
         try:
             template = self.env.get_template(
-                "{0}.{1}".format(template, TEMPLATE_EXTENSION))
+                "{0}.{1}".format(filename, TEMPLATE_EXTENSION))
         except exceptions.TemplateNotFound as exc:
             raise RuntimeError("Template does not exist") from exc
 

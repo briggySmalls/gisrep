@@ -34,7 +34,7 @@ command:
 
 ::
 
-    gisrep report ./simple.md.tplt "repo:twbs/bootstrap"
+    gisrep report --user-template ./simple.md "repo:twbs/bootstrap"
 
 Custom logic
 ------------

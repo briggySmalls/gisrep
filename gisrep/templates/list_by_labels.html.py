@@ -14,10 +14,15 @@ def get_context(issues):
         dict: Context dictionary passed to list_by_labels.html.tplt template
     """
     labels = []
+    unlabelled = []
     for issue in issues:
-        labels.extend([l for l in issue.labels if l not in labels])
+        if not issue.labels:
+            unlabelled.append(issue)
+        else:
+            labels.extend([l for l in issue.labels if l not in labels])
 
     return {
         'labels': labels,
-        'issues': issues
+        'issues': issues,
+        'unlabelled': unlabelled,
     }
