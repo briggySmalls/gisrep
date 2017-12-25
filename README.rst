@@ -19,6 +19,8 @@ This installs the ``gisrep`` script to the command line.
 Usage
 -----
 
+You can type `gisrep --help` to see guidance on how to use the script.
+
 Publishing reports
 ~~~~~~~~~~~~~~~~~~
 
@@ -55,10 +57,10 @@ Issues can be formatted with templates - either those shipped with gisrep, or cu
 ::
 
     # Specify gisrep template tag
-    gisrep report "repo:twbs/bootstrap is:open label:feature" --template list_by_labels.html
+    gisrep report "repo:twbs/bootstrap is:open label:feature" --internal list_by_labels.html
 
     # Pass path of a user template
-    gisrep report "repo:twbs/bootstrap is:open label:feature" --user-template ./custom-report.rst
+    gisrep report "repo:twbs/bootstrap is:open label:feature" --external ./custom-report.rst
 
 To list the tags for built-in templates use the following command:
 
