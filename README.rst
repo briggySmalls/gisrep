@@ -74,22 +74,23 @@ readme <gisrep/templates/README.rst>`__ for creating custom templates.
 Private repositories
 --------------------
 
-The tool needs to be initialised with Github credentials in order to
-access private repositories. The tool is initialised with the following
-command:
+The tool needs Github credentials in order to access private repositories.
+Credentials can be provided as command line arguments directly, or supplied
+in a `.gisreprc` config file.
+
+A config file can be initialised and saved to your home directory with the following command:
 
 ::
 
     gisrep init
 
-You will be prompted for your Github username and password. The password
-is stored in your system’s password manager using
-`keyring <https://pypi.python.org/pypi/keyring>`__. Note that if your Github
+You will be prompted for your Github username and password. Note that if your Github
 account uses 2 factor authentication, then the password provided to gisrep
 should be a `personal access token
 <https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/>`__.
 
-To overrwrite an existing configuration use the ``--force`` argument.
+The password is stored in your system’s password manager using
+`keyring <https://pypi.python.org/pypi/keyring>`__.
 
 .. |Build Status| image:: https://travis-ci.org/briggySmalls/gisrep.svg?branch=master
    :target: https://travis-ci.org/briggySmalls/gisrep

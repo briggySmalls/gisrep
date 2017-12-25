@@ -44,6 +44,9 @@ class Cli(object):  # pylint: disable=too-few-public-methods
             '-f', '--force',
             action='store_true',
             help="Overwrite an existing config file")
+        init_parser.add_argument(
+            '-l', '--local',
+            help="Path to a local directory in which to save the file")
         init_parser.set_defaults(handler=handler)
 
     @classmethod
@@ -114,21 +117,22 @@ class Cli(object):  # pylint: disable=too-few-public-methods
 
         args = self.root_parser.parse_args(raw_args)
 
-        # Verify argument combinations
-        if args.username and not args.password:
-            raise RuntimeError("Password required if username supplied")
-        if args.password and not args.username:
-            raise RuntimeError("Username required if password supplied")
-        if args.config and args.username:
-            raise RuntimeError(
-                "Config file and username/password are mutually exclusive")
+        if args.command == 'report':
+            # Verify argument combinations
+            if args.username and not args.password:
+                raise RuntimeError("Password required if username supplied")
+            if args.password and not args.username:
+                raise RuntimeError("Username required if password supplied")
+            if args.config and args.username:
+                raise RuntimeError(
+                    "Config file and username/password are mutually exclusive")
 
-        # Confirm files exist
-        if args.config and not os.path.exists(args.config):
-            raise RuntimeError(
-                "Cannot find config file: {}".format(args.config))
-        if args.external and not os.path.exists(args.external):
-            raise RuntimeError(
-                "Cannot find external template: {}".format(args.external))
+            # Confirm files exist
+            if args.config and not os.path.exists(args.config):
+                raise RuntimeError(
+                    "Cannot find config file: {}".format(args.config))
+            if args.external and not os.path.exists(args.external):
+                raise RuntimeError(
+                    "Cannot find external template: {}".format(args.external))
 
         args.handler(args)

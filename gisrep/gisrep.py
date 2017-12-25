@@ -21,7 +21,7 @@ from .templates.template_manager import (
 DEFAULT_CONFIG_DIR = os.path.expanduser("~")
 DEFAULT_CONFIG_FILE = ".gisreprc"
 DEFAULT_CONFIG_FILEPATH = os.path.join(
-    os.path.expanduser("~"), DEFAULT_CONFIG_FILE)
+    DEFAULT_CONFIG_DIR, DEFAULT_CONFIG_FILE)
 
 
 def _get_credentials(args):
@@ -105,18 +105,22 @@ def init(args):
     Args:
         args (argparse.Namespace): Command arguments
     """
-    # Prompt for username and password
-    username = input("Github username:")
-    password = getpass.getpass("Github password:")
+    filepath = os.path.join(
+        os.path.abspath(args.local) if args.local else DEFAULT_CONFIG_DIR,
+        DEFAULT_CONFIG_FILE)
 
+    if not args.force and os.path.exists(filepath):
+        raise RuntimeError("Config file already exists")
+
+    # Prompt for username and password
     initial_config = {
-        'username': username,
-        'password': password,
+        'username': input("Github username:"),
+        'password': getpass.getpass("Github password:"),
     }
 
     # Initialise config file
     Config(
-        DEFAULT_CONFIG_FILEPATH,
+        filepath,
         initial_config=initial_config,
         force=args.force)
 
