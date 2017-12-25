@@ -19,9 +19,70 @@ from .templates.template_manager import (
     InternalTemplateManager, ExternalTemplateManager)
 
 DEFAULT_CONFIG_DIR = os.path.expanduser("~")
-DEFAULT_CONFIG_FILE = ".gisrep_config"
+DEFAULT_CONFIG_FILE = ".gisreprc"
 DEFAULT_CONFIG_FILEPATH = os.path.join(
     os.path.expanduser("~"), DEFAULT_CONFIG_FILE)
+
+
+def _get_credentials(args):
+    """Gets Github credentials from command line or config file
+
+    Args:
+        args (list): List of command line arguments passed to gisrep
+
+    Returns:
+        dict: Github credentials
+    """
+    if args.username:
+        # Get credentials from command line
+        assert args.password
+        credentials = {
+            'username': args.username,
+            'password': args.password,
+        }
+    else:
+        # Try to get credentials from a config file
+        if args.config:
+            # User supplied a config file path
+            config_filepath = args.config
+        elif os.path.exists(DEFAULT_CONFIG_FILEPATH):
+            # Global config file provided
+            config_filepath = DEFAULT_CONFIG_FILEPATH
+        else:
+            # There are no credentials to be used
+            return None
+
+        # Create a config object
+        config = Config(config_filepath)
+
+        # Instantiate an API client with Github credentials
+        credentials = config.get_credentials()
+
+    return credentials
+
+
+def _get_template_manager(args):
+    """Gets template objects
+
+    Args:
+        args (list): List of command line arguments passed to gisrep
+
+    Returns:
+        Tuple(TemplateManager, str): Template manager and tag of template
+    """
+    if args.external:
+        # We have been passed a template file path
+        template_dir = os.path.dirname(
+            os.path.abspath(args.external))
+        template_tag = os.path.splitext(
+            os.path.basename(args.external))[0]
+        builder = ExternalTemplateManager(template_dir)
+    elif args.internal:
+        # We have been passed a template tag
+        template_tag = args.internal
+        builder = InternalTemplateManager()
+
+    return builder, template_tag
 
 
 def main():
@@ -67,29 +128,17 @@ def report(args):
         args (argparse.Namespace): Command arguments
     """
     # Create the template manger
-    if args.user_template:
-        # We have been passed a template file path
-        template_dir = os.path.dirname(
-            os.path.abspath(args.user_template))
-        template_tag = os.path.splitext(
-            os.path.basename(args.user_template))[0]
-        builder = ExternalTemplateManager(template_dir)
-    elif args.template:
-        # We have been passed a template tag
-        template_tag = args.template
-        builder = InternalTemplateManager()
+    builder, template_tag = _get_template_manager(args)
+
+    # Attempt to get Github credentials
+    credentials = _get_credentials(args)
 
     # Create PyGithub API object
-    if os.path.exists(DEFAULT_CONFIG_FILEPATH):
-        # Read in the existing config
-        config = Config(DEFAULT_CONFIG_FILEPATH)
-        # Instantiate an API client with Github credentials
-        credentials = config.get_credentials()
+    if credentials is not None:
         api = Github(
             credentials['username'],
             credentials['password'])
     else:
-        # Instantiate an API client without Github credentials
         api = Github()
 
     # Request the issues
