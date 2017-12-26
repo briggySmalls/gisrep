@@ -1,4 +1,5 @@
 |Build Status|
+|Coverage Status|
 
 Gisrep
 ======
@@ -94,3 +95,6 @@ The password is stored in your system’s password manager using
 
 .. |Build Status| image:: https://travis-ci.org/briggySmalls/gisrep.svg?branch=master
    :target: https://travis-ci.org/briggySmalls/gisrep
+
+.. |Coverage Status| image:: https://coveralls.io/repos/github/briggySmalls/gisrep/badge.svg
+   :target: https://coveralls.io/github/briggySmalls/gisrep
