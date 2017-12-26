@@ -35,14 +35,14 @@ class TestCli(unittest.TestCase):
 
         def handle_report(args):
             self.assertEqual(args.command, 'report')
-            self.assertEqual(args.template, template)
+            self.assertEqual(args.internal, template)
             self.assertEqual(args.query, query)
 
         # Set handlers
         self.handlers['report'] = handle_report
 
         # Run test
-        self.cli.parse(['report', '--template', template, query])
+        self.cli.parse(['report', '--internal', template, query])
 
     def test_list_templates(self):
         def handle_list_templates(args):
