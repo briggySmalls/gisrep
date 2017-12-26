@@ -19,7 +19,7 @@ This installs the ``gisrep`` script to the command line.
 Usage
 -----
 
-You can type `gisrep --help` to see guidance on how to use the script.
+You can type ``gisrep --help`` to see guidance on how to use the script.
 
 Publishing reports
 ~~~~~~~~~~~~~~~~~~
