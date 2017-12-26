@@ -4,9 +4,9 @@
 Gisrep
 ======
 
-The command line Github issues reporter, powered by
-`PyGithub <https://github.com/PyGithub/PyGithub>`__ and the
-`jinja2 <http://jinja.pocoo.org/docs/2.10/>`__ templating engine.
+The command line Github issues reporter, making requests with
+`PyGithub <https://github.com/PyGithub/PyGithub>`__ and formatting results with
+`jinja2 <http://jinja.pocoo.org/docs/2.10/>`__.
 
 Installation
 ------------
@@ -30,19 +30,16 @@ API <https://developer.github.com/v3/search/#search-issues>`__:
 
 ::
 
-    gisrep report "repo:twbs/bootstrap is:open label:feature"
+    gisrep report "repo:briggySmalls/gisrep is:open label:enhancement"
 
 Which will print a summary of the issues to the console:
 
 ::
 
-    - v4 - Touch gesture support for carousel [#17118]
-    - Modal animations for v4 - some examples [#17219]
-    - Request - bring muted backgrounds back [#17245]
-    - Horizontal collapse [#17496]
-    - Add styling for <input type="range"> [#17916]
-    - Consider integrating Drool to check for leaks in the JS [#17932]
-    - Add option to enable/disable animation of Collapse on a per-show/hide basis [#18127]
+    - Make project open-source friendly [#2]
+    - Add custom errors and improve handling [#4]
+    - Add coverage tests [#14]
+    - Allow user to provide jinja2 environment configuration [#16]
     ...
 
 Read the Github guide on `searching issues and
