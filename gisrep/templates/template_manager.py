@@ -5,9 +5,8 @@ import importlib.util
 import os
 
 from jinja2 import (
-    Environment, FileSystemLoader, PackageLoader, exceptions,
-    select_autoescape)
-
+    Environment, exceptions, select_autoescape,
+    FileSystemLoader, PackageLoader)
 
 TEMPLATE_EXTENSION = 'tplt'
 
@@ -21,6 +20,7 @@ class TemplateManager(object):
         env (jinja2.Environment): Jinja2 templating environment
 
     """
+
     def __init__(self, loader):
         self.env = Environment(
             loader=loader,

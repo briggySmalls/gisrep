@@ -1,72 +1,66 @@
-import unittest
-import pytest
-from gisrep.config import Config
 import os
 
-TEST_CONFIG_PATH = os.path.abspath('.')
-TEST_CONFIG_FILE = os.path.join(TEST_CONFIG_PATH, '.gisrep_config')
+from gisrep.config import Config
+
+import pytest
+
 TEST_INITIAL_CONFIG = {
     'username': "my_name",
     'password': "my_password",
 }
 
 
-class TestConfig(unittest.TestCase):
-    def setUp(self):
-        # Ensure no previous file exists
-        try:
-            os.remove(TEST_CONFIG_FILE)
-        except OSError:
-            pass
+@pytest.fixture
+def config(tmpdir):
+    return Config(
+        path=os.path.join(tmpdir, '.gisreprc'),
+        initial_config=TEST_INITIAL_CONFIG)
 
-        # Create a new config file
-        self.config = self.new_config(
-            initial_config=TEST_INITIAL_CONFIG)
 
-    def tearDown(self):
-        # Remove the config file
-        os.remove(TEST_CONFIG_FILE)
+@pytest.mark.keyring
+def test_new_config(config):
+    # Assert config file exists
+    assert os.path.exists(config.file_path)
 
-    @pytest.mark.keyring
-    def test_new_config(self):
-        # Assert config file exists
-        self.assertTrue(os.path.exists(TEST_CONFIG_FILE))
+    # Assert the original config object
+    assert_credentials(config, TEST_INITIAL_CONFIG)
 
-        # Assert the original config object
-        self.assert_credentials(self.config, TEST_INITIAL_CONFIG)
-        # Assert a fresh config object
-        self.assert_credentials(self.new_config(), TEST_INITIAL_CONFIG)
+    # Assert a fresh config object
+    new_config = Config(config.file_path)
+    assert_credentials(new_config, TEST_INITIAL_CONFIG)
 
-    @pytest.mark.keyring
-    def test_force_config(self):
-        # Create different config content
-        different_content = {
-            'username': "different_name",
-            'password': "different_password",
-        }
 
-        def init_new_config(force):
-            return self.new_config(
-                initial_config=different_content,
-                force=force)
+@pytest.mark.keyring
+def test_force_config(config):
+    # Create different config content
+    different_content = {
+        'username': "different_name",
+        'password': "different_password",
+    }
 
-        # First try to create new config without force arg
-        self.assertRaises(RuntimeError, init_new_config, False)
+    # First try to create new config without force arg
+    with pytest.raises(RuntimeError):
+        Config(
+            path=config.file_path,
+            initial_config=different_content,
+            force=False)
 
-        # Now force a new config file to be written
-        config = init_new_config(force=True)
+    # Now force a new config file to be written
+    new_config = Config(
+        path=config.file_path,
+        initial_config=different_content,
+        force=True)
 
-        # Assert contents of origintal config object
-        self.assert_credentials(config, different_content)
-        # Assert contents of fresh config object
-        self.assert_credentials(self.new_config(), different_content)
+    # Assert contents of origintal config object
+    assert_credentials(new_config, different_content)
 
-    def new_config(self, **kwargs):
-        return Config(path=TEST_CONFIG_FILE, **kwargs)
+    # Assert contents of fresh config object
+    assert_credentials(Config(config.file_path), different_content)
 
-    def assert_credentials(self, config, expected_credentials):
-        # Get the content
-        credentials = config.get_credentials()
-        # Assert config content
-        self.assertEqual(credentials['username'], expected_credentials['username'])
-        self.assertEqual(credentials['password'], expected_credentials['password'])
+
+def assert_credentials(self, config, expected_credentials):
+    # Get the content
+    credentials = config.get_credentials()
+    # Assert config content
+    assert credentials['username'] == expected_credentials['username']
+    assert credentials['password'] == expected_credentials['password']

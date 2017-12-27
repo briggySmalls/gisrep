@@ -1,59 +1,90 @@
-import unittest
 from gisrep.cli import Cli
 
+import pytest
 
-class TestCli(unittest.TestCase):
-    def setUp(self):
-        # Reset handlers to default
-        self.handlers = {}
-        self.handlers['init'] = self.default_handler
-        self.handlers['report'] = self.default_handler
-        self.handlers['list'] = self.default_handler
 
-        # Instantiate new Cli object
-        self.cli = Cli({
-            'init': lambda args: self.handlers['init'](args),
-            'report': lambda args: self.handlers['report'](args),
-            'list': lambda args: self.handlers['list'](args),
-        })
+def default_handler(self, args):
+    """Default handler for CLI callbacks
 
-    def test_parse_init(self):
-        def handle_init(args):
-            self.assertEqual(args.command, 'init')
-            self.assertTrue(args.force)
+    Args:
+        args (argparse.Namespace): Command line arguments
+    """
+    assert False, ("Default handler called with args: {0}".format(args))
 
-        # Set handlers
-        self.handlers['init'] = handle_init
 
-        # Run test
-        self.cli.parse(["init", "--force"])
-        self.cli.parse(["init", "-f"])
+@pytest.fixture
+def cli_and_handlers():
+    # Reset handlers to default
+    handlers = {}
+    handlers['init'] = default_handler
+    handlers['report'] = default_handler
+    handlers['list'] = default_handler
 
-    def test_parse_report(self):
-        template = "release-note"
-        query = "repo:github/opensource.guide is:open"
+    # Instantiate new Cli object
+    return Cli(
+        {
+            'init': lambda args: handlers['init'](args),
+            'report': lambda args: handlers['report'](args),
+            'list': lambda args: handlers['list'](args)
+        }), handlers
 
-        def handle_report(args):
-            self.assertEqual(args.command, 'report')
-            self.assertEqual(args.internal, template)
-            self.assertEqual(args.query, query)
 
-        # Set handlers
-        self.handlers['report'] = handle_report
+def test_parse_init(cli_and_handlers):
+    """Tests that the 'init' command is parsed correctly
 
-        # Run test
-        self.cli.parse(['report', '--internal', template, query])
+    Args:
+        cli (Cli): Command line parser class
+    """
+    def handle_init(args):
+        assert args.command == 'init'
+        assert args.force
 
-    def test_list_templates(self):
-        def handle_list_templates(args):
-            self.assertEqual(args.command, 'list')
+    cli, handlers = cli_and_handlers
 
-        # Set handlers
-        self.handlers['list'] = handle_list_templates
+    # Set handlers
+    handlers['init'] = handle_init
 
-        # Run test
-        self.cli.parse(['list'])
+    # Run test
+    cli.parse(["init", "--force"])
+    cli.parse(["init", "-f"])
 
-    def default_handler(self, args):
-        self.fail("Default handler called with args: {0}".format(
-            args))
+
+def test_parse_report(cli_and_handlers):
+    """Tests that the report command is parsed correctly
+
+    Args:
+        cli (Cli): Command line parser class
+    """
+    template = "release-note"
+    query = "repo:github/opensource.guide is:open"
+
+    def handle_report(args):
+        assert args.command == 'report'
+        assert args.internal == template
+        assert args.query == query
+
+    cli, handlers = cli_and_handlers
+
+    # Set handlers
+    handlers['report'] = handle_report
+
+    # Run test
+    cli.parse(['report', '--internal', template, query])
+
+
+def test_list(cli_and_handlers):
+    """Tests that the list command is parsed correctly
+
+    Args:
+        cli_and_handlers (dict): Description
+    """
+    def handle_list(args):
+        assert args.command == 'list'
+
+    cli, handlers = cli_and_handlers
+
+    # Set handlers
+    handlers['list'] = handle_list
+
+    # Run test
+    cli.parse(['list'])

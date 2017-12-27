@@ -63,9 +63,9 @@ class Config(object):
             RuntimeError: Description
         """
 
-        self.file_path = path
+        self._file_path = path
         # Determine if a config file already exists
-        if os.path.exists(self.file_path) and not force:
+        if os.path.exists(self._file_path) and not force:
             if initial_config is not None:
                 # Attempted to overwrite config without 'force'
                 raise RuntimeError("Config file already exists")
@@ -80,7 +80,11 @@ class Config(object):
             # No config found (or provided)
             raise RuntimeError("Config file doesn't exist")
 
-    def get_credentials(self):
+    @property
+    def file_path(self):
+        return self._file_path
+
+    def credentials(self):
         """Gets the credentials from the configuration file
 
         Returns:
@@ -109,10 +113,10 @@ class Config(object):
         Returns:
             dict: Configuration
         """
-        return toml.load(self.file_path)
+        return toml.load(self._file_path)
 
     def write(self):
         """Writes the current configuration to the config file
         """
-        with open(self.file_path, 'w') as config_file:
+        with open(self._file_path, 'w') as config_file:
             toml.dump(self.config, config_file)

@@ -16,7 +16,7 @@ from github import Github
 from .cli import Cli
 from .config import Config
 from .templates.template_manager import (
-    InternalTemplateManager, ExternalTemplateManager)
+    ExternalTemplateManager, InternalTemplateManager)
 
 DEFAULT_CONFIG_DIR = os.path.expanduser("~")
 DEFAULT_CONFIG_FILE = ".gisreprc"

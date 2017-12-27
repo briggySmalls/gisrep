@@ -1,8 +1,11 @@
-import unittest
-from gisrep.templates.template_manager import ExternalTemplateManager
 import os
+import pytest
 
-TEST_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "test_data")
+from gisrep.templates.template_manager import ExternalTemplateManager
+
+TEST_DATA_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "test_data")
 TEST_TEMPLATE_TAG = "test_template"
 FAKE_ISSUES = [
     {'title': "Issue 1", 'number': 1},
@@ -11,24 +14,25 @@ FAKE_ISSUES = [
 ]
 
 
-class TestTemplateManager(unittest.TestCase):
+@pytest.fixture
+def external_manager():
+    return ExternalTemplateManager(TEST_DATA_DIR)
 
-    def setUp(self):
-        self.builder = ExternalTemplateManager(TEST_DATA_DIR)
 
-    def test_simple(self):
-        report = self.builder.generate(
-            TEST_TEMPLATE_TAG,
-            FAKE_ISSUES)
+def test_simple(external_manager):
+    report = external_manager.generate(
+        TEST_TEMPLATE_TAG,
+        FAKE_ISSUES)
 
-        # Assert contents
-        self.assertIsNotNone(report)
-        self.assertEqual(report, "123")
+    # Assert contents
+    assert report is not None
+    assert report == "123"
 
-    def test_list(self):
-        # Get a list of templates
-        templates = self.builder.list()
 
-        # Assert list
-        self.assertTrue(len(templates) == 1)
-        self.assertIn('test_template', templates)
+def test_list(external_manager):
+    # Get a list of templates
+    templates = external_manager.list()
+
+    # Assert list
+    assert len(templates) == 1
+    assert 'test_template' in templates
