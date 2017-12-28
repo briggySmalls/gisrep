@@ -34,7 +34,9 @@ def test_external(external_manager):
 
     # Assert contents
     assert report is not None
-    assert report == "123"
+    lines = report.split('\n')
+    assert lines[0] == "123"
+    assert lines[1] == "test"
 
 
 def test_internal(internal_manager):
@@ -48,10 +50,27 @@ def test_internal(internal_manager):
     assert len(report.split('\n')) == len(FAKE_ISSUES) + 1
 
 
-def test_list(external_manager):
+def test_missing_internal(internal_manager):
+    with pytest.raises(RuntimeError):
+        internal_manager.generate(
+            'missing_report.md',
+            FAKE_ISSUES)
+
+
+def test_external_list(external_manager):
     # Get a list of templates
     templates = external_manager.list()
 
     # Assert list
     assert len(templates) == 1
     assert 'test_template' in templates
+
+
+def test_internal_list(internal_manager):
+    # Get a list of templates
+    templates = internal_manager.list()
+
+    # Assert list
+    assert len(templates) == 2
+    assert 'simple_report.md' in templates
+    assert 'list_by_labels.html' in templates

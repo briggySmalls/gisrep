@@ -1,1 +1,3 @@
-{%- for issue in issues -%}{{ issue.number }}{%- endfor -%}
+{% for issue in issues %}{{ issue.number }}{% endfor %}
+
+{{ additional_context }}
