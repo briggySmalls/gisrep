@@ -3,7 +3,7 @@ from gisrep.cli import Cli
 import pytest
 
 
-def default_handler(self, args):
+def default_handler(args):
     """Default handler for CLI callbacks
 
     Args:
@@ -25,7 +25,7 @@ def cli_and_handlers():
         {
             'init': lambda args: handlers['init'](args),
             'report': lambda args: handlers['report'](args),
-            'list': lambda args: handlers['list'](args)
+            'list': lambda args: handlers['list'](args),
         }), handlers
 
 

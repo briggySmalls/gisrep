@@ -5,8 +5,8 @@ import importlib.util
 import os
 
 from jinja2 import (
-    Environment, exceptions, select_autoescape,
-    FileSystemLoader, PackageLoader)
+    Environment, FileSystemLoader, PackageLoader,
+    exceptions, select_autoescape)
 
 TEMPLATE_EXTENSION = 'tplt'
 

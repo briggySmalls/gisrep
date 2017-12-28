@@ -2,19 +2,8 @@ import os
 
 from gisrep.config import Config
 
+import conftest
 import pytest
-
-TEST_INITIAL_CONFIG = {
-    'username': "my_name",
-    'password': "my_password",
-}
-
-
-@pytest.fixture
-def config(tmpdir):
-    return Config(
-        path=os.path.join(tmpdir, '.gisreprc'),
-        initial_config=TEST_INITIAL_CONFIG)
 
 
 @pytest.mark.keyring
@@ -23,11 +12,11 @@ def test_new_config(config):
     assert os.path.exists(config.file_path)
 
     # Assert the original config object
-    assert_credentials(config, TEST_INITIAL_CONFIG)
+    assert_credentials(config, conftest.TEST_INITIAL_CONFIG)
 
     # Assert a fresh config object
     new_config = Config(config.file_path)
-    assert_credentials(new_config, TEST_INITIAL_CONFIG)
+    assert_credentials(new_config, conftest.TEST_INITIAL_CONFIG)
 
 
 @pytest.mark.keyring
@@ -58,7 +47,7 @@ def test_force_config(config):
     assert_credentials(Config(config.file_path), different_content)
 
 
-def assert_credentials(self, config, expected_credentials):
+def assert_credentials(config, expected_credentials):
     # Get the content
     credentials = config.get_credentials()
     # Assert config content

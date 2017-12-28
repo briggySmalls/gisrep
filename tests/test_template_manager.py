@@ -1,7 +1,8 @@
 import os
-import pytest
 
 from gisrep.templates.template_manager import ExternalTemplateManager
+
+import pytest
 
 TEST_DATA_DIR = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),

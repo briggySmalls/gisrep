@@ -84,7 +84,7 @@ class Config(object):
     def file_path(self):
         return self._file_path
 
-    def credentials(self):
+    def get_credentials(self):
         """Gets the credentials from the configuration file
 
         Returns:
