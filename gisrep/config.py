@@ -82,6 +82,11 @@ class Config(object):
 
     @property
     def file_path(self):
+        """Gets the file path of the config file abstracted by this object
+
+        Returns:
+            str: File path of config file
+        """
         return self._file_path
 
     def get_credentials(self):
