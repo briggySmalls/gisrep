@@ -4,7 +4,8 @@ from gisrep.config import Config
 
 import conftest
 import pytest
-
+import keyring
+keyring.backends.SecretService.Keyring.priority
 
 @pytest.mark.keyring
 def test_new_config(config):

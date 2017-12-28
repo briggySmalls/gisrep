@@ -13,5 +13,5 @@ TEST_INITIAL_CONFIG = {
 @pytest.fixture
 def config(tmpdir):
     return Config(
-        path=os.path.join(tmpdir, '.gisreprc'),
+        path=os.path.join(str(tmpdir), '.gisreprc'),
         initial_config=TEST_INITIAL_CONFIG)
