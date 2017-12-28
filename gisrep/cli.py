@@ -119,10 +119,10 @@ class Cli(object):  # pylint: disable=too-few-public-methods
 
         if args.command == 'report':
             # Verify argument combinations
-            if args.username and not args.password:
-                raise RuntimeError("Password required if username supplied")
-            if args.password and not args.username:
-                raise RuntimeError("Username required if password supplied")
+            if args.username:
+                assert args.password
+            elif args.password:
+                assert args.username
             if args.config and args.username:
                 raise RuntimeError(
                     "Config file and username/password are mutually exclusive")

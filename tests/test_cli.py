@@ -72,6 +72,36 @@ def test_parse_report(cli_and_handlers):
     cli.parse(['report', '--internal', template, query])
 
 
+def test_parse_report_failures(cli_and_handlers):
+    cli, handlers = cli_and_handlers
+
+    def handle_report(args):
+        assert False, "Failures should not be handled"
+
+    # Set handlers
+    handlers['report'] = handle_report
+
+    # Test username and password and config
+    with pytest.raises(RuntimeError):
+        cli.parse([
+            'report', "repo:github/opensource.guide is:open",
+            '--username', 'my_name',
+            '--password', 'my_password',
+            '--config', 'path/to/config'])
+
+    # Test config exists
+    with pytest.raises(RuntimeError):
+        cli.parse([
+            'report', "repo:github/opensource.guide is:open",
+            '--config', 'path/to/config'])
+
+    # Test template exists
+    with pytest.raises(RuntimeError):
+        cli.parse([
+            'report', "repo:github/opensource.guide is:open",
+            '--external', 'path/to/template'])
+
+
 def test_list(cli_and_handlers):
     """Tests that the list command is parsed correctly
 
