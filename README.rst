@@ -91,7 +91,7 @@ The password is stored in your system’s password manager using
 `keyring <https://pypi.python.org/pypi/keyring>`__.
 
 .. |Build Status| image:: https://travis-ci.org/briggySmalls/gisrep.svg?branch=master
-   :target: https://travis-ci.org/briggySmalls/gisrep
+   :target: https://travis-ci.org/briggySmalls/gisrep?branch=master
 
-.. |Coverage Status| image:: https://coveralls.io/repos/github/briggySmalls/gisrep/badge.svg
-   :target: https://coveralls.io/github/briggySmalls/gisrep
+.. |Coverage Status| image:: https://coveralls.io/repos/github/briggySmalls/gisrep/badge.svg?branch=master
+   :target: https://coveralls.io/github/briggySmalls/gisrep?branch=master
