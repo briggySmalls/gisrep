@@ -12,6 +12,7 @@ import os
 import sys
 
 from github import Github
+import keyring
 
 from .cli import Cli
 from .config import Config
@@ -24,7 +25,7 @@ DEFAULT_CONFIG_FILEPATH = os.path.join(
     DEFAULT_CONFIG_DIR, DEFAULT_CONFIG_FILE)
 
 
-def _get_credentials(args):
+def _get_credentials(args, password_manager):
     """Gets Github credentials from command line or config file
 
     Args:
@@ -53,7 +54,7 @@ def _get_credentials(args):
             return None
 
         # Create a config object
-        config = Config(config_filepath)
+        config = Config(config_filepath, password_manager)
 
         # Instantiate an API client with Github credentials
         credentials = config.get_credentials()
@@ -121,6 +122,7 @@ def init(args):
     # Initialise config file
     Config(
         filepath,
+        keyring,
         initial_config=initial_config,
         force=args.force)
 
@@ -135,7 +137,7 @@ def report(args):
     builder, template_tag = _get_template_manager(args)
 
     # Attempt to get Github credentials
-    credentials = _get_credentials(args)
+    credentials = _get_credentials(args, keyring)
 
     # Create PyGithub API object
     if credentials is not None:

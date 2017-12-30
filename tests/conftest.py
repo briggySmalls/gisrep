@@ -10,8 +10,20 @@ TEST_INITIAL_CONFIG = {
 }
 
 
+class TestPasswordManager(object):
+    def __init__(self):
+        self.passwords = {}
+
+    def set_password(self, service, username, password):
+        self.passwords[service + username] = password
+
+    def get_password(self, service, username):
+        return self.passwords[service + username]
+
+
 @pytest.fixture
 def config(tmpdir):
     return Config(
-        path=os.path.join(str(tmpdir), '.gisreprc'),
+        os.path.join(str(tmpdir), '.gisreprc'),
+        TestPasswordManager(),
         initial_config=TEST_INITIAL_CONFIG)

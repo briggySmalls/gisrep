@@ -2,25 +2,22 @@ import os
 
 from gisrep.config import Config
 
-import conftest
+from conftest import TEST_INITIAL_CONFIG
 import pytest
-import keyring
-keyring.backends.SecretService.Keyring.priority
 
-@pytest.mark.keyring
+
 def test_new_config(config):
     # Assert config file exists
     assert os.path.exists(config.file_path)
 
     # Assert the original config object
-    assert_credentials(config, conftest.TEST_INITIAL_CONFIG)
+    assert_credentials(config, TEST_INITIAL_CONFIG)
 
     # Assert a fresh config object
-    new_config = Config(config.file_path)
-    assert_credentials(new_config, conftest.TEST_INITIAL_CONFIG)
+    new_config = Config(config.file_path, config._password_manager)
+    assert_credentials(new_config, TEST_INITIAL_CONFIG)
 
 
-@pytest.mark.keyring
 def test_force_config(config):
     # Create different config content
     different_content = {
@@ -32,20 +29,24 @@ def test_force_config(config):
     with pytest.raises(RuntimeError):
         Config(
             path=config.file_path,
+            password_manager=config._password_manager,
             initial_config=different_content,
             force=False)
 
     # Now force a new config file to be written
     new_config = Config(
         path=config.file_path,
+        password_manager=config._password_manager,
         initial_config=different_content,
         force=True)
 
-    # Assert contents of origintal config object
+    # Assert contents of original config object
     assert_credentials(new_config, different_content)
 
     # Assert contents of fresh config object
-    assert_credentials(Config(config.file_path), different_content)
+    assert_credentials(
+        Config(config.file_path, config._password_manager),
+        different_content)
 
 
 def assert_credentials(config, expected_credentials):

@@ -7,13 +7,12 @@ Attributes:
 
 import os
 
-import keyring
 import toml
 
 PASSWORD_SERVICE_NAME = "gisrep"
 
 
-def create_config(initial_config):
+def create_config(password_manager, initial_config):
     """Creates a configuration file
 
     Args:
@@ -24,7 +23,7 @@ def create_config(initial_config):
     """
 
     # Save the password in the password manager
-    keyring.set_password(
+    password_manager.set_password(
         PASSWORD_SERVICE_NAME,
         initial_config['username'],
         initial_config['password'])
@@ -50,7 +49,8 @@ class Config(object):
         file_path (str): File path of config file
     """
 
-    def __init__(self, path, initial_config=None, force=False):
+    def __init__(
+            self, path, password_manager, initial_config=None, force=False):
         """Class for managing configuration file.
 
         Args:
@@ -64,6 +64,7 @@ class Config(object):
         """
 
         self._file_path = path
+        self._password_manager = password_manager
         # Determine if a config file already exists
         if os.path.exists(self._file_path) and not force:
             if initial_config is not None:
@@ -74,7 +75,7 @@ class Config(object):
             self.config = self.read()
         elif initial_config is not None:
             # We are creating the config file now
-            self.config = create_config(initial_config)
+            self.config = create_config(password_manager, initial_config)
             self.write()
         else:
             # No config found (or provided)
@@ -100,7 +101,7 @@ class Config(object):
         """
         username = self.config['github']['username']
         password_service = self.config['github']['password_service']
-        password = keyring.get_password(
+        password = self._password_manager.get_password(
             password_service,
             username)
 
