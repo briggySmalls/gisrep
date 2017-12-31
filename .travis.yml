@@ -1,26 +1,11 @@
 language: python
 python:
   - "3.4"
-virtualenv:
-  system_site_packages: true
+  - "3.5"
+  - "3.6"
 install:
   - pip install tox-travis coveralls
-addons:
-  apt:
-    packages:
-      - dbus
-      - libdbus-glib-1-dev
-      - libsecret-1-dev
-      - python3-dbus
-      - gnome-keyring
-      - python-gnomekeyring
-before_script:
-  - eval $(echo -n "" | /usr/bin/gnome-keyring-daemon --login)
-  - eval $(/usr/bin/gnome-keyring-daemon --components=secrets --start)
-  - |
-    dbus-launch /usr/bin/python -c \
-        "import gnomekeyring;gnomekeyring.create_sync('login', '');"
 script:
-  - dbus-launch tox
+  - tox
 after_success:
   - coveralls
