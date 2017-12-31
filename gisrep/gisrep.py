@@ -77,13 +77,13 @@ def _get_template_manager(args):
             os.path.abspath(args.external))
         template_tag = os.path.splitext(
             os.path.basename(args.external))[0]
-        builder = ExternalTemplateManager(template_dir)
+        manager = ExternalTemplateManager(template_dir)
     elif args.internal:
         # We have been passed a template tag
         template_tag = args.internal
-        builder = InternalTemplateManager()
+        manager = InternalTemplateManager()
 
-    return builder, template_tag
+    return manager, template_tag
 
 
 def main():

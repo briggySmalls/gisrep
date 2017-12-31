@@ -58,19 +58,27 @@ def test_missing_internal(internal_manager):
 
 
 def test_external_list(external_manager):
-    # Get a list of templates
-    templates = external_manager.list()
-
-    # Assert list
-    assert len(templates) == 1
-    assert 'test_template' in templates
+    assert_external_list(external_manager)
 
 
 def test_internal_list(internal_manager):
+    assert_internal_list(internal_manager)
+
+
+def assert_internal_list(manager):
     # Get a list of templates
-    templates = internal_manager.list()
+    templates = manager.list()
 
     # Assert list
     assert len(templates) == 2
     assert 'simple_report.md' in templates
     assert 'list_by_labels.html' in templates
+
+
+def assert_external_list(manager):
+    # Get a list of templates
+    templates = manager.list()
+
+    # Assert list
+    assert len(templates) == 1
+    assert 'test_template' in templates
