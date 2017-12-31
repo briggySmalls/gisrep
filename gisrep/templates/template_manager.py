@@ -89,9 +89,19 @@ class TemplateManager(object):
         """
 
         module_name = os.path.basename(module_path)
-        spec = importlib.util.spec_from_file_location(module_name, module_path)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
+        try:
+            # Python 3.5+
+            spec = importlib.util.spec_from_file_location(
+                module_name,
+                module_path)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+        except AttributeError:
+            # Python 3.4
+            from importlib.machinery import SourceFileLoader
+            module = SourceFileLoader(  # pylint: disable=deprecated-method
+                module_name,
+                module_path).load_module()
         return module
 
 
