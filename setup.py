@@ -13,7 +13,7 @@ README_FILE = path.join(path.abspath(path.dirname(__file__)), 'README.rst')
 with open(README_FILE, encoding='utf-8') as file:
     long_description = file.read()
 
-VERSION = '0.2.0'
+VERSION = '0.0.1'
 
 setup(
     name='gisrep',
