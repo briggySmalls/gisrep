@@ -9,6 +9,7 @@ script:
 - tox
 after_success:
 - coveralls
+- git diff --exit-code --color
 deploy:
   provider: pypi
   user: briggySmalls
