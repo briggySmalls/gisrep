@@ -2,8 +2,8 @@ import os
 
 from gisrep.config import Config
 
-from conftest import TEST_INITIAL_CONFIG
 import pytest
+from conftest import TEST_INITIAL_CONFIG
 
 
 def test_new_config(config):

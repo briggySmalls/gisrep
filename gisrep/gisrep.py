@@ -11,8 +11,8 @@ import getpass
 import os
 import sys
 
-from github import Github
 import keyring
+from github import Github
 
 from .cli import Cli
 from .config import Config

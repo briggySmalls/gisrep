@@ -1,12 +1,12 @@
-from unittest.mock import Mock
 import os
+from unittest.mock import Mock
 
 from gisrep import gisrep
-from test_template_manager import (
-    TEST_DATA_DIR, EXTERNAL_TEMPLATE_TAG, INTERNAL_TEMPLATE_TAG,
-    assert_internal_list, assert_external_list)
 
 import conftest
+from test_template_manager import (
+    EXTERNAL_TEMPLATE_TAG, INTERNAL_TEMPLATE_TAG, TEST_DATA_DIR,
+    assert_external_list, assert_internal_list)
 
 
 def test_get_credentials_direct():

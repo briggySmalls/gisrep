@@ -1,7 +1,7 @@
 import os
 
 from gisrep.templates.template_manager import (
-    InternalTemplateManager, ExternalTemplateManager)
+    ExternalTemplateManager, InternalTemplateManager)
 
 import pytest
 
