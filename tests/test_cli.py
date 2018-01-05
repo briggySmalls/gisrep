@@ -1,6 +1,10 @@
-from gisrep.cli import Cli
+"""
+Tests for the Cli object
+"""
 
 import pytest
+
+from gisrep.cli import Cli
 
 
 def default_handler(args):
@@ -13,33 +17,53 @@ def default_handler(args):
 
 
 @pytest.fixture
-def cli_and_handlers():
-    # Reset handlers to default
-    handlers = {}
-    handlers['init'] = default_handler
-    handlers['report'] = default_handler
-    handlers['list'] = default_handler
+def handlers():
+    """Fixture for providing Cli handlers
 
-    # Instantiate new Cli object
-    return Cli(
-        {
-            'init': lambda args: handlers['init'](args),
-            'report': lambda args: handlers['report'](args),
-            'list': lambda args: handlers['list'](args),
-        }), handlers
+    Returns:
+        dict: command-to-handler lookup
+    """
+    return {
+        'init': default_handler,
+        'report': default_handler,
+        'list': default_handler,
+    }
 
 
-def test_parse_init(cli_and_handlers):
+@pytest.fixture
+def cli(handlers):  # pylint: disable=redefined-outer-name
+    """Fixture for providing a Cli object
+
+    Args:
+        handlers (dict): Handlers for the Cli commands
+
+    Returns:
+        Cli: Cli object for testing
+    """
+    return Cli({
+        'init': lambda args: (  # pylint: disable=unnecessary-lambda
+            handlers['init'](args)),
+        'report': lambda args: (  # pylint: disable=unnecessary-lambda
+            handlers['report'](args)),
+        'list': lambda args: (  # pylint: disable=unnecessary-lambda
+            handlers['list'](args))
+    })
+
+
+def test_parse_init(cli, handlers):  # pylint: disable=redefined-outer-name
     """Tests that the 'init' command is parsed correctly
 
     Args:
-        cli (Cli): Command line parser class
+        cli_and_handlers (tuple): Cli object and handler dict
     """
     def handle_init(args):
+        """Handler for init function call
+
+        Args:
+            args (argparse.Namespace): Arguments from command line
+        """
         assert args.command == 'init'
         assert args.force
-
-    cli, handlers = cli_and_handlers
 
     # Set handlers
     handlers['init'] = handle_init
@@ -49,21 +73,24 @@ def test_parse_init(cli_and_handlers):
     cli.parse(["init", "-f"])
 
 
-def test_parse_report(cli_and_handlers):
+def test_parse_report(cli, handlers):  # pylint: disable=redefined-outer-name
     """Tests that the report command is parsed correctly
 
     Args:
-        cli (Cli): Command line parser class
+        cli_and_handlers (tuple): Cli object and handler dict
     """
     template = "release-note"
     query = "repo:github/opensource.guide is:open"
 
     def handle_report(args):
+        """Handler for report function call
+
+        Args:
+            args (argparse.Namespace): Arguments from command line
+        """
         assert args.command == 'report'
         assert args.internal == template
         assert args.query == query
-
-    cli, handlers = cli_and_handlers
 
     # Set handlers
     handlers['report'] = handle_report
@@ -72,10 +99,20 @@ def test_parse_report(cli_and_handlers):
     cli.parse(['report', '--internal', template, query])
 
 
-def test_parse_report_failures(cli_and_handlers):
-    cli, handlers = cli_and_handlers
+def test_parse_report_failures(
+        cli, handlers):  # pylint: disable=redefined-outer-name
+    """Tests that the report command throws an error for invalid arguments
 
-    def handle_report(args):
+    Args:
+        cli_and_handlers (tuple): Cli object and handler dict
+    """
+
+    def handle_report(args):  # pylint: disable=unused-argument
+        """Handler for report function call
+
+        Args:
+            args (argparse.Namespace): Command line arguments
+        """
         assert False, "Failures should not be handled"
 
     # Set handlers
@@ -102,16 +139,19 @@ def test_parse_report_failures(cli_and_handlers):
             '--external', 'path/to/template'])
 
 
-def test_list(cli_and_handlers):
+def test_list(cli, handlers):  # pylint: disable=redefined-outer-name
     """Tests that the list command is parsed correctly
 
     Args:
-        cli_and_handlers (dict): Description
+        cli_and_handlers (tuple): Cli object and handler dict
     """
     def handle_list(args):
-        assert args.command == 'list'
+        """Handler for list function call
 
-    cli, handlers = cli_and_handlers
+        Args:
+            args (argparse.Namespace): Arguments from command line
+        """
+        assert args.command == 'list'
 
     # Set handlers
     handlers['list'] = handle_list

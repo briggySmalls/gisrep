@@ -1,12 +1,24 @@
+"""
+Tests the Config module
+"""
+
 import os
+
+import pytest
 
 from gisrep.config import Config
 
-import pytest
-from conftest import TEST_INITIAL_CONFIG
+from .conftest import TEST_INITIAL_CONFIG
 
 
-def test_new_config(config):
+def test_new_config(config, password_manager):
+    """Tests the creation of a duplicate config object
+
+    Args:
+        config (Config): A config object
+        password_manager (MockPasswordManager): A mock password manager
+    """
+
     # Assert config file exists
     assert os.path.exists(config.file_path)
 
@@ -14,11 +26,17 @@ def test_new_config(config):
     assert_credentials(config, TEST_INITIAL_CONFIG)
 
     # Assert a fresh config object
-    new_config = Config(config.file_path, config._password_manager)
+    new_config = Config(config.file_path, password_manager)
     assert_credentials(new_config, TEST_INITIAL_CONFIG)
 
 
-def test_force_config(config):
+def test_force_config(config, password_manager):
+    """Tests the forced creation of a new config object
+
+    Args:
+        config (Config): A config object
+        password_manager (MockPasswordManager): A mock password manager
+    """
     # Create different config content
     different_content = {
         'username': "different_name",
@@ -29,14 +47,14 @@ def test_force_config(config):
     with pytest.raises(RuntimeError):
         Config(
             path=config.file_path,
-            password_manager=config._password_manager,
+            password_manager=password_manager,
             initial_config=different_content,
             force=False)
 
     # Now force a new config file to be written
     new_config = Config(
         path=config.file_path,
-        password_manager=config._password_manager,
+        password_manager=password_manager,
         initial_config=different_content,
         force=True)
 
@@ -45,13 +63,20 @@ def test_force_config(config):
 
     # Assert contents of fresh config object
     assert_credentials(
-        Config(config.file_path, config._password_manager),
+        Config(config.file_path, password_manager),
         different_content)
 
 
 def assert_credentials(config, expected_credentials):
+    """Helper function to assert Config credentials match those supplied
+
+    Args:
+        config (Config): Config object
+        expected_credentials (dict): Credentials to assert
+    """
     # Get the content
     credentials = config.get_credentials()
+
     # Assert config content
     assert credentials['username'] == expected_credentials['username']
     assert credentials['password'] == expected_credentials['password']
