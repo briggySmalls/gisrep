@@ -11,12 +11,11 @@ from gisrep.config import Config
 from .conftest import TEST_INITIAL_CONFIG
 
 
-def test_new_config(config, password_manager):
+def test_new_config(config):
     """Tests the creation of a duplicate config object
 
     Args:
         config (Config): A config object
-        password_manager (MockPasswordManager): A mock password manager
     """
 
     # Assert config file exists
@@ -26,16 +25,16 @@ def test_new_config(config, password_manager):
     assert_credentials(config, TEST_INITIAL_CONFIG)
 
     # Assert a fresh config object
-    new_config = Config(config.file_path, password_manager)
+    new_config = Config(config.file_path)
     assert_credentials(new_config, TEST_INITIAL_CONFIG)
 
 
-def test_force_config(config, password_manager):
+def test_force_config(config):
     """Tests the forced creation of a new config object
 
     Args:
         config (Config): A config object
-        password_manager (MockPasswordManager): A mock password manager
+       (MockPasswordManager): A mock password manager
     """
     # Create different config content
     different_content = {
@@ -47,14 +46,12 @@ def test_force_config(config, password_manager):
     with pytest.raises(RuntimeError):
         Config(
             path=config.file_path,
-            password_manager=password_manager,
             initial_config=different_content,
             force=False)
 
     # Now force a new config file to be written
     new_config = Config(
         path=config.file_path,
-        password_manager=password_manager,
         initial_config=different_content,
         force=True)
 
@@ -63,7 +60,7 @@ def test_force_config(config, password_manager):
 
     # Assert contents of fresh config object
     assert_credentials(
-        Config(config.file_path, password_manager),
+        Config(config.file_path),
         different_content)
 
 

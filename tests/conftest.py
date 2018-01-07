@@ -7,6 +7,7 @@ Attributes:
 
 import os
 
+import keyring
 import pytest
 
 from gisrep.config import Config
@@ -17,7 +18,7 @@ TEST_INITIAL_CONFIG = {
 }
 
 
-class MockPasswordManager(object):
+class MockPasswordManager(keyring.backend.KeyringBackend):
 
     """Mocks a password manager
 
@@ -52,27 +53,19 @@ class MockPasswordManager(object):
 
 
 @pytest.fixture
-def password_manager():
-    """Returns a MockPasswordManager object
-
-    Returns:
-        MockPasswordManager: The mock password manager
-    """
-    return MockPasswordManager()
-
-
-@pytest.fixture
-def config(tmpdir, password_manager):  # pylint: disable=redefined-outer-name
+def config(tmpdir):  # pylint: disable=redefined-outer-name
     """Fixture that provides a config object
 
     Args:
         tmpdir (py.path.local): Temporary pytest directory to place config file
-        password_manager (MockPasswordManager): Mock password manager
 
     Returns:
         Config: Config object
     """
+    # Create a fresh keyring for each test
+    keyring.set_keyring(MockPasswordManager())
+
+    # Return a fresh config object, using the new keyring
     return Config(
         os.path.join(str(tmpdir), '.gisreprc'),
-        password_manager,
         initial_config=TEST_INITIAL_CONFIG)

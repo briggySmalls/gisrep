@@ -7,7 +7,7 @@ from unittest.mock import Mock
 
 from gisrep.gisrep import _get_credentials, _get_template_manager
 
-from .conftest import TEST_INITIAL_CONFIG, MockPasswordManager
+from .conftest import TEST_INITIAL_CONFIG
 from .test_template_manager import (
     EXTERNAL_TEMPLATE_TAG, INTERNAL_TEMPLATE_TAG, TEST_DATA_DIR,
     assert_external_list, assert_internal_list)
@@ -24,20 +24,18 @@ def test_command_line_credentials():
 
     # Make call to _get_credentials
     credentials = _get_credentials(  # pylint: disable=protected-access
-        args,
-        MockPasswordManager())
+        args)
 
     # Assert returned credentials are correct
     assert credentials['username'] == TEST_INITIAL_CONFIG['username']
     assert credentials['password'] == TEST_INITIAL_CONFIG['password']
 
 
-def test_local_config_credentials(config, password_manager):
+def test_local_config_credentials(config):
     """Tests the _get_credentials function find a local config file
 
     Args:
         config (Config): A config object
-        password_manager (MockPasswordManager): A mock password manager
     """
     # Construct mock argparse.Namespace object specifying config file
     args = Mock(
@@ -47,8 +45,7 @@ def test_local_config_credentials(config, password_manager):
 
     # Make call to _get_credentials
     credentials = _get_credentials(  # pylint: disable=protected-access
-        args,
-        password_manager)
+        args)
 
     # Assert returned credentials are correct
     assert credentials['username'] == TEST_INITIAL_CONFIG['username']
