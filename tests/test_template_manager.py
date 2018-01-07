@@ -6,6 +6,7 @@ import os
 
 import pytest
 
+from gisrep.errors import GisrepError
 from gisrep.templates.template_manager import (
     ExternalTemplateManager, InternalTemplateManager)
 
@@ -81,7 +82,7 @@ def test_missing_internal(
     Args:
         internal_manager (InternalTemplateManager): The template manager
     """
-    with pytest.raises(RuntimeError):
+    with pytest.raises(GisrepError):
         internal_manager.generate(
             'missing_report.md',
             FAKE_ISSUES)

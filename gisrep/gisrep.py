@@ -11,10 +11,12 @@ import getpass
 import os
 import sys
 
-from github import Github
+from github import Github, GithubException
+import keyring
 
 from .cli import Cli
 from .config import Config
+from .errors import GisrepError
 from .templates.template_manager import (
     ExternalTemplateManager, InternalTemplateManager)
 
@@ -88,15 +90,23 @@ def _get_template_manager(args):
 def main():
     """Main function for Gisrep tool
     """
-
+    # Create a CLI object for parsing invocation arguments
     handlers = {
         'init': init,
         'report': report,
         'list': list_templates,
     }
-    # Parse command line arguments
     cli = Cli(handlers)
-    cli.parse(sys.argv[1:])
+
+    # Parse command line arguments
+    try:
+        cli.parse(sys.argv[1:])
+    except GisrepError as exc:
+        print("Gisrep Error: {}".format(exc))
+    except GithubException as exc:
+        print("Github API Error: {}".format(exc))
+    except keyring.errors.KeyringError as exc:
+        print("Keyring Error: {}".format(exc))
 
 
 def init(args):
@@ -105,12 +115,22 @@ def init(args):
     Args:
         args (argparse.Namespace): Command arguments
     """
+    directory = (
+        os.path.abspath(args.local)
+        if args.local else
+        DEFAULT_CONFIG_DIR)
+
+    if not os.path.exists(directory):
+        raise GisrepError(
+            "Cannot find config directory '{}'".format(directory))
+
     filepath = os.path.join(
-        os.path.abspath(args.local) if args.local else DEFAULT_CONFIG_DIR,
+        directory,
         DEFAULT_CONFIG_FILE)
 
     if not args.force and os.path.exists(filepath):
-        raise RuntimeError("Config file already exists")
+        raise GisrepError(
+            "Config file '{}' already exists".format(filepath))
 
     # Prompt for username and password
     initial_config = {
@@ -150,6 +170,10 @@ def report(args):
         args.query,
         sort="created",
         order="asc")
+
+    # Check issues were found
+    if not issues.get_page(0):
+        raise GisrepError("No matching issues found")
 
     # Generate report
     report_obj = builder.generate(

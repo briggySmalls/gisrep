@@ -10,6 +10,8 @@ import os
 import keyring
 import toml
 
+from .errors import GisrepError
+
 PASSWORD_SERVICE_NAME = "gisrep"
 
 
@@ -61,7 +63,7 @@ class Config(object):
                                     file
 
         Raises:
-            RuntimeError: Description
+            GisrepError: Description
         """
 
         self._file_path = path
@@ -69,7 +71,8 @@ class Config(object):
         if os.path.exists(self._file_path) and not force:
             if initial_config is not None:
                 # Attempted to overwrite config without 'force'
-                raise RuntimeError("Config file already exists")
+                raise GisrepError(
+                    "Config file already exists. Try the --force argument")
 
             # Read the existing config file
             self.config = self.read()
@@ -79,7 +82,7 @@ class Config(object):
             self.write()
         else:
             # No config found (or provided)
-            raise RuntimeError("Config file doesn't exist")
+            raise GisrepError("Config file doesn't exist")
 
     @property
     def file_path(self):
@@ -97,7 +100,7 @@ class Config(object):
             dict: The credentials
 
         Raises:
-            RuntimeError: Description
+            GisrepError: Description
         """
         username = self.config['github']['username']
         password_service = self.config['github']['password_service']
@@ -106,7 +109,7 @@ class Config(object):
             username)
 
         if password is None:
-            raise RuntimeError("Password not found in password manager")
+            raise GisrepError("Password not found in password manager")
 
         return {
             'username': username,

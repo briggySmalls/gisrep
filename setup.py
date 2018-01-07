@@ -48,7 +48,7 @@ setup(
         'toml',
         'jinja2',
         'PyGithub',
-        'keyring',
+        'keyring>=10.6',
         'pyperclip',
     ],
     packages=find_packages(),

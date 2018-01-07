@@ -8,6 +8,8 @@ from jinja2 import (
     Environment, FileSystemLoader, PackageLoader, exceptions,
     select_autoescape)
 
+from ..errors import GisrepError
+
 TEMPLATE_EXTENSION = 'tplt'
 
 
@@ -46,8 +48,8 @@ class TemplateManager(object):
         try:
             template = self.env.get_template(
                 "{0}.{1}".format(filename, TEMPLATE_EXTENSION))
-        except exceptions.TemplateNotFound as exc:
-            raise RuntimeError("Template does not exist") from exc
+        except exceptions.TemplateNotFound:
+            raise GisrepError("Couldn't find template: {}".format(filename))
 
         # Check if corresponding module
         module_path = os.path.splitext(template.filename)[0] + '.py'

@@ -5,6 +5,7 @@ Tests for the Cli object
 import pytest
 
 from gisrep.cli import Cli
+from gisrep.errors import GisrepError
 
 
 def default_handler(args):
@@ -119,7 +120,7 @@ def test_parse_report_failures(
     handlers['report'] = handle_report
 
     # Test username and password and config
-    with pytest.raises(RuntimeError):
+    with pytest.raises(GisrepError):
         cli.parse([
             'report', "repo:github/opensource.guide is:open",
             '--username', 'my_name',
@@ -127,13 +128,13 @@ def test_parse_report_failures(
             '--config', 'path/to/config'])
 
     # Test config exists
-    with pytest.raises(RuntimeError):
+    with pytest.raises(GisrepError):
         cli.parse([
             'report', "repo:github/opensource.guide is:open",
             '--config', 'path/to/config'])
 
     # Test template exists
-    with pytest.raises(RuntimeError):
+    with pytest.raises(GisrepError):
         cli.parse([
             'report', "repo:github/opensource.guide is:open",
             '--external', 'path/to/template'])

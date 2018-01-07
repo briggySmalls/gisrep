@@ -7,6 +7,7 @@ import os
 import pytest
 
 from gisrep.config import Config
+from gisrep.gisrep import GisrepError
 
 from .conftest import TEST_INITIAL_CONFIG
 
@@ -43,7 +44,7 @@ def test_force_config(config):
     }
 
     # First try to create new config without force arg
-    with pytest.raises(RuntimeError):
+    with pytest.raises(GisrepError):
         Config(
             path=config.file_path,
             initial_config=different_content,

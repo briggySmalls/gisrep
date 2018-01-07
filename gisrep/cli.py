@@ -5,6 +5,8 @@ Module that defines behaviour of command line interface
 import argparse
 import os
 
+from .errors import GisrepError
+
 
 class Cli(object):  # pylint: disable=too-few-public-methods
 
@@ -124,15 +126,15 @@ class Cli(object):  # pylint: disable=too-few-public-methods
             elif args.password:
                 assert args.username
             if args.config and args.username:
-                raise RuntimeError(
+                raise GisrepError(
                     "Config file and username/password are mutually exclusive")
 
             # Confirm files exist
             if args.config and not os.path.exists(args.config):
-                raise RuntimeError(
+                raise GisrepError(
                     "Cannot find config file: {}".format(args.config))
             if args.external and not os.path.exists(args.external):
-                raise RuntimeError(
+                raise GisrepError(
                     "Cannot find external template: {}".format(args.external))
 
         args.handler(args)
