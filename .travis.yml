@@ -4,9 +4,11 @@ python:
 - '3.5'
 - '3.6'
 install:
-- pip install tox-travis coveralls
+- pip install tox-travis travis-sphinx
 script:
 - tox
+after_success:
+- travis-sphinx deploy
 deploy:
   provider: pypi
   user: briggySmalls
