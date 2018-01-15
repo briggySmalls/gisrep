@@ -23,7 +23,7 @@ should be named ``report.html.tplt``.
 
 A simple example template, ``simple.md.tplt`` is shown below:
 
-.. code:: jinja2
+.. code-block:: jinja
 
     {% for issue in issues %}
     - {{ issue.title }} - ({{ issue.number }})
@@ -34,7 +34,7 @@ command:
 
 ::
 
-    gisrep report --user-template ./simple.md "repo:twbs/bootstrap"
+    gisrep report --external ./simple.md "repo:twbs/bootstrap"
 
 Custom logic
 ------------
@@ -53,7 +53,7 @@ Custom logic can be supplied in python file that:
 
 A simple example logic file, ``report.md.py`` is shown below:
 
-.. code:: python
+.. code-block:: python
 
     def get_context(issues):
         labels = []
@@ -67,7 +67,7 @@ A simple example logic file, ``report.md.py`` is shown below:
 
 The corresponding template file, ``report.md.tplt``, might look like:
 
-::
+.. code-block:: jinja
 
     {% for label in labels %}
         # {{ label.name }}

@@ -20,7 +20,7 @@ class Cli(object):  # pylint: disable=too-few-public-methods
     def __init__(self, handlers):
         # Build a parser
         self.root_parser = argparse.ArgumentParser(
-            description="Tool for publishing reports of Github issues")
+            description="Tool for publishing Github issues.")
         subparsers = self.root_parser.add_subparsers(
             title="commands",
             dest="command")
@@ -41,14 +41,18 @@ class Cli(object):  # pylint: disable=too-few-public-methods
 
         init_parser = subparsers.add_parser(
             'init',
-            help="Initialises the tool to access Github")
+            description=(
+                "Creates a '.gisreprc' configuration file to store Github "
+                "username and adds the password to the system password "
+                "manager."),
+            help="Initialise gisrep to use Github credentials")
         init_parser.add_argument(
             '-f', '--force',
             action='store_true',
             help="Overwrite an existing config file")
         init_parser.add_argument(
             '-l', '--local',
-            help="Path to a local directory in which to save the file")
+            help="Path to a directory in which to save the file")
         init_parser.set_defaults(handler=handler)
 
     @classmethod
@@ -62,15 +66,17 @@ class Cli(object):  # pylint: disable=too-few-public-methods
 
         report_parser = subparsers.add_parser(
             'report',
-            help="Publishes a report from Github issues")
+            description=(
+                "Publishes a report of nicely formatted Github issues "
+                "specified by a Github issues search query "
+                "(see help.github.com/articles/"
+                "searching-issues-and-pull-requests/)"),
+            help="Publish Github issues")
 
         # Query
         report_parser.add_argument(
             'query',
-            help=(
-                "Github issues search query (see "
-                "help.github.com/articles/"
-                "searching-issues-and-pull-requests/)"))
+            help=("Issues search query"))
 
         # Add mutually exclusive group template/user-template
         template_group = report_parser.add_mutually_exclusive_group()
@@ -107,7 +113,10 @@ class Cli(object):  # pylint: disable=too-few-public-methods
 
         list_parser = subparsers.add_parser(
             'list',
-            help="List built-in templates")
+            description=(
+                "Lists internal templates shipped with gisrep that may be "
+                "used with the 'report' command to format the results."),
+            help="List internal templates")
         list_parser.set_defaults(handler=handler)
 
     def parse(self, raw_args):
@@ -138,3 +147,11 @@ class Cli(object):  # pylint: disable=too-few-public-methods
                     "Cannot find external template: {}".format(args.external))
 
         args.handler(args)
+
+
+def get_parser():
+    return Cli({
+        'init': None,
+        'report': None,
+        'list': None,
+    }).root_parser
