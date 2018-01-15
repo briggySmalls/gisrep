@@ -1,8 +1,0 @@
-# Include the license file
-include LICENSE
-
-# Include the readme file
-include README.rst
-
-# Include templates
-include gisrep/templates/*.tplt
