@@ -150,6 +150,11 @@ class Cli(object):  # pylint: disable=too-few-public-methods
 
 
 def get_parser():
+    """Gets a CLI parser with no handlers
+
+    Returns:
+        TYPE: A Cli object
+    """
     return Cli({
         'init': None,
         'report': None,
