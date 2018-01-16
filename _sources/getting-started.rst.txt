@@ -49,7 +49,7 @@ Read the `templates documentation <./templates.html>`__ for creating
 custom templates.
 
 Private repositories
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 The tool needs Github credentials in order to access private repositories.
 Credentials can be provided as command line arguments directly, or supplied
