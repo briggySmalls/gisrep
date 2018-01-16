@@ -10,8 +10,8 @@ The command line Github issues reporter, making requests with
 Documentation
 -------------
 
-For guidance on installation and usage, check out the `documentation
- <https://briggysmalls.github.io/gisrep/>`__.
+For guidance on installation and usage, check out the
+`documentation <https://briggysmalls.github.io/gisrep/>`__.
 
 Contributing
 ------------

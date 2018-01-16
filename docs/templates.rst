@@ -47,7 +47,7 @@ prior to formatting the results in the template.
 Custom logic can be supplied in python file that:
 
 -  Is in the same directory as the template
--  Has the same file name as the template, but has the ‘\*.py’ extension
+-  Has the same file name as the template, but has the ``\*.py`` extension
 -  Contains a function ``get_context(issues)`` that returns a dictionary
    of variable names and their values
 
