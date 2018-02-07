@@ -2,4 +2,4 @@
 Module that records software version
 """
 
-VERSION = '0.1.1'
+VERSION = '0.1.0'
