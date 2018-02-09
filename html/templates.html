@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Templates &#8212; gisrep 0.1.0 documentation</title>
+    <title>Templates &#8212; gisrep 0.2.1-alpha.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -30,8 +22,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -49,24 +40,24 @@ denoted by a .tplt extension.</p>
 <p>Custom templates can be passed to gisrep to publish specialised reports.
 All that is required is to create a file that:</p>
 <ul class="simple">
-<li>Has the <code class="docutils literal"><span class="pre">.tplt</span></code> extension</li>
+<li>Has the <code class="docutils literal notranslate"><span class="pre">.tplt</span></code> extension</li>
 <li>Is formatted in the <a class="reference external" href="http://jinja2.readthedocs.io/en/latest/templates.html">Jinja template
 syntax</a></li>
-<li>Accesses the <code class="docutils literal"><span class="pre">issues</span></code> context variable - a list of <a class="reference external" href="http://pygithub.readthedocs.io/en/latest/github_objects/Issue.html">PyGithub issue
+<li>Accesses the <code class="docutils literal notranslate"><span class="pre">issues</span></code> context variable - a list of <a class="reference external" href="http://pygithub.readthedocs.io/en/latest/github_objects/Issue.html">PyGithub issue
 objects</a></li>
 </ul>
 <p>Gisrep templates should contain an extension that hints at the format of
 any output document. For example a template ‘report’ that produces HTML
-should be named <code class="docutils literal"><span class="pre">report.html.tplt</span></code>.</p>
-<p>A simple example template, <code class="docutils literal"><span class="pre">simple.md.tplt</span></code> is shown below:</p>
-<div class="highlight-jinja"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">issue</span> <span class="k">in</span> <span class="nv">issues</span> <span class="cp">%}</span><span class="x"></span>
+should be named <code class="docutils literal notranslate"><span class="pre">report.html.tplt</span></code>.</p>
+<p>A simple example template, <code class="docutils literal notranslate"><span class="pre">simple.md.tplt</span></code> is shown below:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">issue</span> <span class="k">in</span> <span class="nv">issues</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">- </span><span class="cp">{{</span> <span class="nv">issue.title</span> <span class="cp">}}</span><span class="x"> - (</span><span class="cp">{{</span> <span class="nv">issue.number</span> <span class="cp">}}</span><span class="x">)</span>
 <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
 </pre></div>
 </div>
 <p>This template could then be passed to gisrep using the following example
 command:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">gisrep</span> <span class="n">report</span> <span class="o">--</span><span class="n">external</span> <span class="o">./</span><span class="n">simple</span><span class="o">.</span><span class="n">md</span> <span class="s2">&quot;repo:twbs/bootstrap&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gisrep</span> <span class="n">report</span> <span class="o">--</span><span class="n">external</span> <span class="o">./</span><span class="n">simple</span><span class="o">.</span><span class="n">md</span> <span class="s2">&quot;repo:twbs/bootstrap&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -79,12 +70,12 @@ prior to formatting the results in the template.</p>
 <p>Custom logic can be supplied in python file that:</p>
 <ul class="simple">
 <li>Is in the same directory as the template</li>
-<li>Has the same file name as the template, but has the ‘*.py’ extension</li>
-<li>Contains a function <code class="docutils literal"><span class="pre">get_context(issues)</span></code> that returns a dictionary
+<li>Has the same file name as the template, but has the <code class="docutils literal notranslate"><span class="pre">\*.py</span></code> extension</li>
+<li>Contains a function <code class="docutils literal notranslate"><span class="pre">get_context(issues)</span></code> that returns a dictionary
 of variable names and their values</li>
 </ul>
-<p>A simple example logic file, <code class="docutils literal"><span class="pre">report.md.py</span></code> is shown below:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_context</span><span class="p">(</span><span class="n">issues</span><span class="p">):</span>
+<p>A simple example logic file, <code class="docutils literal notranslate"><span class="pre">report.md.py</span></code> is shown below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_context</span><span class="p">(</span><span class="n">issues</span><span class="p">):</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">issue</span> <span class="ow">in</span> <span class="n">issues</span><span class="p">:</span>
         <span class="n">labels</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">issue</span><span class="o">.</span><span class="n">labels</span> <span class="k">if</span> <span class="n">l</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">])</span>
@@ -95,8 +86,8 @@ of variable names and their values</li>
     <span class="p">}</span>
 </pre></div>
 </div>
-<p>The corresponding template file, <code class="docutils literal"><span class="pre">report.md.tplt</span></code>, might look like:</p>
-<div class="highlight-jinja"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">label</span> <span class="k">in</span> <span class="nv">labels</span> <span class="cp">%}</span><span class="x"></span>
+<p>The corresponding template file, <code class="docutils literal notranslate"><span class="pre">report.md.tplt</span></code>, might look like:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">label</span> <span class="k">in</span> <span class="nv">labels</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">    # </span><span class="cp">{{</span> <span class="nv">label.name</span> <span class="cp">}}</span><span class="x"></span>
 <span class="x">    </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">issue</span> <span class="k">in</span> <span class="nv">issues</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">        </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">label</span> <span class="k">in</span> <span class="nv">issue.labels</span> <span class="cp">%}</span><span class="x"></span>
@@ -156,12 +147,14 @@ of variable names and their values</li>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -172,7 +165,7 @@ of variable names and their values</li>
       &copy;2018, Sam Briggs.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0b2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
