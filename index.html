@@ -4,9 +4,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Installation &#8212; gisrep 0.2.1-alpha.4 documentation</title>
+    <title>Welcome to gisrep’s documentation! &#8212; gisrep 0.2.1-alpha.4 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
@@ -15,8 +15,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Getting started" href="getting-started.html" />
-    <link rel="prev" title="Welcome to gisrep’s documentation!" href="index.html" />
+    <link rel="next" title="Installation" href="installation.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -31,29 +30,42 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="general">
-<h2>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
-<p>Install gisrep using pip with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">gisrep</span>
-</pre></div>
+  <div class="section" id="welcome-to-gisrep-s-documentation">
+<h1>Welcome to gisrep’s documentation!<a class="headerlink" href="#welcome-to-gisrep-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#general">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#linux">Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#publishing-reports">Publishing reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#formatting-results">Formatting results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#private-repositories">Private repositories</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#commands">commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#Sub-commands:">Sub-commands:</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#custom-templates">Custom templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#custom-logic">Custom logic</a></li>
+</ul>
+</li>
+</ul>
 </div>
-<p>This installs the <code class="docutils literal notranslate"><span class="pre">gisrep</span></code> script to the command line.</p>
 </div>
-<div class="section" id="linux">
-<h2>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
-<p>Gisrep uses keyring to interface with the system password manager. On Linux, the recommended
-keyring relies on SecretStorage, which in turn relies on dbus-python.</p>
-<dl class="docutils">
-<dt>dbus-python does not install correctly when using the Python installers, so dbus-python must</dt>
-<dd>be installed as a system package. E.g. on Ubuntu:</dd>
-</dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python3</span><span class="o">-</span><span class="n">dbus</span>
-</pre></div>
-</div>
-<p>See the <a class="reference external" href="https://github.com/mitya57/secretstorage">SecretStorage GitHub repo</a> for details.</p>
-</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
 </div>
 
 
@@ -62,7 +74,7 @@ keyring relies on SecretStorage, which in turn relies on dbus-python.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">gisrep</a></h1>
+<h1 class="logo"><a href="#">gisrep</a></h1>
 
 
 
@@ -82,12 +94,8 @@ keyring relies on SecretStorage, which in turn relies on dbus-python.</p>
 
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#general">General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linux">Linux</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
@@ -96,9 +104,8 @@ keyring relies on SecretStorage, which in turn relies on dbus-python.</p>
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Welcome to gisrep’s documentation!</a></li>
-      <li>Next: <a href="getting-started.html" title="next chapter">Getting started</a></li>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="installation.html" title="next chapter">Installation</a></li>
   </ul></li>
 </ul>
 </div>
@@ -122,11 +129,11 @@ keyring relies on SecretStorage, which in turn relies on dbus-python.</p>
       &copy;2018, Sam Briggs.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="_sources/installation.rst.txt"
+      <a href="_sources/index.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
