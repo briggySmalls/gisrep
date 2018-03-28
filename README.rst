@@ -1,4 +1,4 @@
-|Build Status| |Coverage Status|
+|Build Status| |Coverage Status| |PyPI Versions|
 
 Gisrep
 ======
@@ -46,3 +46,5 @@ CONTRIBUTING.rst <CONTRIBUTING.rst>`__.
    :target: https://travis-ci.org/briggySmalls/gisrep?branch=master
 .. |Coverage Status| image:: https://coveralls.io/repos/github/briggySmalls/gisrep/badge.svg?branch=master
    :target: https://coveralls.io/github/briggySmalls/gisrep?branch=master
+.. |PyPI Versions| image:: https://img.shields.io/pypi/pyversions/gisrep.svg
+   :alt: PyPI - Python Version
