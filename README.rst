@@ -13,7 +13,7 @@ Taster
 Generate issue reports and release notes effortlessly with a query for the `Github search
 API <https://developer.github.com/v3/search/#search-issues>`__:
 
-.. code-block:: none
+.. code-block::
 
     $ pip install gisrep
     $ gisrep report 'repo:briggySmalls/gisrep label:enhancement milestone:"milestone name"'
@@ -46,5 +46,6 @@ CONTRIBUTING.rst <CONTRIBUTING.rst>`__.
    :target: https://travis-ci.org/briggySmalls/gisrep?branch=master
 .. |Coverage Status| image:: https://coveralls.io/repos/github/briggySmalls/gisrep/badge.svg?branch=master
    :target: https://coveralls.io/github/briggySmalls/gisrep?branch=master
-.. |PyPI Versions| image:: https://img.shields.io/pypi/pyversions/gisrep.svg
+.. |PyPI Versions| image:: https://img.shields.io/pypi/pyversions/gisrep.svg?branch=master
    :alt: PyPI - Python Version
+   :target: https://pypi.python.org/pypi/gisrep
