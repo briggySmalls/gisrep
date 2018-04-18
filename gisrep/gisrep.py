@@ -13,8 +13,8 @@ import sys
 
 from github import Github, GithubException
 import keyring
+import click
 
-from .cli import Cli
 from .config import Config
 from .errors import GisrepError
 from .templates.template_manager import (
@@ -26,7 +26,7 @@ DEFAULT_CONFIG_FILEPATH = os.path.join(
     DEFAULT_CONFIG_DIR, DEFAULT_CONFIG_FILE)
 
 
-def _get_credentials(args):
+def _get_credentials(config):
     """Gets Github credentials from command line or config file
 
     Args:
@@ -35,32 +35,22 @@ def _get_credentials(args):
     Returns:
         dict: Github credentials
     """
-    if args.username:
-        # Get credentials from command line
-        assert args.password
-        credentials = {
-            'username': args.username,
-            'password': args.password,
-        }
+    # Try to get credentials from a config file
+    if config:
+        # User supplied a config file path
+        config_filepath = config
+    elif os.path.exists(DEFAULT_CONFIG_FILEPATH):
+        # Global config file provided
+        config_filepath = DEFAULT_CONFIG_FILEPATH
     else:
-        # Try to get credentials from a config file
-        if args.config:
-            # User supplied a config file path
-            config_filepath = args.config
-        elif os.path.exists(DEFAULT_CONFIG_FILEPATH):
-            # Global config file provided
-            config_filepath = DEFAULT_CONFIG_FILEPATH
-        else:
-            # There are no credentials to be used
-            return None
+        # There are no credentials to be used
+        return None
 
-        # Create a config object
-        config = Config(config_filepath)
+    # Create a config object
+    config = Config(config_filepath)
 
-        # Instantiate an API client with Github credentials
-        credentials = config.get_credentials()
-
-    return credentials
+    # Instantiate an API client with Github credentials
+    return config.get_credentials()
 
 
 def _get_template_manager(args):
@@ -87,16 +77,10 @@ def _get_template_manager(args):
     return manager, template_tag
 
 
+@click.group()
 def main():
     """Main function for Gisrep tool
     """
-    # Create a CLI object for parsing invocation arguments
-    handlers = {
-        'init': init,
-        'report': report,
-        'list': list_templates,
-    }
-    cli = Cli(handlers)
 
     # Parse command line arguments
     try:
@@ -109,15 +93,30 @@ def main():
         print("Keyring Error: {}".format(exc))
 
 
-def init(args):
-    """Initialises the tool config file
+@main.command()
+@main.option(
+    '--force/--no-force',
+    default=False,
+    help="Overwrite an existing config file")
+@main.option(
+    '--local/--global',
+    default=False,
+    help="Path to a directory in which to save the file")
+@click.argument('username')
+@click.password_option()
+def init(username, password, force, local):
+    """Creates a '.gisreprc' configuration file to store Github username and
+    adds the password to the system password manager.
 
     Args:
         args (argparse.Namespace): Command arguments
+
+    Raises:
+        GisrepError: Description
     """
     directory = (
-        os.path.abspath(args.local)
-        if args.local else
+        os.path.abspath(local)
+        if local else
         DEFAULT_CONFIG_DIR)
 
     if not os.path.exists(directory):
@@ -128,25 +127,36 @@ def init(args):
         directory,
         DEFAULT_CONFIG_FILE)
 
-    if not args.force and os.path.exists(filepath):
+    if not force and os.path.exists(filepath):
         raise GisrepError(
             "Config file '{}' already exists".format(filepath))
 
     # Prompt for username and password
     initial_config = {
-        'username': input("Github username:"),
-        'password': getpass.getpass("Github password:"),
+        'username': username,
+        'password': password,
     }
 
     # Initialise config file
     Config(
         filepath,
         initial_config=initial_config,
-        force=args.force)
+        force=force)
 
 
-def report(args):
-    """Publishes a report using specified query, template and output
+@main.command()
+@click.argument('query')
+@click.option('--internal', 'template', flag_value='internal')
+@click.option('--external', 'template', flag_value='external')
+@click.option('--credentials', nargs=2, type=str)
+@click.option(
+    '--config',
+    type=click.File('rb'),
+    help="Path to gisrep config file")
+def report(query, template, credentials, config):
+    """Publishes a report of nicely formatted Github issues specified by a
+    Github issues search query (see
+    help.github.com/articles/searching-issues-and-pull-requests/)
 
     Args:
         args (argparse.Namespace): Command arguments
@@ -155,7 +165,8 @@ def report(args):
     builder, template_tag = _get_template_manager(args)
 
     # Attempt to get Github credentials
-    credentials = _get_credentials(args)
+    if config and not credentials:
+        credentials = _get_credentials(config)
 
     # Create PyGithub API object
     if credentials is not None:
@@ -166,10 +177,7 @@ def report(args):
         api = Github()
 
     # Request the issues
-    issues = api.search_issues(
-        args.query,
-        sort="created",
-        order="asc")
+    issues = api.search_issues(query, sort="created", order="asc")
 
     # Check issues were found
     if not issues.get_page(0):
@@ -184,8 +192,10 @@ def report(args):
     print(report_obj)
 
 
-def list_templates(args):  # pylint: disable=unused-argument
-    """Lists the templates available for publishing
+@main.command()
+def list_templates():
+    """Lists internal templates shipped with gisrep that may be used with the
+    'report' command to format the results.
 
     Args:
         args (argparse.Namespace): Command arguments
