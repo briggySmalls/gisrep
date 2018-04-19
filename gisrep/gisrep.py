@@ -27,7 +27,7 @@ DEFAULT_CONFIG_FILEPATH = os.path.join(
 
 
 def _get_credentials(config):
-    """Gets Github credentials from command line or config file
+    """Gets Github credentials from a config file
 
     Args:
         args (list): List of command line arguments passed to gisrep
@@ -53,25 +53,25 @@ def _get_credentials(config):
     return config.get_credentials()
 
 
-def _get_template_manager(args):
+def _get_template_manager(template):
     """Gets template objects
 
     Args:
-        args (list): List of command line arguments passed to gisrep
+        template (str): Template provided by user
 
     Returns:
         Tuple(TemplateManager, str): Template manager and tag of template
     """
-    if args.external:
+    if template:
         # We have been passed a template file path
         template_dir = os.path.dirname(
-            os.path.abspath(args.external))
+            os.path.abspath(template))
         template_tag = os.path.splitext(
-            os.path.basename(args.external))[0]
+            os.path.basename(template))[0]
         manager = ExternalTemplateManager(template_dir)
-    elif args.internal:
+    else:
         # We have been passed a template tag
-        template_tag = args.internal
+        template_tag = template
         manager = InternalTemplateManager()
 
     return manager, template_tag
@@ -146,9 +146,11 @@ def init(username, password, force, local):
 
 @main.command()
 @click.argument('query')
-@click.option('--internal', 'template', flag_value='internal')
-@click.option('--external', 'template', flag_value='external')
-@click.option('--credentials', nargs=2, type=str)
+@click.option('--credentials', nargs=2, type=str, help="Username and password")
+@click.option(
+    '--template',
+    type=click.Path('rb'),
+    help="External template for formatting results")
 @click.option(
     '--config',
     type=click.File('rb'),
@@ -161,8 +163,6 @@ def report(query, template, credentials, config):
     Args:
         args (argparse.Namespace): Command arguments
     """
-    # Create the template manger
-    builder, template_tag = _get_template_manager(args)
 
     # Attempt to get Github credentials
     if config and not credentials:
@@ -182,6 +182,9 @@ def report(query, template, credentials, config):
     # Check issues were found
     if not issues.get_page(0):
         raise GisrepError("No matching issues found")
+
+    # Create the template manger
+    builder, template_tag = _get_template_manager(template)
 
     # Generate report
     report_obj = builder.generate(
