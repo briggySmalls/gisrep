@@ -6,10 +6,7 @@ Attributes:
     DEFAULT_CONFIG_FILEPATH (str): Full file path to default config file
     DEFAULT_CONFIG_DIR (str): Default config file directory
 """
-
-import getpass
 import os
-import sys
 
 from github import Github, GithubException
 import keyring
@@ -53,16 +50,17 @@ def _get_credentials(config):
     return config.get_credentials()
 
 
-def _get_template_manager(template):
+def _get_template_manager(internal, external):
     """Gets template objects
 
     Args:
         template (str): Template provided by user
+        is_external (bool): Indicates template is external to gisrep
 
     Returns:
         Tuple(TemplateManager, str): Template manager and tag of template
     """
-    if template:
+    if external:
         # We have been passed a template file path
         template_dir = os.path.dirname(
             os.path.abspath(template))
@@ -71,7 +69,7 @@ def _get_template_manager(template):
         manager = ExternalTemplateManager(template_dir)
     else:
         # We have been passed a template tag
-        template_tag = template
+        template_tag = template if template is not None else 'simple_report.md'
         manager = InternalTemplateManager()
 
     return manager, template_tag
@@ -83,22 +81,15 @@ def main():
     """
 
     # Parse command line arguments
-    try:
-        cli.parse(sys.argv[1:])
-    except GisrepError as exc:
-        print("Gisrep Error: {}".format(exc))
-    except GithubException as exc:
-        print("Github API Error: {}".format(exc))
-    except keyring.errors.KeyringError as exc:
-        print("Keyring Error: {}".format(exc))
+    pass
 
 
 @main.command()
-@main.option(
+@click.option(
     '--force/--no-force',
     default=False,
     help="Overwrite an existing config file")
-@main.option(
+@click.option(
     '--local/--global',
     default=False,
     help="Path to a directory in which to save the file")
@@ -108,11 +99,7 @@ def init(username, password, force, local):
     """Creates a '.gisreprc' configuration file to store Github username and
     adds the password to the system password manager.
 
-    Args:
-        args (argparse.Namespace): Command arguments
-
-    Raises:
-        GisrepError: Description
+    USERNAME: Github username
     """
     directory = (
         os.path.abspath(local)
@@ -144,28 +131,48 @@ def init(username, password, force, local):
         force=force)
 
 
+def internal_template_callback(ctx, _, value):
+    if value:
+        ctx.obj['is_internal_template'] = True
+
+
+def external_template_callback(ctx, _, value):
+    if ctx.obj['is_internal_template'] and value:
+        # We only allow one of internal/external to be supplied
+        click.echo("Only one of --internal/--external may be supplied")
+        ctx.exit()
+
+
 @main.command()
 @click.argument('query')
-@click.option('--credentials', nargs=2, type=str, help="Username and password")
 @click.option(
-    '--template',
+    '--external',
     type=click.Path('rb'),
-    help="External template for formatting results")
+    help="Custom template for formatting the results",
+    callback=external_template_callback)
+@click.option(
+    '--internal',
+    type=str,
+    default="simple_report.md",
+    help="Internal Gisrep template for formatting the results",
+    callback=internal_template_callback,
+    is_eager=True)
 @click.option(
     '--config',
     type=click.File('rb'),
     help="Path to gisrep config file")
-def report(query, template, credentials, config):
+@click.option('--credentials', nargs=2, type=str, help="Username and password")
+def report(query, external, internal, config, credentials):
     """Publishes a report of nicely formatted Github issues specified by a
     Github issues search query (see
     help.github.com/articles/searching-issues-and-pull-requests/)
 
-    Args:
-        args (argparse.Namespace): Command arguments
+    \b
+    QUERY: The Github query to find issues for
     """
 
     # Attempt to get Github credentials
-    if config and not credentials:
+    if not credentials:
         credentials = _get_credentials(config)
 
     # Create PyGithub API object
@@ -184,7 +191,7 @@ def report(query, template, credentials, config):
         raise GisrepError("No matching issues found")
 
     # Create the template manger
-    builder, template_tag = _get_template_manager(template)
+    builder, template_tag = _get_template_manager(internal, external)
 
     # Generate report
     report_obj = builder.generate(
@@ -196,12 +203,9 @@ def report(query, template, credentials, config):
 
 
 @main.command()
-def list_templates():
+def templates():
     """Lists internal templates shipped with gisrep that may be used with the
     'report' command to format the results.
-
-    Args:
-        args (argparse.Namespace): Command arguments
     """
     builder = InternalTemplateManager()
     for template in builder.list():
