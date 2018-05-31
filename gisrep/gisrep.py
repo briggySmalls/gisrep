@@ -200,7 +200,7 @@ def report(query, external, internal, config, credentials):
         issues)
 
     # Output report
-    print(report_obj)
+    click.echo(report_obj)
 
 
 @cli.command()
@@ -210,7 +210,7 @@ def templates():
     """
     builder = InternalTemplateManager()
     for template in builder.list():
-        print(template)
+        click.echo(template)
 
 
 def main():
@@ -218,11 +218,11 @@ def main():
     try:
         cli(obj={'is_internal_template': False})
     except GisrepError as exc:
-        print("Gisrep Error: {}".format(exc))
+        click.echo("Gisrep Error: {}".format(exc))
     except GithubException as exc:
-        print("Github API Error: {}".format(exc))
+        click.echo("Github API Error: {}".format(exc))
     except keyring.errors.KeyringError as exc:
-        print("Keyring Error: {}".format(exc))
+        click.echo("Keyring Error: {}".format(exc))
 
 
 if __name__ == '__main__':
