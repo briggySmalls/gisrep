@@ -133,11 +133,11 @@ def init(username, password, force, local):
 
 def internal_template_callback(ctx, _, value):
     if value:
-        ctx.obj['is_internal_template'] = True
+        ctx.is_internal_template = True
 
 
 def external_template_callback(ctx, _, value):
-    if ctx.obj['is_internal_template'] and value:
+    if ctx.is_internal_template and value:
         # We only allow one of internal/external to be supplied
         click.echo("Only one of --internal/--external may be supplied")
         ctx.exit()
@@ -213,4 +213,4 @@ def templates():
 
 
 if __name__ == '__main__':
-    main()
+    main(is_internal_template=False)
