@@ -21,6 +21,7 @@ DEFAULT_CONFIG_DIR = os.path.expanduser("~")
 DEFAULT_CONFIG_FILE = ".gisreprc"
 DEFAULT_CONFIG_FILEPATH = os.path.join(
     DEFAULT_CONFIG_DIR, DEFAULT_CONFIG_FILE)
+DEFAULT_TEMPLATE = 'simple_report.md'
 
 
 def _get_credentials(config):
@@ -63,20 +64,20 @@ def _get_template_manager(internal, external):
     if external:
         # We have been passed a template file path
         template_dir = os.path.dirname(
-            os.path.abspath(template))
+            os.path.abspath(external))
         template_tag = os.path.splitext(
-            os.path.basename(template))[0]
+            os.path.basename(external))[0]
         manager = ExternalTemplateManager(template_dir)
     else:
         # We have been passed a template tag
-        template_tag = template if template is not None else 'simple_report.md'
+        template_tag = internal if internal is not None else 'simple_report.md'
         manager = InternalTemplateManager()
 
     return manager, template_tag
 
 
 @click.group()
-def main():
+def cli():
     """Main function for Gisrep tool
     """
 
@@ -84,7 +85,7 @@ def main():
     pass
 
 
-@main.command()
+@cli.command()
 @click.option(
     '--force/--no-force',
     default=False,
@@ -132,18 +133,18 @@ def init(username, password, force, local):
 
 
 def internal_template_callback(ctx, _, value):
-    if value:
-        ctx.is_internal_template = True
+    if value != DEFAULT_TEMPLATE:
+        ctx.obj['is_internal_template'] = True
 
 
 def external_template_callback(ctx, _, value):
-    if ctx.is_internal_template and value:
+    if ctx.obj['is_internal_template'] and value:
         # We only allow one of internal/external to be supplied
         click.echo("Only one of --internal/--external may be supplied")
         ctx.exit()
 
 
-@main.command()
+@cli.command()
 @click.argument('query')
 @click.option(
     '--external',
@@ -153,7 +154,7 @@ def external_template_callback(ctx, _, value):
 @click.option(
     '--internal',
     type=str,
-    default="simple_report.md",
+    default=DEFAULT_TEMPLATE,
     help="Internal Gisrep template for formatting the results",
     callback=internal_template_callback,
     is_eager=True)
@@ -202,7 +203,7 @@ def report(query, external, internal, config, credentials):
     print(report_obj)
 
 
-@main.command()
+@cli.command()
 def templates():
     """Lists internal templates shipped with gisrep that may be used with the
     'report' command to format the results.
@@ -212,5 +213,17 @@ def templates():
         print(template)
 
 
+def main():
+    # Parse command line arguments
+    try:
+        cli(obj={'is_internal_template': False})
+    except GisrepError as exc:
+        print("Gisrep Error: {}".format(exc))
+    except GithubException as exc:
+        print("Github API Error: {}".format(exc))
+    except keyring.errors.KeyringError as exc:
+        print("Keyring Error: {}".format(exc))
+
+
 if __name__ == '__main__':
-    main(is_internal_template=False)
+    main()
