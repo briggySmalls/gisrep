@@ -1,3 +1,0 @@
-{% for issue in issues %}
-- {{ issue.title }} [#{{ issue.number }}]
-{% endfor %}

@@ -9,13 +9,13 @@ Attributes:
 import os
 
 import click
-from github import Github, GithubException
+from github import GithubException
+from pathlib import Path
 import keyring
 
 from .config import Config
 from .errors import GisrepError
-from .templates.template_manager import (
-    ExternalTemplateManager, InternalTemplateManager)
+from .github.github import GithubRequester
 
 DEFAULT_CONFIG_DIR = os.path.expanduser("~")
 DEFAULT_CONFIG_FILE = ".gisreprc"
@@ -49,30 +49,6 @@ def _get_credentials(config):
 
     # Instantiate an API client with Github credentials
     return config.get_credentials()
-
-
-def _get_template_manager(template):
-    """Gets template objects
-
-    Args:
-        template (str): Template provided by user
-        is_external (bool): Indicates template is external to gisrep
-
-    Returns:
-        Tuple(TemplateManager, str): Template manager and tag of template
-    """
-    if not template:
-        # No template specified so default to internal one
-        return InternalTemplateManager(), 'simple_report.md'
-
-    # We have been passed a template file path
-    template_dir = os.path.dirname(
-        os.path.abspath(template))
-    template_tag = os.path.splitext(
-        os.path.basename(template))[0]
-    manager = ExternalTemplateManager(template_dir)
-
-    return manager, template_tag
 
 
 @click.group()
@@ -131,11 +107,21 @@ def init(username, password, force, local):
         force=force)
 
 
+def pathlib_wrapper(ctx, param, value):
+    # Wrap any paths in a pathlib object
+    click.echo("trying...")
+    if value is not None:
+        click.echo("success!")
+        return Path(value)
+    return value
+
+
 @cli.command()
 @click.argument('query')
 @click.option(
     '--template',
     type=click.Path('rb'),
+    callback=pathlib_wrapper,
     help="Custom template for formatting the results")
 @click.option(
     '--config',
@@ -155,31 +141,12 @@ def report(query, template, config, credentials):
     if not credentials:
         credentials = _get_credentials(config)
 
-    # Create PyGithub API object
-    if credentials is not None:
-        api = Github(
-            credentials['username'],
-            credentials['password'])
-    else:
-        api = Github()
-
-    # Request the issues
-    issues = api.search_issues(query, sort="created", order="asc")
-
-    # Check issues were found
-    if not issues.get_page(0):
-        raise GisrepError("No matching issues found")
-
-    # Create the template manger
-    builder, template_tag = _get_template_manager(template)
-
     # Generate report
-    report_obj = builder.generate(
-        template_tag,
-        issues)
+    requester = GithubRequester(credentials)
+    report = requester.generate_report(query, template)
 
     # Output report
-    click.echo(report_obj)
+    click.echo(report)
 
 
 def main():
