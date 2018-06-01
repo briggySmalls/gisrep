@@ -8,9 +8,9 @@ Attributes:
 """
 import os
 
+import click
 from github import Github, GithubException
 import keyring
-import click
 
 from .config import Config
 from .errors import GisrepError
