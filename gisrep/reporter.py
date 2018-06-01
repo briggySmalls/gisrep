@@ -1,5 +1,5 @@
-from .template_manager import TemplateManager
 from .errors import GisrepError
+from .template_manager import TemplateManager
 
 
 class Reporter(object):

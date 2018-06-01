@@ -7,10 +7,10 @@ Attributes:
     DEFAULT_CONFIG_DIR (str): Default config file directory
 """
 import os
+from pathlib import Path
 
 import click
 from github import GithubException
-from pathlib import Path
 import keyring
 
 from .config import Config

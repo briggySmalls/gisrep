@@ -3,8 +3,8 @@ Github requester
 """
 
 from github import Github
-from ..reporter import Reporter
 
+from ..reporter import Reporter
 
 DEFAULT_TEMPLATE = r"""{% for issue in issues %}
 - {{ issue.title }} [#{{ issue.number }}]
