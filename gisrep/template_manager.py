@@ -1,4 +1,5 @@
 import importlib.util
+from abc import ABC
 
 import jinja2
 
@@ -11,7 +12,7 @@ TEMPLATE_ARGS = {
 }
 
 
-class GisrepTemplate(object):
+class GisrepTemplate(ABC):
 
     def __init__(self, template):
         self.template = template
