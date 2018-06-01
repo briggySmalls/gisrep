@@ -1,7 +1,6 @@
 Usage
 *****
 
-.. argparse::
-   :module: gisrep.cli
-   :func: get_parser
+.. click:: gisrep.gisrep:cli
    :prog: gisrep
+   :show-nested:
