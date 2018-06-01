@@ -133,11 +133,25 @@ def init(username, password, force, local):
 
 
 def internal_template_callback(ctx, _, value):
+    """Record if internal template is supplied
+
+    Args:
+        ctx (TYPE): Click context
+        _ (str): Parameter name
+        value (str): Tag of the internal template
+    """
     if value != DEFAULT_TEMPLATE:
         ctx.obj['is_internal_template'] = True
 
 
 def external_template_callback(ctx, _, value):
+    """Validate that internal and external were not both passed
+
+    Args:
+        ctx (TYPE): Click context
+        _ (str): Parameter name
+        value (click.Path): Path of the external template
+    """
     if ctx.obj['is_internal_template'] and value:
         # We only allow one of internal/external to be supplied
         click.echo("Only one of --internal/--external may be supplied")
@@ -214,9 +228,13 @@ def templates():
 
 
 def main():
+    """Entry point to command line application
+    """
+
     # Parse command line arguments
     try:
-        cli(obj={'is_internal_template': False})
+        cli(  # pylint: disable=unexpected-keyword-arg
+            obj={'is_internal_template': False})
     except GisrepError as exc:
         click.echo("Gisrep Error: {}".format(exc))
     except GithubException as exc:
