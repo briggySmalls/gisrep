@@ -86,7 +86,7 @@ class FileTemplate(GisrepTemplate):
             # Python 3.5+
             spec = importlib.util.spec_from_file_location(
                 module_path.name,
-                module_path)
+                str(module_path))
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
         except AttributeError:
@@ -94,7 +94,7 @@ class FileTemplate(GisrepTemplate):
             from importlib.machinery import SourceFileLoader
             module = SourceFileLoader(  # pylint: disable=deprecated-method
                 module_path.name,
-                module_path).load_module()
+                str(module_path)).load_module()
         return module
 
 

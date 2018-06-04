@@ -2,7 +2,6 @@
 Tests for the template_manager module
 """
 
-from collections import namedtuple
 import inspect
 from pathlib import Path
 
@@ -12,7 +11,8 @@ from gisrep.errors import GisrepError
 from gisrep.template_manager import (
     DefaultTemplate, FileTemplate, TemplateManager)
 
-SIMPLE_TEMPLATE_STRING = r"{% for issue in issues %}{{ issue.number }}{% endfor %}"
+SIMPLE_TEMPLATE_STRING = (
+    r"{% for issue in issues %}{{ issue.number }}{% endfor %}")
 
 EXTRA_CONTEXT_TEMPLATE_STRING = (
     SIMPLE_TEMPLATE_STRING +
@@ -46,7 +46,7 @@ def template_file(request, tmpdir):
         context_file = tmpdir.join(FILENAME + '.py')
         context_file.write(inspect.getsource(context_function))
 
-    return template_file
+    return Path(str(template_file))
 
 
 @pytest.mark.parametrize(
@@ -75,7 +75,7 @@ def test_default_template(template_string, issues, expected_report):
 )
 def test_file_template(template_file, issues, expected_report):
     # Create the template
-    template = FileTemplate(Path(template_file))
+    template = FileTemplate(template_file)
 
     # Render a report
     report = template.render(issues)
