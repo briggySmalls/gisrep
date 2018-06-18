@@ -27,4 +27,5 @@ class GithubRequester(Reporter):
 
     def _request(self, query):
         """ Request the issues """
-        return self.api.search_issues(query, sort="created", order="asc")
+        issues = self.api.search_issues(query, sort="created", order="asc")
+        return issues if issues.get_page(0) else None

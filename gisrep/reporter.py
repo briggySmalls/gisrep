@@ -13,7 +13,7 @@ class Reporter(object):
         issues = self._request(query)
 
         # Check issues were found
-        if not issues.get_page(0):
+        if issues is None:
             raise GisrepError("No matching issues found")
 
         return self.template_manager.generate(issues, template)
