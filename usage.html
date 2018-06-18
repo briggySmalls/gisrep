@@ -9,7 +9,7 @@
     <title>Usage &#8212; gisrep 0.2.3 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -33,99 +33,94 @@
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<p>Tool for publishing Github issues.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">gisrep</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">{</span><span class="n">init</span><span class="p">,</span><span class="n">report</span><span class="p">,</span><span class="nb">list</span><span class="p">}</span> <span class="o">...</span>
+<div class="section" id="gisrep">
+<h2>gisrep<a class="headerlink" href="#gisrep" title="Permalink to this headline">¶</a></h2>
+<p>Main function for Gisrep tool</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>gisrep <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
 </pre></div>
 </div>
-<div class="section" id="commands">
-<h2>commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
-<table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd>command</kbd></td>
-<td>Possible choices: init, report, list</td></tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="Sub-commands:">
-<h2>Sub-commands:<a class="headerlink" href="#Sub-commands:" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="init">
-<h3>init<a class="headerlink" href="#init" title="Permalink to this headline">¶</a></h3>
-<p>Creates a ‘.gisreprc’ configuration file to store Github username and adds the password to the system password manager.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gisrep</span> <span class="n">init</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">l</span> <span class="n">LOCAL</span><span class="p">]</span>
+<div class="section" id="gisrep-init">
+<h3>init<a class="headerlink" href="#gisrep-init" title="Permalink to this headline">¶</a></h3>
+<p>Creates a ‘.gisreprc’ configuration file to store Github username and
+adds the password to the system password manager.</p>
+<p>USERNAME: Github username</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>gisrep init <span class="o">[</span>OPTIONS<span class="o">]</span> USERNAME
 </pre></div>
 </div>
-<div class="section" id="Named Arguments">
-<h4>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h4>
-<table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd>-f, --force</kbd></td>
-<td><p class="first">Overwrite an existing config file</p>
-<p class="last">Default: False</p>
-</td></tr>
-<tr><td class="option-group">
-<kbd>-l, --local</kbd></td>
-<td>Path to a directory in which to save the file</td></tr>
-</tbody>
-</table>
+<p class="rubric">Options</p>
+<dl class="option">
+<dt id="cmdoption-gisrep-init-force">
+<code class="descname">--force</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--no-force</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-gisrep-init-force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite an existing config file</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-gisrep-init-local">
+<code class="descname">--local</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--global</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-gisrep-init-local" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to a directory in which to save the file</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-gisrep-init-password">
+<code class="descname">--password</code><code class="descclassname"> &lt;password&gt;</code><a class="headerlink" href="#cmdoption-gisrep-init-password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="option">
+<dt id="cmdoption-gisrep-init-arg-username">
+<code class="descname">USERNAME</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-gisrep-init-arg-username" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
 </div>
-</div>
-<div class="section" id="report">
-<h3>report<a class="headerlink" href="#report" title="Permalink to this headline">¶</a></h3>
-<p>Publishes a report of nicely formatted Github issues specified by a Github issues search query (see help.github.com/articles/searching-issues-and-pull-requests/)</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gisrep</span> <span class="n">report</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">i</span> <span class="n">INTERNAL</span> <span class="o">|</span> <span class="o">-</span><span class="n">e</span> <span class="n">EXTERNAL</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">CONFIG</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">PASSWORD</span><span class="p">]</span>
-              <span class="p">[</span><span class="o">-</span><span class="n">u</span> <span class="n">USERNAME</span><span class="p">]</span>
-              <span class="n">query</span>
+<div class="section" id="gisrep-report">
+<h3>report<a class="headerlink" href="#gisrep-report" title="Permalink to this headline">¶</a></h3>
+<p>Publishes a report of nicely formatted Github issues specified by a
+Github issues search query (see
+help.github.com/articles/searching-issues-and-pull-requests/)</p>
+<p>
+QUERY: The Github query to find issues for</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>gisrep report <span class="o">[</span>OPTIONS<span class="o">]</span> QUERY
 </pre></div>
 </div>
-<div class="section" id="Positional Arguments">
-<h4>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h4>
-<table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd>query</kbd></td>
-<td>Issues search query</td></tr>
-</tbody>
-</table>
+<p class="rubric">Options</p>
+<dl class="option">
+<dt id="cmdoption-gisrep-report-external">
+<code class="descname">--external</code><code class="descclassname"> &lt;external&gt;</code><a class="headerlink" href="#cmdoption-gisrep-report-external" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom template for formatting the results</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-gisrep-report-internal">
+<code class="descname">--internal</code><code class="descclassname"> &lt;internal&gt;</code><a class="headerlink" href="#cmdoption-gisrep-report-internal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Internal Gisrep template for formatting the results</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-gisrep-report-config">
+<code class="descname">--config</code><code class="descclassname"> &lt;config&gt;</code><a class="headerlink" href="#cmdoption-gisrep-report-config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to gisrep config file</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-gisrep-report-credentials">
+<code class="descname">--credentials</code><code class="descclassname"> &lt;credentials&gt;</code><a class="headerlink" href="#cmdoption-gisrep-report-credentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Username and password</p>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="option">
+<dt id="cmdoption-gisrep-report-arg-query">
+<code class="descname">QUERY</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-gisrep-report-arg-query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
 </div>
-<div class="section" id="Named Arguments_repeat1">
-<h4>Named Arguments<a class="headerlink" href="#Named Arguments_repeat1" title="Permalink to this headline">¶</a></h4>
-<table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd>-i, --internal</kbd></td>
-<td><p class="first">Tag of internal template to format issues with</p>
-<p class="last">Default: “simple_report.md”</p>
-</td></tr>
-<tr><td class="option-group">
-<kbd>-e, --external</kbd></td>
-<td>Path to external template to format issues with</td></tr>
-<tr><td class="option-group">
-<kbd>-c, --config</kbd></td>
-<td>Path to gisrep config file</td></tr>
-<tr><td class="option-group">
-<kbd>-p, --password</kbd></td>
-<td>Github password</td></tr>
-<tr><td class="option-group">
-<kbd>-u, --username</kbd></td>
-<td>Github usename</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="section" id="list">
-<h3>list<a class="headerlink" href="#list" title="Permalink to this headline">¶</a></h3>
-<p>Lists internal templates shipped with gisrep that may be used with the ‘report’ command to format the results.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gisrep</span> <span class="nb">list</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span>
+<div class="section" id="gisrep-templates">
+<h3>templates<a class="headerlink" href="#gisrep-templates" title="Permalink to this headline">¶</a></h3>
+<p>Lists internal templates shipped with gisrep that may be used with the
+‘report’ command to format the results.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>gisrep templates <span class="o">[</span>OPTIONS<span class="o">]</span>
 </pre></div>
 </div>
 </div>
@@ -162,8 +157,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#commands">commands</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Sub-commands:">Sub-commands:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gisrep">gisrep</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
@@ -198,7 +192,7 @@
       &copy;2018, Sam Briggs.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
