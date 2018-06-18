@@ -15,7 +15,7 @@ import keyring
 
 from .config import Config
 from .errors import GisrepError
-from .github.github import GithubRequester
+from .clients.github import GithubRequester
 
 DEFAULT_CONFIG_DIR = os.path.expanduser("~")
 DEFAULT_CONFIG_FILE = ".gisreprc"
