@@ -15,7 +15,7 @@ import keyring
 
 from .config import Config
 from .errors import GisrepError
-from .clients.github import GithubRequester
+from .reporters.github import GithubReporter
 
 DEFAULT_CONFIG_DIR = os.path.expanduser("~")
 DEFAULT_CONFIG_FILE = ".gisreprc"
@@ -142,7 +142,7 @@ def report(query, template, config, credentials):
         credentials = _get_credentials(config)
 
     # Generate report
-    requester = GithubRequester(credentials)
+    requester = GithubReporter(credentials)
     report = requester.generate_report(query, template)
 
     # Output report

@@ -11,7 +11,7 @@ DEFAULT_TEMPLATE = r"""{% for issue in issues %}
 {% endfor %}"""
 
 
-class GithubRequester(Reporter):
+class GithubReporter(Reporter):
 
     def __init__(self, credentials=None):
         # Create PyGithub API object
