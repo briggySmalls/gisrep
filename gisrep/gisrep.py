@@ -133,11 +133,15 @@ def pathlib_wrapper(ctx, param, value):
     callback=pathlib_wrapper,
     help="Custom template for formatting the results")
 @click.option(
+    '--client',
+    type=click.Choice(['github', 'gitlab']),
+    help="Client to fetch issues from")
+@click.option(
     '--config',
     type=click.File('rb'),
     help="Path to gisrep config file")
 @click.option('--credentials', nargs=2, type=str, help="Username and password")
-def report(query, template, config, credentials):
+def report(query, template, client, config, credentials):
     """Publishes a report of nicely formatted Github issues specified by a
     Github issues search query (see
     help.github.com/articles/searching-issues-and-pull-requests/)
