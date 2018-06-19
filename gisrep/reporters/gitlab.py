@@ -25,6 +25,9 @@ class GitLabReporter(Reporter):
         # Call Reporter initialiser
         super().__init__(DEFAULT_TEMPLATE)
 
+    def name(self):
+        return 'gitlab'
+
     def _request(self, query):
         """ Request the issues """
         issues = self.api.search_issues(query, sort="created", order="asc")

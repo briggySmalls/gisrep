@@ -21,7 +21,7 @@ class Reporter(ABC):
         """
         # Create a template manager
         self.template_manager = TemplateManager(default_template)
-    
+
     @staticmethod
     def create(client_name):
         # Get the client
@@ -53,10 +53,15 @@ class Reporter(ABC):
     def _request(self, query):
         pass
 
+    @property
+    @abstractmethod
+    def name(self):
+        pass
+
     @staticmethod
-    def _find_client(, client_name):
+    def _find_client(client_name):
         # Find all implementing classed
-        subclasses = ._all_subclasses(Reporter)
+        subclasses = Reporter._all_subclasses(Reporter)
 
         # Instantiate the one that matches the name
         for cls in subclasses:
@@ -66,4 +71,4 @@ class Reporter(ABC):
     @staticmethod
     def _all_subclasses(cls):
         return set(cls.__subclasses__()).union(
-            [s for c in cls.__subclasses__() for s in all_subclasses(c)])
+            [s for c in cls.__subclasses__() for s in Reporter.all_subclasses(c)])

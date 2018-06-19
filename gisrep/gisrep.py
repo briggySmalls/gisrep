@@ -135,6 +135,7 @@ def pathlib_wrapper(ctx, param, value):
 @click.option(
     '--client',
     type=click.Choice(['github', 'gitlab']),
+    default='github',
     help="Client to fetch issues from")
 @click.option(
     '--config',
