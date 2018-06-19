@@ -71,5 +71,6 @@ class GitLabReporter(Reporter):
             self.api.projects.get(query.project)
             if query.project
             else self.api)
-        issues = manager.issues.list()
+        issues = manager.issues.list(
+            milestone=query.milestone)
         return issues if len(issues) > 0 else None
