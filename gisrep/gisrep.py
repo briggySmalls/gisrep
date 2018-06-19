@@ -160,24 +160,24 @@ def report(ctx, template, config):
 
 
 @report.command()
-@pass_github
 @pass_common
-def github(common, reporter, query):
+@pass_github
+def github(reporter, query, common):
     """Publish issues from a Github search query
     (see help.github.com/articles/searching-issues-and-pull-requests/)"""
-    generate_report(common, reporter, query)
+    generate_report(reporter, query, common)
 
 
 @report.command()
-@pass_gitlab
 @pass_common
-def gitlab(common, reporter, query):
+@pass_gitlab
+def gitlab(reporter, query, common):
     """Publish issues from a GitLab search query
     (see https://docs.gitlab.com/ee/user/search/)"""
-    generate_report(common, reporter, query)
+    generate_report(reporter, query, common)
 
 
-def generate_report(common, reporter, query):
+def generate_report(reporter, query, common):
     # Generate report
     report = reporter.generate_report(query, common.template)
 

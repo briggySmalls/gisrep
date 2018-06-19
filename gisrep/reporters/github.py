@@ -33,15 +33,17 @@ def pass_github(f):
     @click.option('--username', help="Github username")
     @click.option('--password', help="Github password")
     @click.argument('search')
-    @click.pass_context
     @wraps(f)
-    def gitlab_options(ctx, username, password, search):
+    def gitlab_options(*args, **kwargs):
         """Publish issues from a GitLab search query
         (see https://docs.gitlab.com/ee/user/search/)"""
         reporter = GithubReporter(
-            GithubConfig(username=username, password=password))
-        query = GithubQuery(search_string=search)
-        return f(ctx, reporter, query)
+            GithubConfig(
+                username=kwargs.pop('username'),
+                password=kwargs.pop('password')))
+        query = GithubQuery(
+            search_string=kwargs.pop('search'))
+        return f(reporter, query, *args, **kwargs)
     return gitlab_options
 
 
