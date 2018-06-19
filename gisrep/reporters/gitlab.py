@@ -46,9 +46,9 @@ def pass_gitlab(f):
     def gitlab_options(ctx, token, url, project, milestone):
         """Publish issues from a GitLab search query
         (see https://docs.gitlab.com/ee/user/search/)"""
-        config = GitLabConfig(token=token, url=url)
+        reporter = GitLabReporter(GitLabConfig(token=token, url=url))
         query = GitLabQuery(project=project, milestone=milestone)
-        return f(ctx, config, query)
+        return f(ctx, reporter, query)
     return gitlab_options
 
 

@@ -16,7 +16,6 @@ import attr
 
 from gisrep.config import Config
 from gisrep.errors import GisrepError
-from gisrep.reporters.reporter import create_reporter
 from gisrep.reporters.gitlab import pass_gitlab
 from gisrep.reporters.github import pass_github
 
@@ -163,25 +162,22 @@ def report(ctx, template, config):
 @report.command()
 @pass_github
 @pass_common
-def github(common, config, query):
+def github(common, reporter, query):
     """Publish issues from a Github search query
     (see help.github.com/articles/searching-issues-and-pull-requests/)"""
-    generate_report("github", common, config, query)
+    generate_report(common, reporter, query)
 
 
 @report.command()
 @pass_gitlab
 @pass_common
-def gitlab(common, config, query):
+def gitlab(common, reporter, query):
     """Publish issues from a GitLab search query
     (see https://docs.gitlab.com/ee/user/search/)"""
-    generate_report("gitlab", common, config, query)
+    generate_report(common, reporter, query)
 
 
-def generate_report(reporter_name, common, config, query):
-    # Get reporter
-    reporter = create_reporter(reporter_name, config)
-
+def generate_report(common, reporter, query):
     # Generate report
     report = reporter.generate_report(query, common.template)
 

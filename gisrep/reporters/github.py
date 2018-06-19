@@ -38,9 +38,10 @@ def pass_github(f):
     def gitlab_options(ctx, username, password, search):
         """Publish issues from a GitLab search query
         (see https://docs.gitlab.com/ee/user/search/)"""
-        config = GithubConfig(username=username, password=password)
+        reporter = GithubReporter(
+            GithubConfig(username=username, password=password))
         query = GithubQuery(search_string=search)
-        return f(ctx, config, query)
+        return f(ctx, reporter, query)
     return gitlab_options
 
 
