@@ -148,9 +148,7 @@ pass_common = click.make_pass_decorator(CommonOptions)
     help="Path to gisrep config file")
 @click.pass_context
 def report(ctx, template, config):
-    """Publishes a report of nicely formatted issues specified by a
-    Github issues search query (see
-    help.github.com/articles/searching-issues-and-pull-requests/)
+    """Publishes a report of nicely formatted issues from the chosen source
     """
 
     # Save context

@@ -6,31 +6,6 @@ from gisrep.errors import GisrepError
 from gisrep.template_manager import TemplateManager
 
 
-def create_reporter(reporter_name, config):
-    """Find and instantiate the specified reporter """
-    subclasses = _all_subclasses(Reporter)
-
-    # Instantiate the one that matches the name
-    for cls in subclasses:
-        try:
-            class_name = cls.NAME
-        except AttributeError:
-            raise GisrepError(
-                "{} missing NAME attribute".format(cls))
-
-        if class_name == reporter_name:
-            return cls(config)
-
-    # Raise an error if none found
-    raise GisrepError("Reporter '{}' not found".format(reporter_name))
-
-
-def _all_subclasses(cls):
-    """Recursively search for subclasses"""
-    return set(cls.__subclasses__()).union(
-        [s for c in cls.__subclasses__() for s in _all_subclasses(c)])
-
-
 class Reporter(ABC):
     """Abstract reporter class for generating reports from a query
 
@@ -71,9 +46,4 @@ class Reporter(ABC):
 
     @abstractmethod
     def _request(self, query):
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def create_config(**kwargs):
         pass

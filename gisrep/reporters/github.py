@@ -48,8 +48,6 @@ def pass_github(f):
 
 
 class GithubReporter(Reporter):
-    NAME = "github"
-
     def __init__(self, config):
         # Create PyGithub API object
         if config.has_credentials():
@@ -61,10 +59,6 @@ class GithubReporter(Reporter):
 
         # Call Reporter initialiser
         super().__init__(_DEFAULT_TEMPLATE)
-
-    @staticmethod
-    def create_config(**kwargs):
-        return GithubConfig(**kwargs)
 
     def _request(self, query):
         """ Request the issues """

@@ -56,8 +56,6 @@ def pass_gitlab(f):
 
 
 class GitLabReporter(Reporter):
-    NAME = "gitlab"
-
     def __init__(self, config):
         # Create GitLab API object
         self.api = Gitlab(
@@ -66,10 +64,6 @@ class GitLabReporter(Reporter):
 
         # Call Reporter initialiser
         super().__init__(DEFAULT_TEMPLATE)
-
-    @staticmethod
-    def create_config(**kwargs):
-        return GitLabConfig(**kwargs)
 
     def _request(self, query):
         """ Request the issues """
