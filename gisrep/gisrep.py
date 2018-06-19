@@ -17,6 +17,8 @@ import attr
 from gisrep.config import Config
 from gisrep.errors import GisrepError
 from gisrep.reporters.reporter import create_reporter
+from gisrep.reporters.gitlab import pass_gitlab
+from gisrep.reporters.github import pass_github
 
 DEFAULT_CONFIG_DIR = os.path.expanduser("~")
 DEFAULT_CONFIG_FILE = ".gisreprc"
@@ -129,7 +131,6 @@ def pathlib_wrapper(ctx, param, value):
 @attr.s()
 class CommonOptions(object):
     template = attr.ib(type=click.Path)
-    query = attr.ib(type=str)
     config = attr.ib(type=click.File)
 
 
@@ -137,7 +138,6 @@ pass_common = click.make_pass_decorator(CommonOptions)
 
 
 @cli.group()
-@click.argument('query')
 @click.option(
     '--template',
     type=click.Path('rb'),
@@ -148,51 +148,42 @@ pass_common = click.make_pass_decorator(CommonOptions)
     type=click.File('rb'),
     help="Path to gisrep config file")
 @click.pass_context
-def report(ctx, query, template, config):
+def report(ctx, template, config):
     """Publishes a report of nicely formatted issues specified by a
     Github issues search query (see
     help.github.com/articles/searching-issues-and-pull-requests/)
-
-    \b
-    QUERY: The Github query to find issues for
     """
 
     # Save context
     ctx.obj = CommonOptions(
-        query=query,
         template=template,
         config=config)
 
 
 @report.command()
-@click.option('--username', help="Github username")
-@click.option('--password', help="Github password")
+@pass_github
 @pass_common
-def github(common, username, password):
+def github(common, config, query):
     """Publish issues from a Github search query
     (see help.github.com/articles/searching-issues-and-pull-requests/)"""
-    generate_report("github", common, username=username, password=password)
+    generate_report("github", common, config, query)
 
 
 @report.command()
-@click.option('--token', help="GitLab personal access token")
-@click.option(
-    '--url',
-    default="https://gitlab.com",
-    help="GitLab instance URL")
+@pass_gitlab
 @pass_common
-def gitlab(common, token, url):
+def gitlab(common, config, query):
     """Publish issues from a GitLab search query
     (see https://docs.gitlab.com/ee/user/search/)"""
-    generate_report("gitlab", common, token=token, url=url)
+    generate_report("gitlab", common, config, query)
 
 
-def generate_report(reporter_name, common, **kwargs):
+def generate_report(reporter_name, common, config, query):
     # Get reporter
-    reporter = create_reporter(reporter_name, **kwargs)
+    reporter = create_reporter(reporter_name, config)
 
     # Generate report
-    report = reporter.generate_report(common.query, common.template)
+    report = reporter.generate_report(query, common.template)
 
     # Output report
     click.echo(report)
@@ -204,8 +195,7 @@ def main():
 
     # Parse command line arguments
     try:
-        cli(  # pylint: disable=unexpected-keyword-arg
-            obj={'is_internal_template': False})
+        cli()
     except GisrepError as exc:
         click.echo("Gisrep Error: {}".format(exc))
     except GithubException as exc:

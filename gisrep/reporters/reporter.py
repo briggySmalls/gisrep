@@ -6,7 +6,7 @@ from gisrep.errors import GisrepError
 from gisrep.template_manager import TemplateManager
 
 
-def create_reporter(reporter_name, **kwargs):
+def create_reporter(reporter_name, config):
     """Find and instantiate the specified reporter """
     subclasses = _all_subclasses(Reporter)
 
@@ -19,7 +19,7 @@ def create_reporter(reporter_name, **kwargs):
                 "{} missing NAME attribute".format(cls))
 
         if class_name == reporter_name:
-            return cls(cls.create_config(**kwargs))
+            return cls(config)
 
     # Raise an error if none found
     raise GisrepError("Reporter '{}' not found".format(reporter_name))
