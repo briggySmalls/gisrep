@@ -2,8 +2,33 @@
 """
 from abc import ABC, abstractmethod
 
-from .errors import GisrepError
-from .template_manager import TemplateManager
+from gisrep.errors import GisrepError
+from gisrep.template_manager import TemplateManager
+
+
+def create_reporter(reporter_name, **kwargs):
+    """Find and instantiate the specified reporter """
+    subclasses = _all_subclasses(Reporter)
+
+    # Instantiate the one that matches the name
+    for cls in subclasses:
+        try:
+            class_name = cls.NAME
+        except AttributeError:
+            raise GisrepError(
+                "{} missing NAME attribute".format(cls))
+
+        if class_name == reporter_name:
+            return cls(cls.create_config(**kwargs))
+
+    # Raise an error if none found
+    raise GisrepError("Reporter '{}' not found".format(reporter_name))
+
+
+def _all_subclasses(cls):
+    """Recursively search for subclasses"""
+    return set(cls.__subclasses__()).union(
+        [s for c in cls.__subclasses__() for s in _all_subclasses(c)])
 
 
 class Reporter(ABC):
@@ -21,11 +46,6 @@ class Reporter(ABC):
         """
         # Create a template manager
         self.template_manager = TemplateManager(default_template)
-
-    @staticmethod
-    def create(client_name):
-        # Get the client
-        return Reporter._find_client(client_name)
 
     def generate_report(self, query, template=None):
         """Generates a report from the query object and template
@@ -53,22 +73,7 @@ class Reporter(ABC):
     def _request(self, query):
         pass
 
-    @property
+    @staticmethod
     @abstractmethod
-    def name(self):
+    def create_config(**kwargs):
         pass
-
-    @staticmethod
-    def _find_client(client_name):
-        # Find all implementing classed
-        subclasses = Reporter._all_subclasses(Reporter)
-
-        # Instantiate the one that matches the name
-        for cls in subclasses:
-            if cls.name == client_name:
-                return cls()
-
-    @staticmethod
-    def _all_subclasses(cls):
-        return set(cls.__subclasses__()).union(
-            [s for c in cls.__subclasses__() for s in Reporter.all_subclasses(c)])

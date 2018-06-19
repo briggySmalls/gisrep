@@ -6,7 +6,7 @@ import importlib.util
 
 import jinja2
 
-from .errors import GisrepError
+from gisrep.errors import GisrepError
 
 _TEMPLATE_ARGS = {
     'trim_blocks': True,

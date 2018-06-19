@@ -10,7 +10,7 @@ import os
 import keyring
 import toml
 
-from .errors import GisrepError
+from gisrep.errors import GisrepError
 
 PASSWORD_SERVICE_NAME = "gisrep"
 

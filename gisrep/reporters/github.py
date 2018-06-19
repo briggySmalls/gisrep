@@ -3,8 +3,9 @@ Github requester
 """
 
 from github import Github
+import attr
 
-from ..reporter import Reporter
+from .reporter import Reporter
 
 # Template to default to if no custom template is provided
 _DEFAULT_TEMPLATE = r"""{% for issue in issues %}
@@ -12,21 +13,33 @@ _DEFAULT_TEMPLATE = r"""{% for issue in issues %}
 {% endfor %}"""
 
 
+@attr.s()
+class GithubConfig(object):
+    username = attr.ib(type=str)
+    password = attr.ib(type=str)
+
+    def has_credentials(self):
+        return self.username is not None and self.password is not None
+
+
 class GithubReporter(Reporter):
-    def __init__(self, credentials=None):
+    NAME = "github"
+
+    def __init__(self, config):
         # Create PyGithub API object
-        if credentials is not None:
+        if config.has_credentials():
             self.api = Github(
-                credentials['username'],
-                credentials['password'])
+                config.username,
+                config.password)
         else:
             self.api = Github()
 
         # Call Reporter initialiser
         super().__init__(_DEFAULT_TEMPLATE)
 
-    def name(self):
-        return "github"
+    @staticmethod
+    def create_config(**kwargs):
+        return GithubConfig(**kwargs)
 
     def _request(self, query):
         """ Request the issues """

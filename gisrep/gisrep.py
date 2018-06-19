@@ -12,10 +12,11 @@ from pathlib import Path
 import click
 from github import GithubException
 import keyring
+import attr
 
-from .config import Config
-from .errors import GisrepError
-from .reporters.github import GithubReporter
+from gisrep.config import Config
+from gisrep.errors import GisrepError
+from gisrep.reporters.reporter import create_reporter
 
 DEFAULT_CONFIG_DIR = os.path.expanduser("~")
 DEFAULT_CONFIG_FILE = ".gisreprc"
@@ -125,7 +126,17 @@ def pathlib_wrapper(ctx, param, value):
     return value
 
 
-@cli.command()
+@attr.s()
+class CommonOptions(object):
+    template = attr.ib(type=click.Path)
+    query = attr.ib(type=str)
+    config = attr.ib(type=click.File)
+
+
+pass_common = click.make_pass_decorator(CommonOptions)
+
+
+@cli.group()
 @click.argument('query')
 @click.option(
     '--template',
@@ -133,17 +144,12 @@ def pathlib_wrapper(ctx, param, value):
     callback=pathlib_wrapper,
     help="Custom template for formatting the results")
 @click.option(
-    '--client',
-    type=click.Choice(['github', 'gitlab']),
-    default='github',
-    help="Client to fetch issues from")
-@click.option(
     '--config',
     type=click.File('rb'),
     help="Path to gisrep config file")
-@click.option('--credentials', nargs=2, type=str, help="Username and password")
-def report(query, template, client, config, credentials):
-    """Publishes a report of nicely formatted Github issues specified by a
+@click.pass_context
+def report(ctx, query, template, config):
+    """Publishes a report of nicely formatted issues specified by a
     Github issues search query (see
     help.github.com/articles/searching-issues-and-pull-requests/)
 
@@ -151,13 +157,42 @@ def report(query, template, client, config, credentials):
     QUERY: The Github query to find issues for
     """
 
-    # Attempt to get Github credentials
-    if not credentials:
-        credentials = _get_credentials(config)
+    # Save context
+    ctx.obj = CommonOptions(
+        query=query,
+        template=template,
+        config=config)
+
+
+@report.command()
+@click.option('--username', help="Github username")
+@click.option('--password', help="Github password")
+@pass_common
+def github(common, username, password):
+    """Publish issues from a Github search query
+    (see help.github.com/articles/searching-issues-and-pull-requests/)"""
+    generate_report("github", common, username=username, password=password)
+
+
+@report.command()
+@click.option('--token', help="GitLab personal access token")
+@click.option(
+    '--url',
+    default="https://gitlab.com",
+    help="GitLab instance URL")
+@pass_common
+def gitlab(common, token, url):
+    """Publish issues from a GitLab search query
+    (see https://docs.gitlab.com/ee/user/search/)"""
+    generate_report("gitlab", common, token=token, url=url)
+
+
+def generate_report(reporter_name, common, **kwargs):
+    # Get reporter
+    reporter = create_reporter(reporter_name, **kwargs)
 
     # Generate report
-    requester = GithubReporter(credentials)
-    report = requester.generate_report(query, template)
+    report = reporter.generate_report(common.query, common.template)
 
     # Output report
     click.echo(report)
