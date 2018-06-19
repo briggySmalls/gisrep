@@ -108,10 +108,19 @@ def init(username, password, force, local):
 
 
 def pathlib_wrapper(ctx, param, value):
+    """Wrap a path argument in a pathlib.Path
+
+    Args:
+        ctx (click.Context): Click context
+        param (str): Parameter name
+        value (click.Path): The path argument
+
+    Returns:
+        pathlib.Path: The wrapped path
+    """
+    del ctx, param
     # Wrap any paths in a pathlib object
-    click.echo("trying...")
     if value is not None:
-        click.echo("success!")
         return Path(value)
     return value
 

@@ -7,8 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from gisrep.template_manager import (
-    DefaultTemplate, FileTemplate)
+from gisrep.template_manager import DefaultTemplate, FileTemplate
 
 SIMPLE_TEMPLATE_STRING = (
     r"{% for issue in issues %}{{ issue.number }}{% endfor %}")

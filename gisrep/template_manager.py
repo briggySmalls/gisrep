@@ -1,3 +1,6 @@
+"""Abstraction of jinja2 template management
+"""
+
 from abc import ABC
 import importlib.util
 
@@ -5,7 +8,7 @@ import jinja2
 
 from .errors import GisrepError
 
-TEMPLATE_ARGS = {
+_TEMPLATE_ARGS = {
     'trim_blocks': True,
     'lstrip_blocks': True,
     'autoescape': jinja2.select_autoescape(['html', 'xml'])
@@ -13,6 +16,11 @@ TEMPLATE_ARGS = {
 
 
 class GisrepTemplate(ABC):
+    """Abstract gisrep template
+
+    Attributes:
+        template (jinja2.Template): Template to wrap
+    """
 
     def __init__(self, template):
         self.template = template
@@ -35,7 +43,7 @@ class DefaultTemplate(GisrepTemplate):
         """
 
         # Create a Jinja2 template from a string
-        template = jinja2.Template(template_string, **TEMPLATE_ARGS)
+        template = jinja2.Template(template_string, **_TEMPLATE_ARGS)
         super().__init__(template)
 
 
@@ -50,7 +58,7 @@ class FileTemplate(GisrepTemplate):
         # Create a Jinja2 environment
         env = jinja2.Environment(
             loader=loader,
-            **TEMPLATE_ARGS)
+            **_TEMPLATE_ARGS)
 
         try:
             # Return the template
