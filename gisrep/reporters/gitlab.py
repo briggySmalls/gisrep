@@ -25,6 +25,8 @@ class GitLabConfig(object):
 class GitLabQuery(object):
     project = attr.ib(type=str)
     milestone = attr.ib(type=str)
+    state = attr.ib(type=str)
+    labels = attr.ib(type=str)
 
 
 def pass_gitlab(f):
@@ -41,6 +43,15 @@ def pass_gitlab(f):
     @click.option(
         '--milestone',
         help="GitLab milestone to filter issues by")
+    @click.option(
+        '--state',
+        type=click.Choice(['opened', 'closed']),
+        help="GitLab issue state")
+    @click.option(
+        '--label',
+        type=str,
+        multiple=True,
+        help="GitLab label to filter issues by (intersection)")
     @wraps(f)
     def gitlab_options(*args, **kwargs):
         """Publish issues from a GitLab search query
@@ -50,7 +61,9 @@ def pass_gitlab(f):
             url=kwargs.pop('url')))
         query = GitLabQuery(
             project=kwargs.pop('project'),
-            milestone=kwargs.pop('milestone'))
+            milestone=kwargs.pop('milestone'),
+            labels=kwargs.pop('label'),
+            state=kwargs.pop('state'))
         return f(reporter, query, *args, **kwargs)
     return gitlab_options
 
@@ -72,5 +85,7 @@ class GitLabReporter(Reporter):
             if query.project
             else self.api)
         issues = manager.issues.list(
-            milestone=query.milestone)
+            milestone=query.milestone,
+            state=query.state,
+            labels=query.labels)
         return issues if len(issues) > 0 else None
